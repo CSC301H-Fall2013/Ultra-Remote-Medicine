@@ -1,0 +1,7 @@
+#Types
+*.pyc
+
+#Files
+sqlite3.db
+
+#Folders
