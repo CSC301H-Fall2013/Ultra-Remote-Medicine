@@ -19,4 +19,4 @@ Developing and Running the Server:
  
 2. In the ultraRemoteMedicine folder, create a file called configurationsettings.py
 	
-a. Add the following line: project_path = "path/to/Ultra-Remote-Medicine" where Ultra-Remote-Medicine is the root directory, containing this README. Even on Windows, use forward slashes.
+a. Add the following line: project_path = "path/to/Ultra-Remote-Medicine" where path/to/Ultra-Remote-Medicine is the root directory (i.e. the one containing this README). Even on Windows, use forward slashes.
