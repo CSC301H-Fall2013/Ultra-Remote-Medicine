@@ -16,6 +16,6 @@ To access the website, please follow: http://csc301h-fall2013.github.io/Ultra-Re
 Developing and Running the Server:
 
 1. Download the source files from github
-2. 
+ 
 2. In the ultraRemoteMedicine folder, create a file called configurationsettings.py
 	a. Add the following line: project_path = "path/to/Ultra-Remote-Medicine" where Ultra-Remote-Medicine is the root directory, containing this README. Even on Windows, use forward slashes.
