@@ -1,5 +1,6 @@
 # Django settings for ultraRemoteMedicine project.
 import os
+from configurationsettings import project_path
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -109,9 +110,11 @@ ROOT_URLCONF = 'ultraRemoteMedicine.urls'
 WSGI_APPLICATION = 'ultraRemoteMedicine.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Put strings here, like "/home/html/django_templates" or
+    # "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+   project_path + '/templates',
 )
 
 INSTALLED_APPS = (
@@ -126,6 +129,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'ultraRemoteMedicine',
+    'sample'
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
