@@ -1,6 +1,8 @@
 # Django settings for ultraRemoteMedicine project.
 import os
-from configurationsettings import project_path
+#from configurationsettings import project_path
+PROJECT_DIR = os.path.dirname(__file__)
+project_path = '/home/rocknrolla/Dropbox/UofT/CSC301/ultraRemoteMedicine/'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -74,6 +76,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_DIR, '../templates/asset/'),
 )
 
 # List of finder classes that know how to find static files in
@@ -114,7 +117,7 @@ TEMPLATE_DIRS = (
     # "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-   project_path + '/templates',
+   project_path + '/templates/website',
 )
 
 INSTALLED_APPS = (

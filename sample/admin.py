@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from sample.models import Doctor, Worker, Patient, Measurement, SpecialtyType,\
-     Schedule, Case, CasePicture, Annotation
+    Schedule, Case, CasePicture, Annotation
 
 admin.site.register(Doctor)
 admin.site.register(Worker)
