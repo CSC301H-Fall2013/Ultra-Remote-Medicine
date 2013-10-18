@@ -18,7 +18,9 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('sample.views',
-                        url('^$', 'home'))
+                        url('^$', 'home'),
+                        url('^login$', 'process_login', name='login'))
+
 
 if settings.DEBUG:
     urlpatterns += patterns('django.contrib.staticfiles.views',

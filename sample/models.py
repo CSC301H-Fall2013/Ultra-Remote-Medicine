@@ -23,7 +23,7 @@ class Doctor(models.Model):
     comments = models.TextField(blank=True)
 
     def __unicode__(self):
-        return str(self.id) + ". " + self.last_name + ", " + self.first_name
+        return str(self.id)
 
 
 class Worker(models.Model):
@@ -34,7 +34,7 @@ class Worker(models.Model):
     comments = models.TextField(blank=True)
 
     def __unicode__(self):
-        return str(self.id) + ". " + self.last_name + ", " + self.first_name
+        return str(self.id)
 
 
 class Patient(models.Model):
@@ -45,7 +45,7 @@ class Patient(models.Model):
     phone = models.CharField(max_length=63, blank=True)
 
     def __unicode__(self):
-        return str(self.id) + ". " + self.last_name + ", " + self.first_name
+        return str(self.id)
 
 
 class Measurement(models.Model):
