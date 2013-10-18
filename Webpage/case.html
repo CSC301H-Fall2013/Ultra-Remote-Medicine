@@ -1,0 +1,37 @@
+<!--This is the page where field workers can add new cases-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Add a new case</title>
+		<script language="JavaScript">
+			function openFile() {
+				window.location = 'file:///' + document.form.selectedFile.value;
+			}
+		</script>
+	</head>
+	<body>
+		<form name="form">
+			Patient ID: <input type="text" name="patientID"><br>
+			Description: <input type="text" name="Description" style="width: 300px; height: 300px;"><br>
+			Speciality: <input type="text" name="Speciality"><br>
+			<!--Doctor: <input type="text" name="doctor"><br>-->
+			Priority: <input type="text" name="priority"><br>
+			Status: <input type="text" name="status"><br> <!--Default = pending (not seen)-->
+			Your name: <input type="text" name="fWorkerName"><br>
+			Comments: <input type="text" name="comments" style="width: 300px; height: 300px;"><br>
+			<input type="file" name="selectedFile">
+			<input type=button onClick="openFile()" value="Open File">
+<!-- 			<div class="fileupload fileupload-new" data-provides="fileupload">
+				<div class="input-append">
+					<div class="uneditable-input span3"><i class="icon-file fileupload-exists"></i> 
+					<span class="fileupload-preview"></span></div>
+					<span class="btn btn-file">
+					<span class="fileupload-new">Select file</span>
+					<span class="fileupload-exists">Change</span><input type="file" /></span>
+					<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+			</div>
+			</div> -->
+		</form>
+		<button type="button">Submit</button>
+	</body>
+</html>

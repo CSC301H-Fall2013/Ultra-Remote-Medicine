@@ -2,7 +2,7 @@
 import os
 #from configurationsettings import project_path
 PROJECT_DIR = os.path.dirname(__file__)
-project_path = '/home/rocknrolla/Dropbox/UofT/CSC301/ultraRemoteMedicine/'
+project_path = 'C:\Users\Dhaval\Desktop\Ultra-Remote-Medicine\ultraRemoteMedicine'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
