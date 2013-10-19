@@ -1,8 +1,9 @@
 # Django settings for ultraRemoteMedicine project.
 import os
-#from configurationsettings import project_path
-PROJECT_DIR = os.path.dirname(__file__)
-project_path = 'C:\Users\Dhaval\Desktop\Ultra-Remote-Medicine\ultraRemoteMedicine'
+import string
+
+PROJECT_DIR = string.replace(os.path.join(os.path.dirname( __file__ ),
+        os.pardir),  '\\', '/')
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -76,7 +77,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_DIR, '../templates/asset/'),
+    os.path.join(PROJECT_DIR, '/templates/asset/'),
 )
 
 # List of finder classes that know how to find static files in
@@ -112,13 +113,24 @@ ROOT_URLCONF = 'ultraRemoteMedicine.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'ultraRemoteMedicine.wsgi.application'
 
+PROJECT_DIR = "C:/Users/Andrew/csc301workspace/Ultra-Remote-Medicine"
+
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or
     # "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-   project_path + '/templates/website',
+
+    # (Andrew): I don't see why "/templates" was changed to
+    # "/templates/website" the admin stuff wasn't accessible unless one uses
+    # "/templates" itself.
+    PROJECT_DIR + '/templates/website',
+    PROJECT_DIR + '/templates/admin',
+
+    PROJECT_DIR + '/templates'
 )
+
+print PROJECT_DIR
 
 INSTALLED_APPS = (
     'django.contrib.auth',
