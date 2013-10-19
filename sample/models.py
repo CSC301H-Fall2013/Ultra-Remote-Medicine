@@ -110,7 +110,7 @@ class TimeSlot(models.Model):
         if len(minute_string) == 1:
             minute_string += "0"
             
-        time_string = str(date_time.hour) + ":" + minute_string
+        time_string = str(date_time.hour) + ":" + minute_string + " (GMT)"
         
         return date_strings[date_time.weekday()] + " " + time_string
 

@@ -130,8 +130,6 @@ TEMPLATE_DIRS = (
     PROJECT_DIR + '/templates'
 )
 
-print PROJECT_DIR
-
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
