@@ -49,11 +49,14 @@ def process_login(request):
                  #                                            doctor_page))
                 return HttpResponse("OK")
             except ObjectDoesNotExist:
-                Worker.objects.get(user=user)
-                login(request, user)
-                #return HttpResponseRedirect(request.POST.get('next',
-                #                                             worker_page))
-                return HttpResponse("OK")
+                try:
+                    Worker.objects.get(user=user)
+                    login(request, user)
+                    #return HttpResponseRedirect(request.POST.get('next',
+                    #                                             worker_page))
+                    return HttpResponse("OK")
+                except ObjectDoesNotExist:
+                    return HttpResponse("Admin does not allow to login here")
         else:
             # inactive account
             return HttpResponseRedirect("%s?e=a" % signin_page)
