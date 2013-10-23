@@ -23,7 +23,7 @@ Assuming you have Django 1.5.4 installed.... [This is kind of important]
 
 9. Try to call manage.py syncdb
 
-9. Try call to manage.py runserver like usual.
+10. Try call to manage.py runserver like usual.
 
 If you get an exception in 8 or 9 like that a module can't be imported, you should do the following:
 
