@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html>
+<script>
+	function up(fWorkerName,fWorkerID)
+	{
+		var name = document.getElementById("fWorkerName");
+		var setName = document.getElementById("fWorkerNameSet");
+		setName.innerHTML = name.value;
+		var ID = document.getElementById("fWorkerID");
+		var setID = document.getElementById("fWorkerIDSet");
+		setID.innerHTML = ID.value;
+	}
+</script>
 <h1>
   FieldWorker's Page
 </h1>
@@ -7,10 +18,12 @@
 <tr>
 <td> photo <button type="button">Edit</button><br></td>
 <td>
-<form>
-     Name: Worker 1<br></br>
-Worker ID: 123456 <br></br>
-<button type="button">Edit</button><br>
+<form method='post' onsubmit="up(fWorkerName, fWorkerID);return false;">
+	Name: <input type="text" id="fWorkerName" name="fWorkerName"><br>
+	ID: <input type="text" id="fWorkerID" name="fWorkerID"><br>
+	<input type="submit" name="submit" value="Edit"/>
+	<p id="fWorkerNameSet"></p><br>
+	<p id="fWorkerIDSet"></p><br>
 </form>
 </tr>
 
