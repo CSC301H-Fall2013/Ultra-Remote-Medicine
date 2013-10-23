@@ -4,14 +4,14 @@
 
 <body>
     <h1>
-        {{name}}'s Page
+        {{firstName}}'s Page
     </h1>
-<table border="1">
+<table border="1" cellpadding="5">
     <tr>
      <td><img src="patient.png" width="104" height="142"><br></td>
      <td>
          <form>
-              Name:{{name}}<br>
+              Name: {{lastName}}, {{firstName}}<br>
               Gender:<input type="text" name="gender"><br>
               DOB: <input type="text" name="DOB"><br>
               Location:{{address}}<br>
@@ -21,34 +21,61 @@
          </form>
     </td>
 </tr>
-<tr>
-    </tr>
-    <table border="1">
-        <tr>
-            <td><button type="button">Case ID</button></td>
-            <td><button type="button">Submitter</button></td>
-            <td><button type="button">Doctor</button></td>
-            <td><button type="button">Date</button></td>
-            <td><button type="button">Description</button></td>
-            <td><button type="button">Priority</button></td>
-        </tr>
-        <tr>
-            <td>00001</td>
-            <td>Candy White</td>
-            <td>Doctor Name</td>
-            <td>18/10/2013</td>
-            <td>HeartDisease</td>
-            <td>7</td>
-        </tr>
-        <tr>
-            <td>00002</td>
-            <td>Candy White</td>
-            <td>Dr. Cool</td>
-            <td>18/09/2013</td>
-            <td>XXX</td>
-            <td>5</td>
-        </tr>
-    </table>
+</table>
+
+<h2>
+<b>Cases</b>
+</h2>
+
+<table border="1" cellpadding="5">
+    <tr>
+      <td>
+        <button type="button">Patient Name</button>
+      </td>
+      <td>
+        <button type="button">Status</button>
+      </td>
+      <td>
+        <button type="button">Age</button>
+      </td>
+      <td>
+        <button type="button">Gender</button>
+      </td>
+      <td>
+        <button type="button">Priority</button>
+      </td>
+      <td>
+        <button type="button">Date</button>
+      </td>
+      <td>
+        <button type="button">Link to cases</button>
+      </td>
+
+      {% for case in cases %}
+   	<tr>
+
+          <td>
+            <br>
+            <a href="http://www.google.ca" target="_blank"> {{case.patient_ref.last_name}}, {{case.patient_ref.first_name}} </a>
+          </td>
+          <td>
+            <select>
+              <option value="pending(not seen)">pending(not seen)</option>
+              <option value="pending(seen)">pending(seen)</option>
+              <option value="completed" selected>completed</option>
+            </select>
+          </td>
+          <td>{{case.age}}</td>
+          <td>Male</td>
+          <td>
+            5
+            <button type="button">Edit</button>
+          </td>
+          <td>{{case.case_ref.date_opened}}</td>
+          <td>
+            <a href="http://www.google.ca" target="_blank">case-link 1</a>
+          </td>
+     {% endfor %}
 </table>
 
 </body>

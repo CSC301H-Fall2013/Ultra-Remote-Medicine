@@ -11,8 +11,8 @@ from django.db import IntegrityError
 
 class CaseAttribute():
     '''
-    A class that contains pre-processed information about a case
-    patient. This is transmitted to the display template.
+    A class that contains pre-processed information about a case.
+    This is transmitted to the display template.
     '''
     
     def __init__(self, case_reference):
@@ -20,11 +20,10 @@ class CaseAttribute():
         self.patient_ref = case_reference.patient
         self.age = 30
 
-def create_case_attributes():
-    patients = Case.objects
-    patient_count = Patient.objects.count()
-    attributes = [CaseAttribute(patient) for patient in\
-                  patients.all()]
+def create_case_attributes(cases):
+    ''' Creates a list of CaseAttributes that correspond to all known cases.'''
+    attributes = [CaseAttribute(case) for case in\
+                  cases.all()]
     return attributes
 
 def home(request):
@@ -90,7 +89,7 @@ def display_doctor(request):
     
     doctor = request.user.doctor
 
-    case_attributes = create_case_attributes()
+    case_attributes = create_case_attributes(Case.objects)
 
     return render_to_response('doctor.html', {
         'name': doctor.user.first_name,
@@ -108,7 +107,7 @@ def display_field_worker(request):
     
     worker = request.user.worker
 
-    case_attributes = create_case_attributes()
+    case_attributes = create_case_attributes(Case.objects)
 
     return render_to_response('fieldworker.html', {
         'name': worker.user.first_name,
@@ -124,7 +123,6 @@ def redirect_patient(request):
     ''' Redirect to new patient page. '''
     return render_to_response('newPatient.html', {},
                               context_instance=RequestContext(request))
-
 
 def add_patient(request):
     ''' Add new patient by retrieving information and creating a new object
@@ -155,8 +153,13 @@ def add_patient(request):
         print "hard fail"
         return HttpResponseServerError()
 
+    # TODO: Filter these so that they are only cases regarding the patient.
+    case_attributes = create_case_attributes(Case.objects)
+    
     return render_to_response('patient.html', {
-        'name': patient.first_name,
+        'firstName': patient.first_name,
+        'lastName': patient.last_name,
         'phone': patient.phone,
         'address': patient.address,
+        'cases' : case_attributes
     }, context_instance=RequestContext(request))
