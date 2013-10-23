@@ -19,10 +19,12 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('sample.views',
                         url('^$', 'home'),
-                        url('^login$', 'process_login', name='login'))
+                        url('^login$', 'process_login', name='login'),
+                        url('^doctor$', 'display_doctor',
+                            name='doctor'),
+                        url('^field$', 'display_field_worker', name='field'))
 
 
 if settings.DEBUG:
     urlpatterns += patterns('django.contrib.staticfiles.views',
-        url(r'^static/(?P<path>.*)$', 'serve'),
-    )
+                            url(r'^static/(?P<path>.*)$', 'serve'))

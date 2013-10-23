@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login
 import pdb
 
+
 def home(request):
     """
     Page to initiate sign-in
@@ -16,6 +17,7 @@ def home(request):
     return render_to_response('login.html', {
         # add stuff here
     }, context_instance=RequestContext(request))
+
 
 def process_login(request):
     """
@@ -32,7 +34,7 @@ def process_login(request):
 
     signin_page = reverse_lazy("home")
     doctor_page = reverse_lazy("doctor")
-    worker_page = reverse_lazy("worker")
+    worker_page = reverse_lazy("field")
 
     try:
         User.objects.get(username=username)
@@ -45,18 +47,26 @@ def process_login(request):
             try:
                 Doctor.objects.get(user=user)
                 login(request, user)
-                #return HttpResponseRedirect(request.POST.get('next',
-                 #                                            doctor_page))
-                return HttpResponse("OK")
+                return HttpResponseRedirect(request.POST.get('next',
+                                                             doctor_page))
             except ObjectDoesNotExist:
                 Worker.objects.get(user=user)
                 login(request, user)
-                #return HttpResponseRedirect(request.POST.get('next',
-                #                                             worker_page))
-                return HttpResponse("OK")
+                return HttpResponseRedirect(request.POST.get('next',
+                                                             worker_page))
         else:
-            # inactive account
             return HttpResponseRedirect("%s?e=a" % signin_page)
     else:
-        # bad password
         return HttpResponseRedirect("%s?e=p" % signin_page)
+
+
+def display_doctor(request, doctor_id):
+    return render_to_response('doctor.html', {
+        "name": doctor.user.first_name
+    }, context_instance=RequestContext(request))
+
+
+def display_field_worker(request):
+    return render_to_response('fieldworker.html', {
+        "name": "Anar"
+    }, context_instance=RequestContext(request))

@@ -23,7 +23,7 @@ class Doctor(models.Model):
     comments = models.TextField(blank=True)
 
     def __unicode__(self):
-        return str(self.id)
+        return str(self.id) + self.user.first_name + self.user.last_name
 
 
 class Worker(models.Model):
@@ -34,18 +34,19 @@ class Worker(models.Model):
     comments = models.TextField(blank=True)
 
     def __unicode__(self):
-        return str(self.id)
+        return str(self.id) + self.user.first_name + self.user.last_name
 
 
 class Patient(models.Model):
-    user = models.OneToOneField(User)
+    first_name = models.CharField(max_length=256)
+    last_name = models.CharField(max_length=256)
     gps_coordinates = models.CharField(max_length=63, blank=True)
     address = models.CharField(max_length=254, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     phone = models.CharField(max_length=63, blank=True)
 
     def __unicode__(self):
-        return str(self.id)
+        return str(self.id) + self.first_name + self.last_name
 
 
 class Measurement(models.Model):

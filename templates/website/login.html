@@ -1,17 +1,15 @@
 {% load static from staticfiles %}
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Ultra Remote Medicine</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.css"%}"/>
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
-  </head>
+<head>
+  <title>Ultra Remote Medicine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap -->
+  <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.css"%}"/>
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
+</head>
   <div class = "center">
-     <br>
     <br>
     <br>
     <br>
@@ -22,38 +20,39 @@
     <br>
     <br>
     <br>
-    <center> <h1> Ultra Remote Medicine </h1> </center>
+    <br>
+    <center>
+      <h1>Ultra Remote Medicine</h1>
+    </center>
     <br>
     <br>
     <div class="row-fluid">
-        <div class="span4"></div>
-        <div class="span4">
-          <p class ="text center">
-              <div class="control-group">
-              <form id="login-form" action="{% url 'sample.views.process_login' %}" method="post">
+      <div class="span4"></div>
+      <div class="span4">
+        <p class ="text center">
+          <div class="control-group">
+            <form id="login-form" action="{% url 'login' %}" method="post">
               {% csrf_token %}
-                <label class="control-label" for="username">Username</label>
-                  <div class="controls">
-                    <input type="text" id="username" name="username" placeholder="Username">
-                  </div>
+              <label class="control-label" for="username">Username</label>
+              <div class="controls">
+                <input type="text" id="username" name="username" placeholder="Username"></div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="password">Password</label>
+              <div class="controls">
+                <input type="password" id="password" name="password" placeholder="Password"></div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <button type="submit" class="btn btn-primary">Log in</button>
               </div>
-              <div class="control-group">
-                <label class="control-label" for="password">Password</label>
-                  <div class="controls">
-                    <input type="password" id="password" name="password" placeholder="Password">
-                  </div>
-              </div>
-                <div class="control-group">
-                  <div class="controls">
-                    <button type="submit" class="btn btn-primary">Log in</button>
-                  </div>
-
-                </div>
-                </form>
-            </p>
-          </div>
+            </div>
+          </form>
+        </p>
+      </div>
     </div>
-<script> //$(function(){
+  </div>
+  <script> //$(function(){
 //     $('input[name="username"]').focus();
 //     $('#submit').on('click',function(e){
 //         validateAndSubmit();
