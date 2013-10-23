@@ -9,13 +9,16 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
 
-''' A class that contains pre-processed information about a case
-    patient. This is transmitted to the display template.'''
 class CaseAttribute():
+    '''
+    A class that contains pre-processed information about a case
+    patient. This is transmitted to the display template.
+    '''
+    
     def __init__(self, case_reference):
         self.case_ref = case_reference
         self.patient_ref = case_reference.patient
-        self.age = 3
+        self.age = 30
 
 def create_case_attributes():
     patients = Case.objects
@@ -83,7 +86,8 @@ def process_login(request):
         return HttpResponseRedirect("%s?e=p" % signin_page)
 
 def display_doctor(request):
-    '''Load doctor information to doctor's display page'''
+    ''' Load doctor information to doctor's display page. '''
+    
     doctor = request.user.doctor
 
     case_attributes = create_case_attributes()
@@ -93,32 +97,38 @@ def display_doctor(request):
         'last_name': doctor.user.last_name,
         'phone': doctor.phone,
         'address': doctor.address,
-        'cases' : case_attributes,
+        'specialties' : doctor.specialties.all(),
+        'schedule' : doctor.schedule.all(),
+        'cases' : case_attributes
     }, context_instance=RequestContext(request))
 
 
 def display_field_worker(request):
-    '''Load worker information to worker's display page'''
+    ''' Load worker information to worker's display page. '''
+    
     worker = request.user.worker
+
+    case_attributes = create_case_attributes()
 
     return render_to_response('fieldworker.html', {
         'name': worker.user.first_name,
-        'last_name': worker.user.first_name,
+        'last_name': worker.user.last_name,
         'phone': worker.phone,
         'address': worker.address,
-        'id': worker.id
+        'id': worker.id,
+        'cases' : case_attributes
     }, context_instance=RequestContext(request))
 
 
 def redirect_patient(request):
-    '''Redirect to new patient page'''
+    ''' Redirect to new patient page. '''
     return render_to_response('newPatient.html', {},
                               context_instance=RequestContext(request))
 
 
 def add_patient(request):
-    '''Add new patient by retrieving information and creating a new object
-    in database'''
+    ''' Add new patient by retrieving information and creating a new object
+    in database. '''
 
     try:
         name = request.POST['patientName']

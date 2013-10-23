@@ -23,7 +23,8 @@ class Doctor(models.Model):
     comments = models.TextField(blank=True)
 
     def __unicode__(self):
-        return str(self.id) + self.user.first_name + self.user.last_name
+        return (str(self.id) + ". " + self.user.first_name + " " +
+                self.user.last_name)
 
 ''' Represents a worker, the job of whom primarily is to register new patients,
     submit new cases, and to take measurements, scans, pictures and other
@@ -36,7 +37,8 @@ class Worker(models.Model):
     comments = models.TextField(blank=True)
 
     def __unicode__(self):
-        return str(self.id) + self.user.first_name + self.user.last_name
+        return (str(self.id) + ". " + self.user.first_name + " " +
+                self.user.last_name)
 
 ''' Represents a patient. Patients are not considered users, having no access
     to the server.'''
@@ -117,10 +119,16 @@ class TimeSlot(models.Model):
 
         return date_strings[date_time.weekday()] + " " + time_string
 
-    def __unicode__(self):
+    ''' Identical to __unicode__(), but gets around a restriction in the
+        Django template system where variables and attributes may not
+        start with an underscore. '''
+    def to_string(self):
         return  (self._convert_date_time_to_string(self.start_time)
                  + " -> "
                  + self._convert_date_time_to_string(self.end_time))
+
+    def __unicode__(self):
+        return self.to_string()
 
 ''' Represents an original picture or scan of a Patient in the database.'''
 class Scan(models.Model):

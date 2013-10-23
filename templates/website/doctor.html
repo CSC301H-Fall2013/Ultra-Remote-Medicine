@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
   <h1>{{name}}'s Page</h1>
-  <table border="1">
+  <table border="1" cellpadding="5">
     <tr>
       <td>
         <img src="doctor.png" width="104" height="142">
@@ -13,9 +13,11 @@
         <form>
           Name: {{name}} {{last_name}}
           <br></br>
-        Specialty: {{speciality}}
+        Specialties: {% for specialty in specialties %} {{specialty.name}}, {% endfor %}
         <br></br>
-      Scheduale: Mon-Wed 10-5pm
+        Schedule:      {% for time_slot in schedule %} 
+		         <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{time_slot.to_string}} 
+		       {% endfor %}
       <br>
       <button type="button">Edit</button>
       <br>
@@ -24,7 +26,12 @@
     </form>
   </tr>
 </table>
-  <table border="1">
+
+<h2>
+<b>Cases</b>
+</h2>
+
+<table border="1" cellpadding="5">
     <tr>
       <td>
         <button type="button">Patient Name</button>
@@ -53,7 +60,7 @@
 
           <td>
             <br>
-            <a href="http://www.google.ca" target="_blank">{{case.patient_ref.last_name}}, {{case.patient_ref.first_name}}</a>
+            <a href="http://www.google.ca" target="_blank"> {{case.patient_ref.last_name}}, {{case.patient_ref.first_name}} </a>
           </td>
           <td>
             <select>
@@ -72,8 +79,8 @@
           <td>
             <a href="http://www.google.ca" target="_blank">case-link 1</a>
           </td>
-        {% endfor %}
-      </table>
+     {% endfor %}
+</table>
 
 </body>
     </html>
