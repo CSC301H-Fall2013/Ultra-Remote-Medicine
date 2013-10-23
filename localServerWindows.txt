@@ -1,0 +1,36 @@
+This is what I, Andrew, did to get Django working with PostGres.
+
+Assuming you have Django 1.5.4 installed.... [This is kind of important]
+1. Google PostGres and download and run the installer.
+	When it prompts for different settings, you can use whatever you'd like.
+	Be sure to remember what password you provided, though.
+
+2. Open up pgadmin.
+
+3. On the tree view, navigate to Servers->PostGreSQL <<blah blah blah>>
+
+4. Create a New Login Role by right clicking PostGreSQL <<blah blah blah>>, and clicking New Object->New Login Role
+
+5. Set the user name of the new user to django_login and the password to 12345. Click OK
+
+6. Navigate to Servers->PostGreSQL <<blah blah blah>>->Databases
+
+7. Right click on the Databases node and click New Database
+
+8. Set up the New Database with the following settings: Name: django_db, Owner: django_login
+
+** These settings should all reflect the settings.py file in our project.
+
+9. Try to runserver like usual.
+
+If you get an exception like that a module can't be imported you should do the following:
+
+Go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#pip
+
+1. Download/Install Setuptools and pip 
+
+2. Ensure <<python 2.7 directory>/scripts is in your path
+
+3. on the commandline, use: pip install <<whatever-it-says-is-missing>
+
+4. Repeat (3) until nothing is missing
