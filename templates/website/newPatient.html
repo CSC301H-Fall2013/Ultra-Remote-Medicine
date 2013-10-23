@@ -13,12 +13,13 @@
 	<body>
 		<form id="login-form" action="{% url 'add_patient' %}" method="post">
             {% csrf_token %}
-			Name of patient: <input type="text" name="patientName"><br> <!--link to patent-->
+			First Name: <input type="text" name="firstName"><br> <!--link to patent-->
+			Last Name: <input type="text" name="lastName"><br> <!--link to patent-->
 			Patient ID: <input type="text" name="patientID"><br>
-			Phone number: <input type="text" name="phonenumber"><br>
+			Phone number: <input type="text" name="phoneNumber"><br>
+			GPS Coordinates: <input type="text" name="gpsCoordinates"><br>
 			Address: <input type="text" name="address"><br>
 			<!--Doctor: <input type="text" name="doctor"><br>-->
-			Your name: <input type="text" name="fWorkerName"><br>
 			Comments: <input type="text" name="comments" style="width: 300px; height: 300px;"><br>
 			<input type="file" name="selectedFile">
 			<input type=button onClick="openFile()" value="Open File">

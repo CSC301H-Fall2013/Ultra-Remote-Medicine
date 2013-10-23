@@ -131,23 +131,28 @@ def add_patient(request):
     in database. '''
 
     try:
-        name = request.POST['patientName']
+        first_name = request.POST['firstName']
+        last_name = request.POST['lastName']
         patient_ID = request.POST['patientID']
-        phone_number = request.POST['phonenumber']
+        phone_number = request.POST['phoneNumber']
+        gps_coordinates = request.POST['gpsCoordinates']
         address = request.POST['address']
-        worker_name = request.POST['fWorkerName']
         comment = request.POST['comments']
     except KeyError:
+        print "Fail"
         return HttpResponseBadRequest()
 
     try:
         patient = Patient(
-            first_name=name,
+            first_name=first_name,
+            last_name=last_name,
             phone=phone_number,
+            gps_coordinates=gps_coordinates,
             address=address,
             health_id=patient_ID)
         patient.save()
     except IntegrityError:
+        print "hard fail"
         return HttpResponseServerError()
 
     return render_to_response('patient.html', {
