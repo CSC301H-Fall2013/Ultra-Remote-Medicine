@@ -29,7 +29,7 @@ MANAGERS = ADMINS
 #     }
 # }
 
-DATABASES['default'] = dj_database_url.config()
+DATABASES = {'default': dj_database_url.config(default='postgres://django_login:12345@localhost:8000/django_db')}
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
