@@ -18,10 +18,9 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('sample.views',
-                        url('^$', 'home'),
+                        url('^$', 'home', name='home'),
                         url('^login$', 'process_login', name='login'),
-                        url('^doctor$', 'display_doctor',
-                            name='doctor'),
+                        url('^doctor$', 'display_doctor', name='doctor'),
                         url('^field$', 'display_field_worker', name='field'))
 
 
