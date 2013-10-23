@@ -50,10 +50,21 @@ def process_login(request):
                 return HttpResponseRedirect(request.POST.get('next',
                                                              doctor_page))
             except ObjectDoesNotExist:
+# <<<<<<< HEAD
                 Worker.objects.get(user=user)
                 login(request, user)
                 return HttpResponseRedirect(request.POST.get('next',
                                                              worker_page))
+# =======
+#                 try:
+#                     Worker.objects.get(user=user)
+#                     login(request, user)
+#                     #return HttpResponseRedirect(request.POST.get('next',
+#                     #                                             worker_page))
+#                     return HttpResponse("OK")
+#                 except ObjectDoesNotExist:
+#                     return HttpResponse("Admin does not allow to login here")
+# >>>>>>> 12be935b34848d92280adaf6686d7fef95416833
         else:
             return HttpResponseRedirect("%s?e=a" % signin_page)
     else:

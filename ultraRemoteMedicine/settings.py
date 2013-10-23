@@ -1,8 +1,12 @@
 # Django settings for ultraRemoteMedicine project.
 import os
-#from configurationsettings import project_path
+import string
+import dj_database_url
+
+# PROJECT_DIR = string.replace(os.path.join(os.path.dirname(__file__),
+#                                           os.pardir),  '\\', '/')
+
 PROJECT_DIR = os.path.dirname(__file__)
-project_path = '/home/rocknrolla/Dropbox/UofT/CSC301/ultraRemoteMedicine'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -13,21 +17,25 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join('sqlite3.db'),                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+#         'NAME': 'django_db',                      # Or path to database file if using sqlite3.
+#         # The following settings are not used with sqlite3:
+#         'USER': 'django_login',
+#         'PASSWORD': '12345', # should be the same for everybody
+#         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+#         'PORT': '',                      # Set to empty string for default.
+#     }
+# }
+
+DATABASES['default'] = dj_database_url.config()
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -65,7 +73,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = 'staticfiles'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -76,7 +84,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_DIR, '../templates/asset/'),
+    os.path.join(PROJECT_DIR, 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -112,12 +120,18 @@ ROOT_URLCONF = 'ultraRemoteMedicine.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'ultraRemoteMedicine.wsgi.application'
 
+
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or
     # "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-   project_path + '/templates/website',
+
+    # (Andrew): I don't see why "/templates" was changed to
+    # "/templates/website" the admin stuff wasn't accessible unless one uses
+    # "/templates" itself.
+    PROJECT_DIR + '/templates/website',
+    PROJECT_DIR + '/templates/admin'
 )
 
 INSTALLED_APPS = (
