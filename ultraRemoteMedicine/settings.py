@@ -3,10 +3,10 @@ import os
 import string
 import dj_database_url
 
-# PROJECT_DIR = string.replace(os.path.join(os.path.dirname(__file__),
-#                                           os.pardir),  '\\', '/')
+PROJECT_DIR = string.replace(os.path.join(os.path.dirname(__file__),
+                                          os.pardir),  '\\', '/')
 
-PROJECT_DIR = os.path.dirname(__file__)
+# PROJECT_DIR = os.path.dirname(__file__)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
