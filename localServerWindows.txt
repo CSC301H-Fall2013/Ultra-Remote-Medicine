@@ -21,9 +21,11 @@ Assuming you have Django 1.5.4 installed.... [This is kind of important]
 
 ** These settings should all reflect the settings.py file in our project.
 
-9. Try to runserver like usual.
+9. Try to call manage.py syncdb
 
-If you get an exception like that a module can't be imported you should do the following:
+9. Try call to manage.py runserver like usual.
+
+If you get an exception in 8 or 9 like that a module can't be imported, you should do the following:
 
 Go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#pip
 
@@ -33,4 +35,4 @@ Go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#pip
 
 3. on the commandline, use: pip install <<whatever-it-says-is-missing>
 
-4. Repeat (3) until nothing is missing
+4. Repeat (3) until sqldb and runserver work.
