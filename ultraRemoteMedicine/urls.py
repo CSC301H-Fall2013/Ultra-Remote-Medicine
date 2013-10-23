@@ -21,7 +21,9 @@ urlpatterns += patterns('sample.views',
                         url('^$', 'home', name='home'),
                         url('^login$', 'process_login', name='login'),
                         url('^doctor$', 'display_doctor', name='doctor'),
-                        url('^field$', 'display_field_worker', name='field'))
+                        url('^field$', 'display_field_worker', name='field'),
+                        url('^new_patient$', 'redirect_patient', name='new_patient'),
+                        url('^add_patient$', 'add_patient', name='add_patient'))
 
 
 if settings.DEBUG:

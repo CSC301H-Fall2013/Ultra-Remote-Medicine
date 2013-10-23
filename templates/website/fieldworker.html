@@ -12,8 +12,9 @@
      Worker ID: {{id}} <br></br>
 <button type="button">Edit</button><br>
 </form>
+</td>
 </tr>
-
+</table>
 
 <table border="1">
 <tr>
@@ -23,7 +24,7 @@
 <td><button type="button">Priority</button></td>
 <td><button type="button">Date</button></td>
 <td><button type="button">Link to cases</button></td>
-<tr>
+</tr>
 
 <td><br><a href="http://www.google.ca" target="_blank">patient 1</a> </td>
 <td>30</td>
@@ -49,10 +50,12 @@
 <td>2013/10/12</td>
 <td><a href="http://www.google.ca" target="_blank">case-link 3 </a></td>
 </tr>
-</tr>
 </table>
-<td><button type="button">Add New Case</button> <button type="button">Add New Patient</button><br></td>
-
+<td><button type="button">Add New Case</button>
+<form id="new_patient" action="{% url 'new_patient' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Add New Patient</button><br></td>
+</form>
 
 
 </body>

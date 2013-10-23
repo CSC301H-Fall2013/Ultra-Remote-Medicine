@@ -1,11 +1,13 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import HttpResponseBadRequest, HttpResponseRedirect
-from sample.models import Doctor, Worker
+from django.http import HttpResponseBadRequest, HttpResponseRedirect,\
+    HttpResponseServerError
+from sample.models import Doctor, Worker, Patient
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login
+from django.db import IntegrityError
 
 
 def home(request):
@@ -89,4 +91,41 @@ def display_field_worker(request):
         'phone': worker.phone,
         'address': worker.address,
         'id': worker.id
+    }, context_instance=RequestContext(request))
+
+
+def redirect_patient(request):
+    '''Redirect to new patient page'''
+    return render_to_response('newPatient.html', {},
+                              context_instance=RequestContext(request))
+
+
+def add_patient(request):
+    '''Add new patient by retrieving information and creating a new object
+    in database'''
+
+    try:
+        name = request.POST['patientName']
+        patient_ID = request.POST['patientID']
+        phone_number = request.POST['phonenumber']
+        address = request.POST['address']
+        worker_name = request.POST['fWorkerName']
+        comment = request.POST['comments']
+    except KeyError:
+        return HttpResponseBadRequest()
+
+    try:
+        patient = Patient(
+            first_name=name,
+            phone=phone_number,
+            address=address,
+            health_id=patient_ID)
+        patient.save()
+    except IntegrityError:
+        return HttpResponseServerError()
+
+    return render_to_response('patient.html', {
+        'name': patient.first_name,
+        'phone': patient.phone,
+        'address': patient.address,
     }, context_instance=RequestContext(request))
