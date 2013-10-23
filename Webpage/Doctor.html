@@ -1,5 +1,19 @@
 <!DOCTYPE html>
 <html>
+<script>
+	function up(doctorName, speciality, schedule)
+	{
+		var name = document.getElementById("doctorName");
+		var setName = document.getElementById("doctorNameSet");
+		setName.innerHTML = name.value;
+		var spec = document.getElementById("speciality");
+		var setSpec = document.getElementById("specialitySet");
+		setSpec.innerHTML = spec.value;
+		var sched = document.getElementById("schedule");
+		var setSched = document.getElementById("scheduleSet");
+		setSched.innerHTML = sched.value;
+	}
+</script>
 <h1>
   Doctor's Page
 </h1>
@@ -7,12 +21,15 @@
 <tr>
 <td><img src="doctor.png" width="104" height="142"><button type="button">Edit</button><br></td>
 <td>
-<form>
-     Name: Doctor 1<br></br>
-Specialty: Cardiologists <br></br>
-Scheduale: Mon-Wed 10-5pm <br>
-<button type="button">Edit</button><br>
-<input type="text" name="search"><button type="button">search</button>
+<form method='post' onsubmit="up(doctorName, speciality, schedule);return false;">
+	Name: <input type="text" id="doctorName" name="doctorName"><br>
+	Speciality: <input type="text" id="speciality" name="speciality"><br>
+	Scheduale: <input type="text" id="schedule" name="schedule"><br>
+	<input type="submit" name="submit" value="Edit"/>
+	<p id="doctorNameSet"></p><br>
+	<p id="specialitySet"></p><br>
+	<p id="scheduleSet"></p><br>
+	<input type="text" name="search"><button type="button">search</button>
 </form>
 </tr>
 
