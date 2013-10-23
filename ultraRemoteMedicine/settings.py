@@ -129,7 +129,8 @@ TEMPLATE_DIRS = (
     # "/templates/website" the admin stuff wasn't accessible unless one uses
     # "/templates" itself.
     PROJECT_DIR + '/templates/website',
-    PROJECT_DIR + '/templates/admin'
+    PROJECT_DIR + '/templates/admin',
+    PROJECT_DIR + '/templates/'
 )
 
 INSTALLED_APPS = (
