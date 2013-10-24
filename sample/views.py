@@ -9,22 +9,24 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
 
+
 class CaseAttribute():
     '''
     A class that contains pre-processed information about a case.
     This is transmitted to the display template.
     '''
-    
+
     def __init__(self, case_reference):
         self.case_ref = case_reference
         self.patient_ref = case_reference.patient
         self.age = 30
 
+
 def create_case_attributes(cases):
     ''' Creates a list of CaseAttributes that correspond to all known cases.'''
-    attributes = [CaseAttribute(case) for case in\
-                  cases.all()]
+    attributes = [CaseAttribute(case) for case in cases.all()]
     return attributes
+
 
 def home(request):
     """
@@ -84,9 +86,10 @@ def process_login(request):
         # redirect if wrong password
         return HttpResponseRedirect("%s?e=p" % signin_page)
 
+
 def display_doctor(request):
     ''' Load doctor information to doctor's display page. '''
-    
+
     doctor = request.user.doctor
 
     case_attributes = create_case_attributes(Case.objects)
@@ -96,15 +99,15 @@ def display_doctor(request):
         'last_name': doctor.user.last_name,
         'phone': doctor.phone,
         'address': doctor.address,
-        'specialties' : doctor.specialties.all(),
-        'schedule' : doctor.schedule.all(),
-        'cases' : case_attributes
+        'specialties': doctor.specialties.all(),
+        'schedule': doctor.schedule.all(),
+        'cases': case_attributes
     }, context_instance=RequestContext(request))
 
 
 def display_field_worker(request):
     ''' Load worker information to worker's display page. '''
-    
+
     worker = request.user.worker
 
     case_attributes = create_case_attributes(Case.objects)
@@ -115,7 +118,7 @@ def display_field_worker(request):
         'phone': worker.phone,
         'address': worker.address,
         'id': worker.id,
-        'cases' : case_attributes
+        'cases': case_attributes
     }, context_instance=RequestContext(request))
 
 
@@ -123,6 +126,7 @@ def redirect_patient(request):
     ''' Redirect to new patient page. '''
     return render_to_response('newPatient.html', {},
                               context_instance=RequestContext(request))
+
 
 def add_patient(request):
     ''' Add new patient by retrieving information and creating a new object
@@ -155,11 +159,11 @@ def add_patient(request):
 
     # TODO: Filter these so that they are only cases regarding the patient.
     case_attributes = create_case_attributes(Case.objects)
-    
+
     return render_to_response('patient.html', {
         'firstName': patient.first_name,
         'lastName': patient.last_name,
         'phone': patient.phone,
         'address': patient.address,
-        'cases' : case_attributes
+        'cases': case_attributes
     }, context_instance=RequestContext(request))
