@@ -56,6 +56,8 @@ class Patient(models.Model):
     phone = models.CharField(max_length=63, blank=True)
     health_id = models.CharField(max_length=63, blank=True, null=True)
     photo_link = models.URLField(blank=True)
+    gender = models.CharField(max_length=63, blank=True)
+    email = models.CharField(max_length=254, blank=True)
 
     def __unicode__(self):
 

@@ -1,16 +1,32 @@
+{% load static from staticfiles %}
 <!DOCTYPE html>
 <html>
+<script>
+	function up(fWorkerName,fWorkerID)
+	{
+		var name = document.getElementById("fWorkerName");
+		var setName = document.getElementById("fWorkerNameSet");
+		setName.innerHTML = name.value;
+		var ID = document.getElementById("fWorkerID");
+		var setID = document.getElementById("fWorkerIDSet");
+		setID.innerHTML = ID.value;
+	}
+</script>
 <h1>
   {{name}}'s Page
 </h1>
 <table border="1" cellpadding="5">
 <tr>
 <td> photo <button type="button">Edit</button><br></td>
-<td>
-<form>
-     Name: {{name}} {{last_name}}<br></br>
-     Worker ID: {{id}} <br></br>
-<button type="button">Edit</button><br>
+<td>  
+<form method='post' onsubmit="up(fWorkerName, fWorkerID);return false;">
+	Name: <input type="text" id="fWorkerName" name="fWorkerName"><br>
+	ID: <input type="text" id="fWorkerID" name="fWorkerID"><br>
+	Name: {{name}} {{last_name}}<br></br>
+    Worker ID: {{id}} <br></br>
+	<input type="submit" name="submit" value="Edit"/> 
+	<!--<p id="fWorkerNameSet"></p><br>
+	<p id="fWorkerIDSet"></p><br>-->
 </form>
 </td>
 </tr>

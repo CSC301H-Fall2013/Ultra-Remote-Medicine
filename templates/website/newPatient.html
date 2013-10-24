@@ -12,13 +12,18 @@
 	</head>
 	<body>
 		<form id="login-form" action="{% url 'add_patient' %}" method="post">
-            {% csrf_token %}
+            {% csrf_token %}<br>
 			First Name: <input type="text" name="firstName"><br> <!--link to patent-->
 			Last Name: <input type="text" name="lastName"><br> <!--link to patent-->
+			Gender: <input type="text" name="gender"><br>
+			DOB: <input type="text" name="DOB"><br>
+			Address: <input type="text" name="address"><br>
 			Patient ID: <input type="text" name="patientID"><br>
 			Phone number: <input type="text" name="phoneNumber"><br>
-			GPS Coordinates: <input type="text" name="gpsCoordinates"><br>
-			Address: <input type="text" name="address"><br>
+			<!--GPS Coordinates: <input type="text" name="gpsCoordinates"><br>-->
+			Email: <input type="text" name="email"><br>
+			<!--Doctor: <input type="text" name="doctor"><br>-->
+			Your name: <input type="text" name="fWorkerName"><br>
 			<!--Doctor: <input type="text" name="doctor"><br>-->
 			Comments: <input type="text" name="comments" style="width: 300px; height: 300px;"><br>
 			<input type="file" name="selectedFile">

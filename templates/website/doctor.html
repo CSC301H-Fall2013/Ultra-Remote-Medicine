@@ -2,6 +2,20 @@
 
 <!DOCTYPE html>
 <html>
+<script>
+	function up(doctorName, speciality, schedule)
+	{
+		var name = document.getElementById("doctorName");
+		var setName = document.getElementById("doctorNameSet");
+		setName.innerHTML = name.value;
+		var spec = document.getElementById("speciality");
+		var setSpec = document.getElementById("specialitySet");
+		setSpec.innerHTML = spec.value;
+		var sched = document.getElementById("schedule");
+		var setSched = document.getElementById("scheduleSet");
+		setSched.innerHTML = sched.value;
+	}
+</script>
   <h1>{{name}}'s Page</h1>
   <table border="1" cellpadding="5">
     <tr>
@@ -10,20 +24,23 @@
         <button type="button">Edit</button>
         <br></td>
       <td>
-        <form>
-          Name: {{name}} {{last_name}}
+	<form method='post' onsubmit="up(doctorName, speciality, schedule);return false;">
+		Name: <input type="text" id="doctorName" name="doctorName"><br>
+		Speciality: <input type="text" id="speciality" name="speciality"><br>
+		Scheduale: <input type="text" id="schedule" name="schedule"><br>
+		Name: {{name}} {{last_name}}
           <br></br>
         Specialties: {% for specialty in specialties %} {{specialty.name}}, {% endfor %}
         <br></br>
         Schedule:      {% for time_slot in schedule %} 
 		         <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{time_slot.to_string}} 
-		       {% endfor %}
-      <br>
-      <button type="button">Edit</button>
-      <br>
-      <input type="text" name="search">
-      <button type="button">search</button>
-    </form>
+		       {% endfor %}<br>
+		<input type="submit" name="submit" value="Edit"/><br>
+		<!--<p id="doctorNameSet"></p><br>
+		<p id="specialitySet"></p><br>
+		<p id="scheduleSet"></p><br>-->
+		<input type="text" name="search"><button type="button">search</button>
+	</form>
   </tr>
 </table>
 
