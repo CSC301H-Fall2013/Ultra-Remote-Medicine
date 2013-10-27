@@ -1,6 +1,8 @@
 from django import forms
 
 class JQueryUIDatepickerWidget(forms.DateInput):
+    ''' Widget designed to allow the user to pick the date. Doesn't work.'''
+
     def __init__(self, **kwargs):
         super(forms.DateInput, self).__init__(attrs={"size":10, "class": "dateinput"}, **kwargs)
 
@@ -10,6 +12,8 @@ class JQueryUIDatepickerWidget(forms.DateInput):
               "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js",)
 
 class NewPatientForm(forms.Form):
+    ''' The form used on the new patient page.'''
+    
     first_name = forms.CharField(max_length=100)
     last_name = forms.CharField(max_length=100)
     gps_coordinates = forms.CharField(max_length=63, required=False)
