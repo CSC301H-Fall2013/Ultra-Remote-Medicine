@@ -2,29 +2,33 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseBadRequest, HttpResponseRedirect,\
     HttpResponseServerError
-from sample.models import Doctor, Worker, Patient, Case
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
+from django import forms
+
+from sample.forms import NewPatientForm
+from sample.models import Doctor, Worker, Patient, Case
 
 class CaseAttribute():
-    '''
-    A class that contains pre-processed information about a case.
-    This is transmitted to the display template.
-    '''
+    ''' A class that contains pre-processed information about a case.
+    This is transmitted to the display template. '''
     
     def __init__(self, case_reference):
         self.case_ref = case_reference
         self.patient_ref = case_reference.patient
         self.age = 30
 
+
 def create_case_attributes(cases):
     ''' Creates a list of CaseAttributes that correspond to all known cases.'''
+    
     attributes = [CaseAttribute(case) for case in\
                   cases.all()]
     return attributes
+
 
 def home(request):
     """
@@ -84,6 +88,7 @@ def process_login(request):
         # redirect if wrong password
         return HttpResponseRedirect("%s?e=p" % signin_page)
 
+
 def display_doctor(request):
     ''' Load doctor information to doctor's display page. '''
     
@@ -119,50 +124,72 @@ def display_field_worker(request):
     }, context_instance=RequestContext(request))
 
 
-def redirect_patient(request):
-    ''' Redirect to new patient page. '''
-    return render_to_response('newPatient.html', {},
+def display_new_patient(request):
+    ''' Display the new patient page and process submitted new-patient
+        forms. '''
+    form = NewPatientForm()
+
+    if request.method == 'POST':
+        
+        form = NewPatientForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            gps_coordinates = form.cleaned_data['gps_coordinates']
+            address = form.cleaned_data['address']
+            date_of_birth = form.cleaned_data['date_of_birth']
+            phone_number = form.cleaned_data['phone_number']
+            health_id = form.cleaned_data['health_id']
+            phto_link = form.cleaned_data['photo_link']
+            sex = form.cleaned_data['sex']
+            email = form.cleaned_data['email']
+            
+            try:
+                patient = Patient(
+		first_name=first_name,
+		last_name=last_name,
+                gps_coordinates=gps_coordinates,
+                address=address,
+                date_of_birth=date_of_birth,
+		phone=phone_number,
+		health_id=health_id,
+                gender=sex,
+                email=email)
+		patient.save()
+            except IntegrityError:
+                print "hard fail"
+                return HttpResponseServerError()
+
+            return HttpResponseRedirect("view_patient/" +
+                str(patient.id))
+    else:
+
+        # The page has just been entered and so the form hasn't
+        # been submitted yet.
+        form = NewPatientForm()
+
+    return render_to_response('newPatient.html', {'form' : form, },
                               context_instance=RequestContext(request))
 
-def add_patient(request):
-    ''' Add new patient by retrieving information and creating a new object
-    in database. '''
 
-    try:
-        first_name = request.POST['firstName']
-        last_name = request.POST['lastName']
-        patient_ID = request.POST['patientID']
-        phone_number = request.POST['phoneNumber']
-        gps_coordinates = request.POST['gpsCoordinates']
-        address = request.POST['address']
-        comment = request.POST['comments']
-    except KeyError:
-        print "Fail"
-        return HttpResponseBadRequest()
+def display_patient(request, patient_id):
+    ''' Display patient information. '''
 
-    try:
-        patient = Patient(
-            first_name=first_name,
-            last_name=last_name,
-            phone=phone_number,
-            gps_coordinates=gps_coordinates,
-            address=address,
-            health_id=patient_ID)
-        patient.save()
-    except IntegrityError:
-        print "hard fail"
-        return HttpResponseServerError()
+    print "Shit"
 
     # TODO: Filter these so that they are only cases regarding the patient.
     case_attributes = create_case_attributes(Case.objects)
+
+    patient = Patient.objects.filter(id=patient_id)[0]
     
-    return render_to_response('patient.html', {
+    return render_to_response('Patient.html', {
         'firstName': patient.first_name,
         'lastName': patient.last_name,
         'phone': patient.phone,
         'address': patient.address,
         'cases' : case_attributes
     }, context_instance=RequestContext(request))
+
 
 def change_doctor_info(request):
 
@@ -191,6 +218,7 @@ def change_doctor_info(request):
         'schedule' : doctor.schedule.all(),
         'cases' : case_attributes
     }, context_instance=RequestContext(request))
+
 
 def change_worker_info(request):
 

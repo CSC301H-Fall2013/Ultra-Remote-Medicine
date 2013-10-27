@@ -88,9 +88,9 @@
      {% endfor %}
 </table>
 
+<!-- csrf_token was removed, since this is simply a redirection button-->
 <td><button type="button">Add New Case</button>
-<form id="new_patient" action="{% url 'new_patient' %}" method="post">
-    {% csrf_token %}
+<form id="new_patient" action="{% url 'new_patient' %}" method='get'>
     <button type="submit">Add New Patient</button><br></td>
 </form>
 

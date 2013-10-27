@@ -22,8 +22,9 @@ urlpatterns += patterns('sample.views',
                         url('^login$', 'process_login', name='login'),
                         url('^doctor$', 'display_doctor', name='doctor'),
                         url('^field$', 'display_field_worker', name='field'),
-                        url('^new_patient$', 'redirect_patient', name='new_patient'),
-                        url('^add_patient$', 'add_patient', name='add_patient'),
+                        url('^new_patient$', 'display_new_patient', name='new_patient'),
+                        url('^view_patient/(?P<patient_id>\d+)$',
+                            'display_patient', name='display_patient'),
                         url('^change_doctor_info$', 'change_doctor_info', name='change_doctor_info'),
                         url('^change_worker_info$', 'change_worker_info', name='change_worker_info'))
 

@@ -9,10 +9,10 @@ TODO:
     tables (if even possible)
 '''
 
-''' Represents a doctor, the job of whom primarily is to annotate and review
-    cases and scans submitted by workers, and issue instructions to patients
-    and workers. '''
 class Doctor(models.Model):
+    ''' Represents a doctor, the job of whom primarily is to annotate and
+    review cases and scans submitted by workers, and issue instructions to
+    patients and workers. '''
     user = models.OneToOneField(User)
     phone = models.CharField(max_length=63)
     address = models.CharField(max_length=254)
@@ -26,10 +26,10 @@ class Doctor(models.Model):
         return (str(self.id) + ". " + self.user.first_name + " " +
                 self.user.last_name)
 
-''' Represents a worker, the job of whom primarily is to register new patients,
-    submit new cases, and to take measurements, scans, pictures and other
-    documentation.'''
 class Worker(models.Model):
+    ''' Represents a worker, the job of whom primarily is to register new
+    patients, submit new cases, and to take measurements, scans, pictures and
+    other documentation.'''
     user = models.OneToOneField(User)
     phone = models.CharField(max_length=63)
     address = models.CharField(max_length=254)
@@ -40,9 +40,9 @@ class Worker(models.Model):
         return (str(self.id) + ". " + self.user.first_name + " " +
                 self.user.last_name)
 
-''' Represents a patient. Patients are not considered users, having no access
-    to the server.'''
 class Patient(models.Model):
+    ''' Represents a patient. Patients are not considered users,
+    having no access to the server.'''
 
     first_name = models.CharField(max_length=256)
     last_name = models.CharField(max_length=256)
