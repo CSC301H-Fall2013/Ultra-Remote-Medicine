@@ -12,13 +12,13 @@
 <form id='workerinfoform' method='post' action="">{% csrf_token %}
 <table border="0" cellpadding="5" style="height:200px">
 <tr>
-<td style="width:300px">
+<td style="width:300px; vertical-align:top">
 	First Name: <input type="text" id="fWorkerFirstName" name="fWorkerFirstName" value='{{first_name}}'>
 	<br> Last Name: <input type="text" id="fWorkerLastName" name="fWorkerLastName" value='{{last_name}}'>
 	<br> Phone Number: <input type="text" id="fWorkerPhoneNumber" name="fWorkerPhoneNumber" value='{{phone_number}}'>
 	<br> Address: <input type="text" id="fWorkerAddress" name="fWorkerAddress" value='{{address}}'>
 </td>
-<td style="width:300px">
+<td style="width:300px; vertical-align:top">
 	{{comments}}
 </td>
 </tr>
@@ -38,7 +38,7 @@
 <span id="workerstatic">
 <table border="0" cellpadding="5"  style="height:200px">
 <tr>
-<td style="width:300px">
+<td style="width:300px; vertical-align:top">
 	First Name: {{first_name}}
 	<br>Last Name: {{last_name}}
 	<br>Phone Number: {{phone_number}}
@@ -46,7 +46,7 @@
 	<br> Registration Time: {{registration_time}}
 	<br> 
 </td>
-<td style="width:300px">
+<td style="width:300px; vertical-align:top">
 	{{comments}}
 </td>
 </tr>
