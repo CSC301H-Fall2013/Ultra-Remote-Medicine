@@ -9,24 +9,55 @@
 <!-- The following is not visible by default-->
 <span id='workerinfo'>
 <form id='workerinfoform' method='post' action="">{% csrf_token %}
+<table border="0" cellpadding="5" style="height:200px">
+<tr>
+<td style="width:300px">
 	First Name: <input type="text" id="fWorkerFirstName" name="fWorkerFirstName" value='{{first_name}}'>
 	<br> Last Name: <input type="text" id="fWorkerLastName" name="fWorkerLastName" value='{{last_name}}'>
 	<br> Phone Number: <input type="text" id="fWorkerPhoneNumber" name="fWorkerPhoneNumber" value='{{phone_number}}'>
 	<br> Address: <input type="text" id="fWorkerAddress" name="fWorkerAddress" value='{{address}}'>
-	<br>
+</td>
+<td style="width:300px">
+	{{comments}}
+</td>
+</tr>
+<tr>
+<td>
 	<input id="submitChanges" type="submit" name="submitChanges" value="Submit Changes"/>
 	<input id="cancelEditButton" onclick="cancelEditMode()" type="button" name="cancelEditButton" value="Cancel"/> 
+</td>
+<td>
+
+</td>
+</tr>
+</table>
 </form>
 </span>
 
 <span id="workerstatic">
+<table border="0" cellpadding="5"  style="height:200px">
+<tr>
+<td style="width:300px">
 	First Name: {{first_name}}
 	<br>Last Name: {{last_name}}
 	<br>Phone Number: {{phone_number}}
 	<br>Address: {{address}}
 	<br> Registration Time: {{registration_time}}
 	<br> 
+</td>
+<td style="width:300px">
+	{{comments}}
+</td>
+</tr>
+<tr>
+<td>
 	<input id="edit" onclick="enterEditMode()" type="submit" name="submit" value="Edit Profile"/>
+</td>
+<td>
+
+</td>
+</tr>
+</table>
 </span>
 
 
