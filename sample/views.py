@@ -109,14 +109,25 @@ def display_doctor(request):
 
 def display_field_worker(request):
     ''' Load worker information to worker's display page. '''
-    
+
+    user = request.user
     worker = request.user.worker
+
+    if request.method == 'POST':
+        
+        try:
+            user.first_name = request.POST['fWorkerFirstName']
+            user.last_name = request.POST['fWorkerLastName']
+            user.save()
+        except IntegrityError:
+                print "Worker update fail"
+                return HttpResponseServerError()
 
     case_attributes = create_case_attributes(Case.objects)
 
     return render_to_response('fieldworker.html', {
-        'name': worker.user.first_name,
-        'last_name': worker.user.last_name,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
         'phone': worker.phone,
         'address': worker.address,
         'id': worker.id,
@@ -155,7 +166,7 @@ def display_new_patient(request):
 		health_id=health_id,
                 gender=sex,
                 email=email)
-		patient.save()
+                patient.save()
             except IntegrityError:
                 print "hard fail"
                 return HttpResponseServerError()

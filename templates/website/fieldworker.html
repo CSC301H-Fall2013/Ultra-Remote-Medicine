@@ -1,36 +1,28 @@
 {% load static from staticfiles %}
 <!DOCTYPE html>
 <html>
-<script>
-	function up(fWorkerName,fWorkerID)
-	{
-		var name = document.getElementById("fWorkerName");
-		var setName = document.getElementById("fWorkerNameSet");
-		setName.innerHTML = name.value;
-		var ID = document.getElementById("fWorkerID");
-		var setID = document.getElementById("fWorkerIDSet");
-		setID.innerHTML = ID.value;
-	}
-</script>
 <h1>
-  {{name}}'s Page
+  {{first_name}}'s Dashboard
 </h1>
-<table border="1" cellpadding="5">
-<tr>
-<td> photo <button type="button">Edit</button><br></td>
-<td>  
-<form method='post' onsubmit="up(fWorkerName, fWorkerID);return false;">
-	Name: <input type="text" id="fWorkerName" name="fWorkerName"><br>
-	ID: <input type="text" id="fWorkerID" name="fWorkerID"><br>
-	Name: {{name}} {{last_name}}<br></br>
-    Worker ID: {{id}} <br></br>
-	<input type="submit" name="submit" value="Edit"/> 
-	<!--<p id="fWorkerNameSet"></p><br>
-	<p id="fWorkerIDSet"></p><br>-->
+
+
+<!-- The following is not visible by default-->
+<span id='workerinfo'>
+<form id='workerinfoform' method='post' action="">{% csrf_token %}
+	First Name: <input type="text" id="fWorkerFirstName" name="fWorkerFirstName" value='{{first_name}}'>
+	<br> Last Name: <input type="text" id="fWorkerLastName" name="fWorkerLastName" value='{{last_name}}'>
+	<br>
+	<input id="submitChanges" type="submit" name="submitChanges" value="Submit Changes"/>
+	<input id="cancelEditButton" onclick="cancelEditMode()" type="button" name="cancelEditButton" value="Cancel"/> 
 </form>
-</td>
-</tr>
-</table>
+</span>
+
+<span id="workerstatic">
+	First Name: <span id="firstNameText"> {{first_name}} </span>
+	<br>Last Name:  <span id="lastNameText"> {{last_name}} </span>
+	<br> 
+	<input id="edit" onclick="enterEditMode()" type="submit" name="submit" value="Edit Profile"/>
+</span>
 
 
 <h2>
@@ -94,6 +86,28 @@
     <button type="submit">Add New Patient</button><br></td>
 </form>
 
+<script>
+	var editMode = false;
+	workerinfo.style.display = 'none';
+
+	function enterEditMode() {
+		editMode = true;
+
+		workerstatic.style.display = 'none'
+		workerinfo.style.display = 'block';
+
+	}
+
+	function cancelEditMode() {
+		editMode = false;
+
+		fWorkerFirstName.value = '{{first_name}}'
+		fWorkerLastName.value = '{{last_name}}'
+
+		workerstatic.style.display = 'block';
+		workerinfo.style.display = 'none';
+	}
+</script>
 
 </body>
 </html>
