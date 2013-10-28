@@ -133,6 +133,7 @@ def display_field_worker(request):
         'phone_number': worker.phone,
         'address': worker.address,
         'registration_time': worker.registration_time,
+        'comments' : worker.comments,
         'id': worker.id,
         'cases' : case_attributes
     }, context_instance=RequestContext(request))
