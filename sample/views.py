@@ -118,6 +118,8 @@ def display_field_worker(request):
         try:
             user.first_name = request.POST['fWorkerFirstName']
             user.last_name = request.POST['fWorkerLastName']
+            worker.phone = request.POST['fWorkerPhoneNumber']
+            worker.address = request.POST['fWorkerAddress']
             user.save()
         except IntegrityError:
                 print "Worker update fail"
@@ -128,8 +130,9 @@ def display_field_worker(request):
     return render_to_response('fieldworker.html', {
         'first_name': user.first_name,
         'last_name': user.last_name,
-        'phone': worker.phone,
+        'phone_number': worker.phone,
         'address': worker.address,
+        'registration_time': worker.registration_time,
         'id': worker.id,
         'cases' : case_attributes
     }, context_instance=RequestContext(request))

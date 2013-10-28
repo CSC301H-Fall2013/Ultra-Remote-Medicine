@@ -11,6 +11,8 @@
 <form id='workerinfoform' method='post' action="">{% csrf_token %}
 	First Name: <input type="text" id="fWorkerFirstName" name="fWorkerFirstName" value='{{first_name}}'>
 	<br> Last Name: <input type="text" id="fWorkerLastName" name="fWorkerLastName" value='{{last_name}}'>
+	<br> Phone Number: <input type="text" id="fWorkerPhoneNumber" name="fWorkerPhoneNumber" value='{{phone_number}}'>
+	<br> Address: <input type="text" id="fWorkerAddress" name="fWorkerAddress" value='{{address}}'>
 	<br>
 	<input id="submitChanges" type="submit" name="submitChanges" value="Submit Changes"/>
 	<input id="cancelEditButton" onclick="cancelEditMode()" type="button" name="cancelEditButton" value="Cancel"/> 
@@ -18,8 +20,11 @@
 </span>
 
 <span id="workerstatic">
-	First Name: <span id="firstNameText"> {{first_name}} </span>
-	<br>Last Name:  <span id="lastNameText"> {{last_name}} </span>
+	First Name: {{first_name}}
+	<br>Last Name: {{last_name}}
+	<br>Phone Number: {{phone_number}}
+	<br>Address: {{address}}
+	<br> Registration Time: {{registration_time}}
 	<br> 
 	<input id="edit" onclick="enterEditMode()" type="submit" name="submit" value="Edit Profile"/>
 </span>
