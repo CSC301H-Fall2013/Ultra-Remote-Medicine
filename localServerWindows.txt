@@ -7,11 +7,11 @@ Assuming you have Django 1.5.4 installed.... [This is kind of important]
 
 2. Open up pgadmin.
 
-3. On the tree view, navigate to Servers->PostGreSQL <<blah blah blah>>
+3. On the tree view, navigate to Servers->PostGreSQL <<blah blah blah>>. Right click PostGreSQL <<>> and click connect.
 
 4. Create a New Login Role by right clicking PostGreSQL <<blah blah blah>>, and clicking New Object->New Login Role
 
-5. Set the user name of the new user to django_login and the password to 12345. Click OK
+5. Set the user name (role name) of the new user to django_login and the password to 12345. Click OK
 
 6. Navigate to Servers->PostGreSQL <<blah blah blah>>->Databases
 
@@ -25,14 +25,14 @@ Assuming you have Django 1.5.4 installed.... [This is kind of important]
 
 10. Try call to manage.py runserver like usual.
 
-If you get an exception in 8 or 9 like that a module can't be imported, you should do the following:
+If you get an exception in 9 or 10 like that a module can't be imported, you should do the following:
 
 Go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#pip
 
-1. Download/Install Setuptools and pip 
+1. Download/Install Setuptools and pip (you might also need to install psycopg2 if pip is being a little bitch).
 
 2. Ensure <<python 2.7 directory>/scripts is in your path
-
+   Restart cmd
 3. on the commandline, use: pip install <<whatever-it-says-is-missing>
 
 4. Repeat (3) until sqldb and runserver work.
