@@ -29,7 +29,7 @@ If you get an exception in 9 or 10 like that a module can't be imported, you sho
 
 Go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#pip
 
-1. Download/Install Setuptools and pip (you might also need to install psycopg2 if pip is being a little bitch).
+1. Download/Install Setuptools and pip (you might also need to install psycopg2 if pip refuses to install it).
 
 2. Ensure <<python 2.7 directory>/scripts is in your path
    Restart cmd
