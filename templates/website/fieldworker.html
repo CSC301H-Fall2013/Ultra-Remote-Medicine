@@ -10,19 +10,19 @@
 <!-- The following is not visible by default-->
 <span id='workerinfo'>
 <form id='workerinfoform' method='post' action="">{% csrf_token %}
-<table border="0" cellpadding="5" style="height:200px">
+<table border="1" cellpadding="5" style="height:200px">
 <tr>
 <td style="width:300px; vertical-align:top">
-	First Name: <input type="text" id="fWorkerFirstName" name="fWorkerFirstName" value='{{first_name}}'>
-	<br> Last Name: <input type="text" id="fWorkerLastName" name="fWorkerLastName" value='{{last_name}}'>
-	<br> Phone Number: <input type="text" id="fWorkerPhoneNumber" name="fWorkerPhoneNumber" value='{{phone_number}}'>
-	<br> Address: <input type="text" id="fWorkerAddress" name="fWorkerAddress" value='{{address}}'>
+	First Name: {{form.first_name}}
+	<br> Last Name: {{form.last_name}}
+	<br> Phone Number: {{form.phone_number}}
+	<br> Address: {{form.address}}
 </td>
 <td style="width:300px; vertical-align:top">
-	{{comments}}
+	{{form.comments}}
 </td>
 </tr>
-<tr>
+<tr style="height:50px">
 <td>
 	<input id="submitChanges" type="submit" name="submitChanges" value="Submit Changes"/>
 	<input id="cancelEditButton" onclick="cancelEditMode()" type="button" name="cancelEditButton" value="Cancel"/> 
@@ -36,7 +36,7 @@
 </span>
 
 <span id="workerstatic">
-<table border="0" cellpadding="5"  style="height:200px">
+<table border="1" cellpadding="5"  style="height:200px">
 <tr>
 <td style="width:300px; vertical-align:top">
 	First Name: {{first_name}}
@@ -50,7 +50,7 @@
 	{{comments}}
 </td>
 </tr>
-<tr>
+<tr style="height:50px">
 <td>
 	<input id="edit" onclick="enterEditMode()" type="submit" name="submit" value="Edit Profile"/>
 </td>
@@ -126,11 +126,15 @@
 <script>
 	var editMode = false;
 	workerinfo.style.display = 'none';
+	{{form.comments.auto_id}}.style.resize = 'none';
+	{{form.comments.auto_id}}.rows = '6';
+	{{form.comments.auto_id}}.style.width = '280px';
+	{{form.comments.auto_id}}.style.height = '100px';
 
 	function enterEditMode() {
 		editMode = true;
 
-		workerstatic.style.display = 'none'
+		workerstatic.style.display = 'none';
 		workerinfo.style.display = 'block';
 
 	}
@@ -138,8 +142,11 @@
 	function cancelEditMode() {
 		editMode = false;
 
-		fWorkerFirstName.value = '{{first_name}}'
-		fWorkerLastName.value = '{{last_name}}'
+		{{form.first_name.auto_id}}.value = '{{first_name}}';
+		{{form.last_name.auto_id}}.value = '{{last_name}}';
+		{{form.phone_number.auto_id}}.value = '{{phone_number}}';
+		{{form.address.auto_id}}.value = '{{address}}';
+		{{form.comments.auto_id}}.value = {{form.comments.auto_id}}.defaultValue;
 
 		workerstatic.style.display = 'block';
 		workerinfo.style.display = 'none';

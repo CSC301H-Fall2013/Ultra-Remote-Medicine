@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
 from django import forms
 
-from sample.forms import NewPatientForm
+from sample.forms import NewPatientForm, UpdateFieldWorkerForm
 from sample.models import Doctor, Worker, Patient, Case
 
 class CaseAttribute():
@@ -115,19 +115,30 @@ def display_field_worker(request):
 
     if request.method == 'POST':
         
-        try:
-            user.first_name = request.POST['fWorkerFirstName']
-            user.last_name = request.POST['fWorkerLastName']
-            worker.phone = request.POST['fWorkerPhoneNumber']
-            worker.address = request.POST['fWorkerAddress']
-            user.save()
-        except IntegrityError:
-                print "Worker update fail"
-                return HttpResponseServerError()
+        form = UpdateFieldWorkerForm(request.POST)
+        if form.is_valid():
+            
+            try:
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                worker.phone = form.cleaned_data['phone_number']
+                worker.address = form.cleaned_data['address']
+                worker.comments = form.cleaned_data['comments']
+                user.save()
+
+                
+            except IntegrityError:
+                    print "Worker update fail"
+                    return HttpResponseServerError()
+    else:
+        form = UpdateFieldWorkerForm()
+        form.populate(worker)
+        print "ASf", user.first_name
 
     case_attributes = create_case_attributes(Case.objects)
 
     return render_to_response('fieldworker.html', {
+        'form' : form,
         'first_name': user.first_name,
         'last_name': user.last_name,
         'phone_number': worker.phone,
@@ -142,7 +153,6 @@ def display_field_worker(request):
 def display_new_patient(request):
     ''' Display the new patient page and process submitted new-patient
         forms. '''
-    form = NewPatientForm()
 
     if request.method == 'POST':
         

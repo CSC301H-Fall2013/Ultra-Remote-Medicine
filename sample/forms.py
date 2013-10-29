@@ -26,3 +26,24 @@ class NewPatientForm(forms.Form):
     sex = forms.ChoiceField(required=False, choices=
             (('Female', 'Female'), ('Male', 'Male'), ('Other', 'Other')))
     email = forms.CharField(max_length=254, required=False)
+
+class UpdateFieldWorkerForm(forms.Form):
+    ''' The main form for updating field worker information.'''
+
+    first_name = forms.CharField(max_length=100)
+    last_name = forms.CharField(max_length=100)
+    phone_number = forms.CharField(max_length=63)
+    address = forms.CharField(max_length=254)
+    comments = forms.CharField(required=False, widget=forms.Textarea)
+
+    def populate(self, worker):
+
+        print "No it aint"
+        self.fields["first_name"].initial = worker.user.first_name
+        self.fields["last_name"].initial = worker.user.last_name
+        self.fields["phone_number"].initial = worker.phone
+        self.fields["address"].initial = worker.address
+        self.fields["comments"].initial = worker.comments
+
+    
+        
