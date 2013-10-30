@@ -1,129 +1,128 @@
 {% load static from staticfiles %}
 <!DOCTYPE html>
 <html>
-<h1>
-  {{first_name}}'s Dashboard
-</h1>
 
-<!-- Someone else can do the alignments.-->
+<head>
+<link rel="stylesheet" type="text/css" href="{% static "headerStyle.css" %}" />
+<title>Field-Worker dashboard | Ultra Remote Medicine</title>
+</head>
 
-<!-- The following is not visible by default-->
-<span id='workerinfo'>
-<form id='workerinfoform' method='post' action="">{% csrf_token %}
-<table border="0" cellpadding="5" style="height:200px">
-<tr>
-<td style="width:300px; vertical-align:top">
-	First Name: {{form.first_name}}
-	<br> Last Name: {{form.last_name}}
-	<br> Phone Number: {{form.phone_number}}
-	<br> Address: {{form.address}}
-</td>
-<td style="width:300px; vertical-align:top">
-	{{form.comments}}
-</td>
-</tr>
-<tr style="height:50px">
-<td>
-	<input id="submitChanges" type="submit" name="submitChanges" value="Submit Changes"/>
-	<input id="cancelEditButton" onclick="cancelEditMode()" type="button" name="cancelEditButton" value="Cancel"/> 
-</td>
-<td>
+<body>
 
-</td>
-</tr>
-</table>
-</form>
-</span>
+	{% include "_topBar.html" %}
 
-<span id="workerstatic">
-<table border="0" cellpadding="5"  style="height:200px">
-<tr>
-<td style="width:300px; vertical-align:top">
-	First Name: {{first_name}}
-	<br>Last Name: {{last_name}}
-	<br>Phone Number: {{phone_number}}
-	<br>Address: {{address}}
-	<br> Registration Time: {{registration_time}}
-	<br> 
-</td>
-<td style="width:300px; vertical-align:top">
-	{{comments}}
-</td>
-</tr>
-<tr style="height:50px">
-<td>
-	<input id="edit" onclick="enterEditMode()" type="submit" name="submit" value="Edit Profile"/>
-</td>
-<td>
+	<div class="pageContents">
 
-</td>
-</tr>
-</table>
-</span>
+		<h1>Dashboard: {{user.first_name}}</h1>
+
+		<!-- Someone else can do the alignments.-->
+
+		<!-- The following is not visible by default-->
+		<span id='workerinfo'>
+			<form id='workerinfoform' method='post' action="">
+				{% csrf_token %}
+				<table border="0" cellpadding="5" style="height: 200px">
+					<tr>
+						<td style="width: 300px; vertical-align: top">
+							First Name: {{form.first_name}}
+							<br>Last Name: {{form.last_name}}
+							<br>Phone Number: {{form.phone_number}}
+							<br>Address: {{form.address}}
+						</td>
+						<td style="width: 300px; vertical-align: top">
+							{{form.comments}}</td>
+					</tr>
+					<tr style="height: 50px">
+						<td><input id="submitChanges" type="submit"
+							name="submitChanges" value="Submit Changes" /> <input
+							id="cancelEditButton" onclick="cancelEditMode()" type="button"
+							name="cancelEditButton" value="Cancel" /></td>
+						<td></td>
+					</tr>
+				</table>
+			</form>
+		</span> <span id="workerstatic">
+			<table border="0" cellpadding="5" style="height: 200px">
+				<tr>
+					<td style="width: 300px; vertical-align: top">
+						First Name: {{user.first_name}}
+						<br>Last Name: {{user.last_name}}
+						<br>Phone Number: {{phone_number}} 
+						<br>Address: {{address}} 
+						<br>Registration Time: {{registration_time}} <br>
+					</td>
+					<td style="width: 300px; vertical-align: top">{{comments}}</td>
+				</tr>
+				<tr style="height: 50px">
+					<td><input id="edit" onclick="enterEditMode()" type="submit"
+						name="submit" value="Edit Profile" /></td>
+					<td></td>
+				</tr>
+			</table>
+		</span>
 
 
-<h2>
-<b>Cases</b>
-</h2>
+		<h2>
+			<b>Cases</b>
+		</h2>
 
-<table border="1" cellpadding="5">
-    <tr>
-      <td>
-        <button type="button">Patient Name</button>
-      </td>
-      <td>
-        <button type="button">Status</button>
-      </td>
-      <td>
-        <button type="button">Age</button>
-      </td>
-      <td>
-        <button type="button">Gender</button>
-      </td>
-      <td>
-        <button type="button">Priority</button>
-      </td>
-      <td>
-        <button type="button">Date</button>
-      </td>
-      <td>
-        <button type="button">Link to cases</button>
-      </td>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					<button type="button">Patient Name</button>
+				</td>
+				<td>
+					<button type="button">Status</button>
+				</td>
+				<td>
+					<button type="button">Age</button>
+				</td>
+				<td>
+					<button type="button">Gender</button>
+				</td>
+				<td>
+					<button type="button">Priority</button>
+				</td>
+				<td>
+					<button type="button">Date</button>
+				</td>
+				<td>
+					<button type="button">Link to cases</button>
+				</td> {% for case in cases %}
+			</tr>
+			<tr>
 
-      {% for case in cases %}
-   	<tr>
+				<td><br> <a href="http://www.google.ca" target="_blank">
+						{{case.patient_ref.last_name}}, {{case.patient_ref.first_name}} </a></td>
+				<td><select>
+						<option value="pending(not seen)">pending(not seen)</option>
+						<option value="pending(seen)">pending(seen)</option>
+						<option value="completed" selected>completed</option>
+				</select></td>
+				<td>{{case.age}}</td>
+				<td>Male</td>
+				<td>5
+					<button type="button">Edit</button>
+				</td>
+				<td>{{case.case_ref.date_opened}}</td>
+				<td><a href="http://www.google.ca" target="_blank">case-link
+						1</a></td> {% endfor %}
+			</tr>
+		</table>
 
-          <td>
-            <br>
-            <a href="http://www.google.ca" target="_blank"> {{case.patient_ref.last_name}}, {{case.patient_ref.first_name}} </a>
-          </td>
-          <td>
-            <select>
-              <option value="pending(not seen)">pending(not seen)</option>
-              <option value="pending(seen)">pending(seen)</option>
-              <option value="completed" selected>completed</option>
-            </select>
-          </td>
-          <td>{{case.age}}</td>
-          <td>Male</td>
-          <td>
-            5
-            <button type="button">Edit</button>
-          </td>
-          <td>{{case.case_ref.date_opened}}</td>
-          <td>
-            <a href="http://www.google.ca" target="_blank">case-link 1</a>
-          </td>
-     {% endfor %}
-</table>
+		<!-- csrf_token was removed, since this is simply a redirection button-->
+		<td><button type="button">Add New Case</button>
+			<form id="new_patient" action="{% url 'new_patient' %}" method='get'>
+				<button type="submit">Add New Patient</button>
+				<br>
+			</form></td>
+		<form action=""></form>
 
-<!-- csrf_token was removed, since this is simply a redirection button-->
-<td><button type="button">Add New Case</button>
-<form id="new_patient" action="{% url 'new_patient' %}" method='get'>
-    <button type="submit">Add New Patient</button><br></td>
-</form>
+	</div>
 
-<script>
+</body>
+
+<script type="text/javascript">
 	var editMode = false;
 	workerinfo.style.display = 'none';
 	{{form.comments.auto_id}}.style.resize = 'none';
@@ -153,5 +152,6 @@
 	}
 </script>
 
-</body>
+<body></body>
+
 </html>

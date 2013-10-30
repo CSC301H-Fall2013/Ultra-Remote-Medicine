@@ -1,83 +1,89 @@
 <!DOCTYPE html>
-<html>
 
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="{% static "headerStyle.css" %}" />
+<title>View patient | Ultra Remote Medicine</title>
+</head>
 
 <body>
-    <h1>
-        {{firstName}}'s Page
-    </h1>
-<table border="1" cellpadding="5">
-    <tr>
-     <td><img src="patient.png" width="104" height="142"><br></td>
-     <td>
-         <form>
-              Name: {{lastName}}, {{firstName}}<br>
-			  Gender: {{gender}} <br>
-              DOB: {{date_of_birth}} <br>
-			  Patient ID: {{health_id}} <br>
-			  Phone:{{phone}}<br>
-              Address:{{address}}<br>
-              Email: {{email}} <br>
-             <button type="button">Edit</button><br>
-         </form>
-    </td>
-</tr>
-</table>
 
-<h2>
-<b>Cases</b>
-</h2>
+	{% include "_topBar.html" %}
 
-<table border="1" cellpadding="5">
-    <tr>
-      <td>
-        <button type="button">Patient Name</button>
-      </td>
-      <td>
-        <button type="button">Status</button>
-      </td>
-      <td>
-        <button type="button">Age</button>
-      </td>
-      <td>
-        <button type="button">Gender</button>
-      </td>
-      <td>
-        <button type="button">Priority</button>
-      </td>
-      <td>
-        <button type="button">Date</button>
-      </td>
-      <td>
-        <button type="button">Link to cases</button>
-      </td>
+	<div class="pageContents">
 
-      {% for case in cases %}
-   	<tr>
+		<h1>Patient: {{firstName}} {{lastName}}</h1>
+		<table border="1" cellpadding="5">
+			<tr>
+				<td><img src="patient.png" width="104" height="142" alt=""><br></td>
+				<td>
+					<form action="">
+						Name: {{lastName}}, {{firstName}}
+						<br> Gender: {{gender}}
+						<br>DOB: {{date_of_birth}}
+						<br> Patient ID: {{health_id}}
+						<br>Phone:{{phone}}
+						<br> Address:{{address}}
+						<br> Email:{{email}} 
+						<br>
+						<button type="button">Edit</button>
+						<br>
+					</form>
+				</td>
+			</tr>
+		</table>
 
-          <td>
-            <br>
-            <a href="http://www.google.ca" target="_blank"> {{case.patient_ref.last_name}}, {{case.patient_ref.first_name}} </a>
-          </td>
-          <td>
-            <select>
-              <option value="pending(not seen)">pending(not seen)</option>
-              <option value="pending(seen)">pending(seen)</option>
-              <option value="completed" selected>completed</option>
-            </select>
-          </td>
-          <td>{{case.age}}</td>
-          <td>Male</td>
-          <td>
-            5
-            <button type="button">Edit</button>
-          </td>
-          <td>{{case.case_ref.date_opened}}</td>
-          <td>
-            <a href="http://www.google.ca" target="_blank">case-link 1</a>
-          </td>
-     {% endfor %}
-</table>
+		<h2>
+			<b>Cases</b>
+		</h2>
+
+		<table border="1" cellpadding="5">
+			<tr>
+				<td>
+					<button type="button">Patient Name</button>
+				</td>
+				<td>
+					<button type="button">Status</button>
+				</td>
+				<td>
+					<button type="button">Age</button>
+				</td>
+				<td>
+					<button type="button">Gender</button>
+				</td>
+				<td>
+					<button type="button">Priority</button>
+				</td>
+				<td>
+					<button type="button">Date</button>
+				</td>
+				<td>
+					<button type="button">Link to cases</button>
+				</td> {% for case in cases %}
+			</tr>
+			<tr>
+
+				<td><br> <a href="http://www.google.ca" target="_blank">
+						{{case.patient_ref.last_name}}, {{case.patient_ref.first_name}} </a></td>
+				<td><select>
+						<option value="pending(not seen)">pending(not seen)</option>
+						<option value="pending(seen)">pending(seen)</option>
+						<option value="completed" selected>completed</option>
+				</select></td>
+				<td>{{case.age}}</td>
+				<td>Male</td>
+				<td>5
+					<button type="button">Edit</button>
+				</td>
+				<td>{{case.case_ref.date_opened}}</td>
+				<td><a href="http://www.google.ca" target="_blank">case-link
+						1</a></td> {% endfor %}
+			</tr>
+		</table>
+
+	</div>
 
 </body>
 </html>

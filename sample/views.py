@@ -120,8 +120,7 @@ def display_doctor(request):
 
     return render_to_response('doctor.html', {
         'form': form,
-        'first_name': user.first_name,
-        'last_name': user.last_name,
+        'user': user,
         'phone_number': doctor.phone,
         'address': doctor.address,
         'registration_time': doctor.registration_time,
@@ -162,8 +161,7 @@ def display_field_worker(request):
 
     return render_to_response('fieldworker.html', {
         'form': form,
-        'first_name': user.first_name,
-        'last_name': user.last_name,
+        'user': user,
         'phone_number': worker.phone,
         'address': worker.address,
         'registration_time': worker.registration_time,
@@ -223,12 +221,15 @@ def display_new_patient(request):
 def display_patient(request, patient_id):
     ''' Display patient information. '''
 
+    user = request.user
+
     # TODO: Filter these so that they are only cases regarding the patient.
     case_attributes = create_case_attributes(Case.objects)
 
     patient = Patient.objects.filter(id=patient_id)[0]
 
     return render_to_response('Patient.html', {
+        'user': user,
         'firstName': patient.first_name,
         'lastName': patient.last_name,
         'phone': patient.phone,

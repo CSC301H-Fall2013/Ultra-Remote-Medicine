@@ -1,22 +1,28 @@
 <!--This is the page where field workers can add new patients-->
+
 {% load static from staticfiles %}
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Add a new case</title>
-		<script language="JavaScript">
+<head>
+<link rel="stylesheet" type="text/css" href="{% static "headerStyle.css" %}" />
+<title>Register new patient | Ultra Remote Medicine</title>
+<script language="JavaScript">
 			function openFile() {
 			window.location = 'file:///' + document.form.selectedFile.value;
 			}
 		</script>
-	</head>
-	<body>
-		<form action="new_patient" method="post">{% csrf_token %}
-		{{ form.as_p }}
-		<input type="submit" value="Submit" />
+</head>
+<body>
+
+	{% include "_topBar.html" %}
+
+	<div class="pageContents">
+
+		<form action="new_patient" method="post">
+			{% csrf_token %} {{ form.as_p }} <input type="submit" value="Submit" />
 		</form>
 
+	</div>
 
-
-	</body>
+</body>
 </html>
