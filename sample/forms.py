@@ -51,6 +51,3 @@ class UpdateFieldWorkerForm(forms.Form):
         self.fields["phone_number"].initial = worker.phone
         self.fields["address"].initial = worker.address
         self.fields["comments"].initial = worker.comments
-
-
-

@@ -137,15 +137,15 @@ def display_field_worker(request):
     case_attributes = create_case_attributes(Case.objects)
 
     return render_to_response('fieldworker.html', {
-        'form' : form,
+        'form': form,
         'first_name': user.first_name,
         'last_name': user.last_name,
         'phone_number': worker.phone,
         'address': worker.address,
         'registration_time': worker.registration_time,
-        'comments' : worker.comments,
+        'comments': worker.comments,
         'id': worker.id,
-        'cases' : case_attributes
+        'cases': case_attributes
     }, context_instance=RequestContext(request))
 
 
@@ -164,21 +164,21 @@ def display_new_patient(request):
             date_of_birth = form.cleaned_data['date_of_birth']
             phone_number = form.cleaned_data['phone_number']
             health_id = form.cleaned_data['health_id']
-            photo_link = form.cleaned_data['photo_link']
+            # photo_link = form.cleaned_data['photo_link']
             sex = form.cleaned_data['sex']
             email = form.cleaned_data['email']
 
             try:
                 patient = Patient(
-        first_name=first_name,
-        last_name=last_name,
-                gps_coordinates=gps_coordinates,
-                address=address,
-                date_of_birth=date_of_birth,
-        phone=phone_number,
-        health_id=health_id,
-                gender=sex,
-                email=email)
+                    first_name=first_name,
+                    last_name=last_name,
+                    gps_coordinates=gps_coordinates,
+                    address=address,
+                    date_of_birth=date_of_birth,
+                    phone=phone_number,
+                    health_id=health_id,
+                    gender=sex,
+                    email=email)
                 patient.save()
             except IntegrityError:
                 print "hard fail"
@@ -199,8 +199,6 @@ def display_new_patient(request):
 def display_patient(request, patient_id):
     ''' Display patient information. '''
 
-    print "Shit"
-
     # TODO: Filter these so that they are only cases regarding the patient.
     case_attributes = create_case_attributes(Case.objects)
 
@@ -211,5 +209,5 @@ def display_patient(request, patient_id):
         'lastName': patient.last_name,
         'phone': patient.phone,
         'address': patient.address,
-        'cases' : case_attributes
+        'cases': case_attributes
     }, context_instance=RequestContext(request))
