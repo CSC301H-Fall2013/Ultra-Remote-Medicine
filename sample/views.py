@@ -7,15 +7,15 @@ from django.core.urlresolvers import reverse_lazy
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
-from django import forms
 
 from sample.forms import NewPatientForm, UpdateFieldWorkerForm
 from sample.models import Doctor, Worker, Patient, Case
 
+
 class CaseAttribute():
     ''' A class that contains pre-processed information about a case.
     This is transmitted to the display template. '''
-    
+
     def __init__(self, case_reference):
         self.case_ref = case_reference
         self.patient_ref = case_reference.patient
@@ -24,7 +24,7 @@ class CaseAttribute():
 
 def create_case_attributes(cases):
     ''' Creates a list of CaseAttributes that correspond to all known cases.'''
-    
+
     attributes = [CaseAttribute(case) for case in\
                   cases.all()]
     return attributes
@@ -91,7 +91,7 @@ def process_login(request):
 
 def display_doctor(request):
     ''' Load doctor information to doctor's display page. '''
-    
+
     doctor = request.user.doctor
 
     case_attributes = create_case_attributes(Case.objects)
@@ -101,9 +101,9 @@ def display_doctor(request):
         'last_name': doctor.user.last_name,
         'phone': doctor.phone,
         'address': doctor.address,
-        'specialties' : doctor.specialties.all(),
-        'schedule' : doctor.schedule.all(),
-        'cases' : case_attributes
+        'specialties': doctor.specialties.all(),
+        'schedule': doctor.schedule.all(),
+        'cases': case_attributes
     }, context_instance=RequestContext(request))
 
 
@@ -114,10 +114,10 @@ def display_field_worker(request):
     worker = request.user.worker
 
     if request.method == 'POST':
-        
+
         form = UpdateFieldWorkerForm(request.POST)
         if form.is_valid():
-            
+
             try:
                 user.first_name = form.cleaned_data['first_name']
                 user.last_name = form.cleaned_data['last_name']
@@ -126,10 +126,9 @@ def display_field_worker(request):
                 worker.comments = form.cleaned_data['comments']
                 user.save()
 
-                
             except IntegrityError:
-                    print "Worker update fail"
-                    return HttpResponseServerError()
+                print "Worker update fail"
+                return HttpResponseServerError()
     else:
         form = UpdateFieldWorkerForm()
         form.populate(worker)
@@ -155,7 +154,7 @@ def display_new_patient(request):
         forms. '''
 
     if request.method == 'POST':
-        
+
         form = NewPatientForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
@@ -165,19 +164,19 @@ def display_new_patient(request):
             date_of_birth = form.cleaned_data['date_of_birth']
             phone_number = form.cleaned_data['phone_number']
             health_id = form.cleaned_data['health_id']
-            phto_link = form.cleaned_data['photo_link']
+            photo_link = form.cleaned_data['photo_link']
             sex = form.cleaned_data['sex']
             email = form.cleaned_data['email']
-            
+
             try:
                 patient = Patient(
-		first_name=first_name,
-		last_name=last_name,
+        first_name=first_name,
+        last_name=last_name,
                 gps_coordinates=gps_coordinates,
                 address=address,
                 date_of_birth=date_of_birth,
-		phone=phone_number,
-		health_id=health_id,
+        phone=phone_number,
+        health_id=health_id,
                 gender=sex,
                 email=email)
                 patient.save()
@@ -193,7 +192,7 @@ def display_new_patient(request):
         # been submitted yet.
         form = NewPatientForm()
 
-    return render_to_response('newPatient.html', {'form' : form, },
+    return render_to_response('newPatient.html', {'form': form},
                               context_instance=RequestContext(request))
 
 
@@ -206,68 +205,11 @@ def display_patient(request, patient_id):
     case_attributes = create_case_attributes(Case.objects)
 
     patient = Patient.objects.filter(id=patient_id)[0]
-    
+
     return render_to_response('Patient.html', {
         'firstName': patient.first_name,
         'lastName': patient.last_name,
         'phone': patient.phone,
         'address': patient.address,
-        'cases' : case_attributes
-    }, context_instance=RequestContext(request))
-
-
-def change_doctor_info(request):
-
-    doctor = request.user.doctor
-    try:
-        doctor.first_name=first_name,
-        doctor.last_name=last_name,
-        doctor.phone=phone_number,
-        doctor.address=address,
-        doctor.specialties=specialties
-        doctor.schedule=schedule
-        doctor.cases=cases
-        doctor.save()
-    except IntegrityError:
-        print "hard fail"
-        return HttpResponseServerError()
-
-    case_attributes = create_case_attributes(Case.objects)
-
-    return render_to_response('doctor.html', {
-        'name': doctor.user.first_name,
-        'last_name': doctor.user.last_name,
-        'phone': doctor.phone,
-        'address': doctor.address,
-        'specialties' : doctor.specialties.all(),
-        'schedule' : doctor.schedule.all(),
-        'cases' : case_attributes
-    }, context_instance=RequestContext(request))
-
-
-def change_worker_info(request):
-
-    worker = request.user.worker
-    try:
-        worker.first_name=first_name,
-        worker.last_name=last_name,
-        worker.phone=phone_number,
-        worker.address=address,
-        worker.specialties=specialties
-        worker.schedule=schedule
-        worker.cases=cases
-        worker.save()
-    except IntegrityError:
-        print "hard fail"
-        return HttpResponseServerError()
-
-    case_attributes = create_case_attributes(Case.objects)
-
-    return render_to_response('fieldworker.html', {
-        'name': worker.user.first_name,
-        'last_name': worker.user.last_name,
-        'phone': worker.phone,
-        'address': worker.address,
-        'id': worker.id,
         'cases' : case_attributes
     }, context_instance=RequestContext(request))
