@@ -1,48 +1,66 @@
 {% load static from staticfiles %}
-
 <!DOCTYPE html>
 <html>
-<script>
-	function up(doctorName, speciality, schedule)
-	{
-		var name = document.getElementById("doctorName");
-		var setName = document.getElementById("doctorNameSet");
-		setName.innerHTML = name.value;
-		var spec = document.getElementById("speciality");
-		var setSpec = document.getElementById("specialitySet");
-		setSpec.innerHTML = spec.value;
-		var sched = document.getElementById("schedule");
-		var setSched = document.getElementById("scheduleSet");
-		setSched.innerHTML = sched.value;
-	}
-</script>
-  <h1>{{name}}'s Page</h1>
-  <table border="1" cellpadding="5">
-    <tr>
-      <td>
-        <img src="doctor.png" width="104" height="142">
-        <button type="button">Edit</button>
-        <br></td>
-      <td>
-	<form method='post' onsubmit="up(doctorName, speciality, schedule);return false;">
-		Name: <input type="text" id="doctorName" name="doctorName"><br>
-		Speciality: <input type="text" id="speciality" name="speciality"><br>
-		Scheduale: <input type="text" id="schedule" name="schedule"><br>
-		Name: {{name}} {{last_name}}
-          <br></br>
-        Specialties: {% for specialty in specialties %} {{specialty.name}}, {% endfor %}
-        <br></br>
-        Schedule:      {% for time_slot in schedule %} 
-		         <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{time_slot.to_string}} 
-		       {% endfor %}<br>
-		<input type="submit" name="submit" value="Edit"/><br>
-		<!--<p id="doctorNameSet"></p><br>
-		<p id="specialitySet"></p><br>
-		<p id="scheduleSet"></p><br>-->
-		<input type="text" name="search"><button type="button">search</button>
-	</form>
-  </tr>
+<h1>
+  {{first_name}}'s Dashboard
+</h1>
+
+<!-- Someone else can do the alignments.-->
+
+<!-- The following is not visible by default-->
+<span id='workerinfo'>
+<form id='workerinfoform' method='post' action="">{% csrf_token %}
+<table border="0" cellpadding="5" style="height:200px">
+<tr>
+<td style="width:300px; vertical-align:top">
+	First Name: {{form.first_name}}
+	<br> Last Name: {{form.last_name}}
+	<br> Phone Number: {{form.phone_number}}
+	<br> Address: {{form.address}}
+</td>
+<td style="width:300px; vertical-align:top">
+	{{form.comments}}
+</td>
+</tr>
+<tr style="height:50px">
+<td>
+	<input id="submitChanges" type="submit" name="submitChanges" value="Submit Changes"/>
+	<input id="cancelEditButton" onclick="cancelEditMode()" type="button" name="cancelEditButton" value="Cancel"/> 
+</td>
+<td>
+
+</td>
+</tr>
 </table>
+</form>
+</span>
+
+<span id="workerstatic">
+<table border="0" cellpadding="5"  style="height:200px">
+<tr>
+<td style="width:300px; vertical-align:top">
+	First Name: {{first_name}}
+	<br>Last Name: {{last_name}}
+	<br>Phone Number: {{phone_number}}
+	<br>Address: {{address}}
+	<br> Registration Time: {{registration_time}}
+	<br> Specialties: {% for specialty in specialties %} {{specialty.name}}, {% endfor %}
+</td>
+<td style="width:300px; vertical-align:top">
+	{{comments}}
+</td>
+</tr>
+<tr style="height:50px">
+<td>
+	<input id="edit" onclick="enterEditMode()" type="submit" name="submit" value="Edit Profile"/>
+</td>
+<td>
+
+</td>
+</tr>
+</table>
+</span>
+
 
 <h2>
 <b>Cases</b>
@@ -99,5 +117,35 @@
      {% endfor %}
 </table>
 
+<script>
+	var editMode = false;
+	workerinfo.style.display = 'none';
+	{{form.comments.auto_id}}.style.resize = 'none';
+	{{form.comments.auto_id}}.rows = '6';
+	{{form.comments.auto_id}}.style.width = '280px';
+	{{form.comments.auto_id}}.style.height = '100px';
+
+	function enterEditMode() {
+		editMode = true;
+
+		workerstatic.style.display = 'none';
+		workerinfo.style.display = 'block';
+
+	}
+
+	function cancelEditMode() {
+		editMode = false;
+
+		{{form.first_name.auto_id}}.value = '{{first_name}}';
+		{{form.last_name.auto_id}}.value = '{{last_name}}';
+		{{form.phone_number.auto_id}}.value = '{{phone_number}}';
+		{{form.address.auto_id}}.value = '{{address}}';
+		{{form.comments.auto_id}}.value = {{form.comments.auto_id}}.defaultValue;
+
+		workerstatic.style.display = 'block';
+		workerinfo.style.display = 'none';
+	}
+</script>
+
 </body>
-    </html>
+</html>

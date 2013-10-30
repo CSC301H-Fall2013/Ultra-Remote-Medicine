@@ -8,7 +8,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
 
-from sample.forms import NewPatientForm, UpdateFieldWorkerForm
+from sample.forms import NewPatientForm, UpdateFieldWorkerForm,\
+    UpdateDoctorForm
 from sample.models import Doctor, Worker, Patient, Case
 
 
@@ -92,17 +93,41 @@ def process_login(request):
 def display_doctor(request):
     ''' Load doctor information to doctor's display page. '''
 
+    user = request.user
     doctor = request.user.doctor
+
+    if request.method == 'POST':
+
+        form = UpdateDoctorForm(request.POST)
+        if form.is_valid():
+
+            try:
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                doctor.phone = form.cleaned_data['phone_number']
+                doctor.address = form.cleaned_data['address']
+                doctor.comments = form.cleaned_data['comments']
+                user.save()
+
+            except IntegrityError:
+                print "Worker update fail"
+                return HttpResponseServerError()
+    else:
+        form = UpdateDoctorForm()
+        form.populate(doctor)
 
     case_attributes = create_case_attributes(Case.objects)
 
     return render_to_response('doctor.html', {
-        'name': doctor.user.first_name,
-        'last_name': doctor.user.last_name,
-        'phone': doctor.phone,
+        'form': form,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'phone_number': doctor.phone,
         'address': doctor.address,
+        'registration_time': doctor.registration_time,
         'specialties': doctor.specialties.all(),
-        'schedule': doctor.schedule.all(),
+        'comments': doctor.comments,
+        'id': doctor.id,
         'cases': case_attributes
     }, context_instance=RequestContext(request))
 
@@ -132,7 +157,6 @@ def display_field_worker(request):
     else:
         form = UpdateFieldWorkerForm()
         form.populate(worker)
-        print "ASf", user.first_name
 
     case_attributes = create_case_attributes(Case.objects)
 
@@ -211,6 +235,7 @@ def display_patient(request, patient_id):
         'address': patient.address,
         'cases': case_attributes
     }, context_instance=RequestContext(request))
+
 
 def change_doctor_info(request):
     ''' Andrew: Despite the fact that we don't use this, I'm leaving it in
