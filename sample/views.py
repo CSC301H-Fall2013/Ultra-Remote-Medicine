@@ -238,6 +238,18 @@ def display_patient(request, patient_id):
     }, context_instance=RequestContext(request))
 
 
+def display_case(request, case_id):
+    ''' Displays the specified case. '''
+
+    user = request.user
+
+    case = Case.objects.filter(id=case_id)[0]
+
+    return render_to_response('Case.html', {
+        'user': user
+    }, context_instance=RequestContext(request))
+
+
 def change_doctor_info(request):
     ''' Andrew: Despite the fact that we don't use this, I'm leaving it in
         because the server won't run if I get rid of it.'''

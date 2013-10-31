@@ -39,49 +39,7 @@
 			<b>Cases</b>
 		</h2>
 
-		<table border="1" cellpadding="5">
-			<tr>
-				<td>
-					<button type="button">Patient Name</button>
-				</td>
-				<td>
-					<button type="button">Status</button>
-				</td>
-				<td>
-					<button type="button">Age</button>
-				</td>
-				<td>
-					<button type="button">Gender</button>
-				</td>
-				<td>
-					<button type="button">Priority</button>
-				</td>
-				<td>
-					<button type="button">Date</button>
-				</td>
-				<td>
-					<button type="button">Link to cases</button>
-				</td> {% for case in cases %}
-			</tr>
-			<tr>
-
-				<td><br> <a href="http://www.google.ca" target="_blank">
-						{{case.patient_ref.last_name}}, {{case.patient_ref.first_name}} </a></td>
-				<td><select>
-						<option value="pending(not seen)">pending(not seen)</option>
-						<option value="pending(seen)">pending(seen)</option>
-						<option value="completed" selected>completed</option>
-				</select></td>
-				<td>{{case.age}}</td>
-				<td>Male</td>
-				<td>5
-					<button type="button">Edit</button>
-				</td>
-				<td>{{case.case_ref.date_opened}}</td>
-				<td><a href="http://www.google.ca" target="_blank">case-link
-						1</a></td> {% endfor %}
-			</tr>
-		</table>
+		{% include "_caseDisplay.html" %}
 
 	</div>
 

@@ -1,0 +1,22 @@
+<!--This is the page where field workers can add new patients-->
+
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="{% static "headerStyle.css" %}" />
+<title>View Case | Ultra Remote Medicine</title>
+<script language="JavaScript">
+			function openFile() {
+			window.location = 'file:///' + document.form.selectedFile.value;
+			}
+		</script>
+</head>
+<body>
+
+	{% include "_topBar.html" %}
+
+	
+
+</body>
+</html>

@@ -24,7 +24,9 @@ urlpatterns += patterns('sample.views',
     url('^field$', 'display_field_worker', name='field'),
     url('^new_patient$', 'display_new_patient', name='new_patient'),
     url('^view_patient/(?P<patient_id>\d+)$',
-        'display_patient', name='display_patient'))
+        'display_patient', name='display_patient'),
+    url('display_case/(?P<case_id>\d+)$',
+        'display_case', name='display_case'))
 
 
 if settings.DEBUG:
