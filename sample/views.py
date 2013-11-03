@@ -96,30 +96,10 @@ def display_doctor(request):
     user = request.user
     doctor = request.user.doctor
 
-    if request.method == 'POST':
-
-        form = UpdateDoctorForm(request.POST)
-        if form.is_valid():
-
-            try:
-                user.first_name = form.cleaned_data['first_name']
-                user.last_name = form.cleaned_data['last_name']
-                doctor.phone = form.cleaned_data['phone_number']
-                doctor.address = form.cleaned_data['address']
-                doctor.comments = form.cleaned_data['comments']
-                user.save()
-
-            except IntegrityError:
-                print "Worker update fail"
-                return HttpResponseServerError()
-    else:
-        form = UpdateDoctorForm()
-        form.populate(doctor)
-
     case_attributes = create_case_attributes(Case.objects)
 
     return render_to_response('doctor.html', {
-        'form': form,
+        'viewer': user,
         'user': user,
         'phone_number': doctor.phone,
         'address': doctor.address,
@@ -137,30 +117,10 @@ def display_field_worker(request):
     user = request.user
     worker = request.user.worker
 
-    if request.method == 'POST':
-
-        form = UpdateFieldWorkerForm(request.POST)
-        if form.is_valid():
-
-            try:
-                user.first_name = form.cleaned_data['first_name']
-                user.last_name = form.cleaned_data['last_name']
-                worker.phone = form.cleaned_data['phone_number']
-                worker.address = form.cleaned_data['address']
-                worker.comments = form.cleaned_data['comments']
-                user.save()
-
-            except IntegrityError:
-                print "Worker update fail"
-                return HttpResponseServerError()
-    else:
-        form = UpdateFieldWorkerForm()
-        form.populate(worker)
-
     case_attributes = create_case_attributes(Case.objects)
 
     return render_to_response('fieldworker.html', {
-        'form': form,
+        'viewer': user,
         'user': user,
         'phone_number': worker.phone,
         'address': worker.address,
@@ -214,7 +174,9 @@ def display_new_patient(request):
         # been submitted yet.
         form = NewPatientForm()
 
-    return render_to_response('newPatient.html', {'form': form},
+    return render_to_response('newPatient.html', 
+                              {'form': form,
+                               'viewer': request.user},
                               context_instance=RequestContext(request))
 
 
@@ -229,6 +191,7 @@ def display_patient(request, patient_id):
     patient = Patient.objects.filter(id=patient_id)[0]
 
     return render_to_response('Patient.html', {
+        'viewer': user,
         'user': user,
         'firstName': patient.first_name,
         'lastName': patient.last_name,
@@ -248,6 +211,100 @@ def display_case(request, case_id):
     return render_to_response('Case.html', {
         'user': user
     }, context_instance=RequestContext(request))
+
+
+def _display_worker(request, user, worker):
+    '''Called by display_profile when it is determined that the user is a
+    worker. Displays the profile of the specified worker.
+
+    Precondition: user should correspond to worker. '''
+
+    if request.method == 'POST' and user == request.user:
+
+        form = UpdateFieldWorkerForm(request.POST)
+        if form.is_valid():
+
+            try:
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                user.save()
+
+                worker.phone = form.cleaned_data['phone_number']
+                worker.address = form.cleaned_data['address']
+                worker.comments = form.cleaned_data['comments']
+                worker.save()
+
+            except IntegrityError:
+                print "Worker update fail"
+                return HttpResponseServerError()
+    else:
+        form = UpdateFieldWorkerForm()
+        form.populate(worker)
+    print worker.user.first_name
+
+    return render_to_response('workerprofile.html', {
+        'viewer': request.user,
+        'form': form,
+        'user': user,
+        'phone_number': worker.phone,
+        'address': worker.address,
+        'registration_time': worker.registration_time,
+        'comments': worker.comments,
+        'id': worker.id
+    }, context_instance=RequestContext(request))
+
+
+def _display_doctor(request, user, doctor):
+    '''Called by display_profile when it is determined that the user is a
+    doctor. Displays the profile of the specified doctor.
+
+    Precondition: user should correspond to doctor. '''
+
+    if request.method == 'POST' and user == request.user:
+
+        form = UpdateDoctorForm(request.POST)
+        if form.is_valid():
+
+            try:
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                user.save()
+
+                doctor.phone = form.cleaned_data['phone_number']
+                doctor.address = form.cleaned_data['address']
+                doctor.comments = form.cleaned_data['comments']
+                doctor.save()
+
+            except IntegrityError:
+                print "Doctor update fail"
+                return HttpResponseServerError()
+    else:
+        form = UpdateDoctorForm()
+        form.populate(doctor)
+
+    return render_to_response('doctorprofile.html', {
+        'viewer': request.user,
+        'form': form,
+        'user': user,
+        'phone_number': doctor.phone,
+        'address': doctor.address,
+        'registration_time': doctor.registration_time,
+        'specialties': doctor.specialties.all(),
+        'comments': doctor.comments,
+        'id': doctor.id
+    }, context_instance=RequestContext(request))
+
+
+def display_profile(request, user_id):
+    '''Displays the profile page of a user. Does not allow editing (protected
+        at both view and model levels) of another user's profile.'''
+
+    user = User.objects.filter(id=user_id)[0]
+
+    if hasattr(user, "worker"):
+        return _display_worker(request, user, user.worker)
+    else:
+        return _display_doctor(request, user, user.doctor)
 
 
 def change_doctor_info(request):

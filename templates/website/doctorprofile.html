@@ -1,0 +1,118 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+<link rel="stylesheet" href="{% static " headerStyle.css" %}"/>
+<title>Doctor {{user.first_name}} | Ultra-Remote-Medicine</title>
+
+  <link rel="stylesheet" type="text/css" href="{% static "headerStyle.css" %}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap -->
+  <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.css"%}"/>
+  <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
+</head>
+
+<body>
+
+
+	{% include "_topBar.html" %}
+
+	<div class="pageContents">
+
+		<div style="margin:0 auto; width:70%;">
+
+			<div id="profilecontainer" style="text-align:center;">
+				<h1>Doctor {{user.first_name}} {{user.last_name}}</h1>
+			<!-- The following is not visible by default-->
+			<div id='profileinfo'>
+				<form id='profileinfoform' method='post' action="">
+					{% csrf_token %}
+					<table border="0" cellpadding="5" style="height: 200px; margin:0 auto; text-align:left">
+						<tr>
+							<td style="width: 400px; vertical-align: top">
+								First Name: {{form.first_name}} <br>
+								Last Name: {{form.last_name}} <br>
+								Phone Number: {{form.phone_number}} <br>
+								Address: {{form.address}}
+							</td>
+							<td style="width: 300px; vertical-align: top">
+								{{form.comments}}</td>
+						</tr>
+						<tr style="height: 50px">
+							<td><input id="submitChanges" type="submit"
+								name="submitChanges" value="Submit Changes" /> <input
+								id="cancelEditButton" onclick="cancelEditMode()" type="button"
+								name="cancelEditButton" value="Cancel" /></td>
+							<td></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+			<div id="profilestatic">
+				<table border="0" cellpadding="5" style="height: 200px; margin:0 auto; text-align:left">
+					<tr>
+						<td style="width: 400px; vertical-align: top; margin: 0;">
+							First Name: {{user.first_name}} <br>
+							Last Name: {{user.last_name}} <br>
+							Phone Number: {{phone_number}} <br>
+							Address: {{address}} <br>
+							Registration Time: {{registration_time}} <br>
+							Specialties: 
+							{% for specialty in specialties %}
+								{{specialty.name}},
+							{% endfor %}
+						</td>
+						<td style="width: 300px; vertical-align: top">{{comments}}</td>
+					</tr>
+					<tr style="height: 50px">
+						{% if viewer = user %}
+							<td><input id="edit" onclick="enterEditMode()" type="submit"
+								name="submit" value="Edit Profile" /></td>
+						{% endif %}
+						<td></td>
+					</tr>
+				</table>
+			</div>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+
+<script>
+	var editMode = false;
+	profileinfo.style.display = 'none';
+	{{form.comments.auto_id}}.style.resize = 'none';
+	{{form.comments.auto_id}}.rows = '6';
+	{{form.comments.auto_id}}.style.width = '280px';
+	{{form.comments.auto_id}}.style.height = '100px';
+
+	function enterEditMode() {
+		editMode = true;
+
+		profilestatic.style.display = 'none';
+		profileinfo.style.display = 'block';
+
+	}
+
+	function cancelEditMode() {
+		editMode = false;
+
+		{{form.first_name.auto_id}}.value = '{{user.first_name}}';
+		{{form.last_name.auto_id}}.value = '{{user.last_name}}';
+		{{form.phone_number.auto_id}}.value = '{{phone_number}}';
+		{{form.address.auto_id}}.value = '{{address}}';
+		{{form.comments.auto_id}}.value = {{form.comments.auto_id}}.defaultValue;
+
+		profilestatic.style.display = 'block';
+		profileinfo.style.display = 'none';
+	}
+</script>
+
+</body>
+
+</html>

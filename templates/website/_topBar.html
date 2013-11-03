@@ -1,7 +1,7 @@
 <!--  Component for displaying the header bar at the top of the site. -->
 
 <!--- Assume headerStyle.css (in static/) has been loaded.--->
-<!--- Assume there is a {{user}} template variable containing the current
+<!--- Assume there is a {{viewer}} template variable containing the current
 	  logged in user information. .--->
 
 
@@ -14,11 +14,11 @@
 	
      <span class="btn-group" style="float: right">
 		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-		{{user.first_name}}
+		{{viewer.first_name}}
 		<span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="left: auto;right: 0px;">
-			<li><a tabindex="-1" href="#">Profile</a></li>
+			<li><a tabindex="-1" href="{% url 'display_profile' viewer.id %}">Profile</a></li>
 			<li class="divider"></li>
 			<li><a tabindex="-1" href="#">Log Out</a></li>
 		</ul>

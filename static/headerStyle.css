@@ -34,13 +34,13 @@ body {
 .pageContents {
 	margin: 8px;
 	margin-top: 40px;
-	margin-right-value: 0px;
 	margin-bottom: 8px;
 	margin-left-value: 0px;
 	margin-left-ltr-source: physical;
 	margin-left-rtl-source: physical;
 	margin-right-ltr-source: physical;
 	margin-right-rtl-source: physical;
+	width:100%;
 	position: absolute;
 }
 
