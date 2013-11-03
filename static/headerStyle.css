@@ -1,16 +1,18 @@
 body {
     margin: 0;
     padding: 0;
+    position: relative;
 }
 
 .topBar {
-    padding:0;
     width:100%;
     margin-top: 0px;
     margin-right: auto;
     margin-left: auto;
+    margin-bottom: 70;
+    height: 40px;
     background-color: #417690;
-    overflow:auto
+	position: absolute;
 }
 
 .topBarContents {
@@ -19,16 +21,19 @@ body {
 	margin-right-value: 0px;
 	margin-bottom: 8px;
 	margin-left-value: 0px;
+	height: 24;
 	margin-left-ltr-source: physical;
 	margin-left-rtl-source: physical;
 	margin-right-ltr-source: physical;
 	margin-right-rtl-source: physical;
-	font-family:"Verdana"
+	font-family:"Verdana";
+	position: relative;
+	overflow: hide;
 }
 
 .pageContents {
 	margin: 8px;
-	margin-top: 8px;
+	margin-top: 40px;
 	margin-right-value: 0px;
 	margin-bottom: 8px;
 	margin-left-value: 0px;
@@ -36,12 +41,23 @@ body {
 	margin-left-rtl-source: physical;
 	margin-right-ltr-source: physical;
 	margin-right-rtl-source: physical;
+	position: absolute;
 }
 
-#titleTop {
+.titleTop {
 	color: white;
 	font-size: 18px;
 	font: Verdana;
+	position: relative;
+}
+
+#aba {
+	color: white
+	font-size: 18px;
+	font: Verdana;	
+	text-align: right;
+	position: relative;
+	float: right;
 }
 
 #user-tools {

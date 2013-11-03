@@ -5,19 +5,23 @@
 	  logged in user information. .--->
 
 
-<div class="topBar">
-<div class="topBarContents">
 
-       
-	<span id="titleTop">Ultra-Remote-Medicine</span>
-        
-    <span id="user-tools">
-    	Welcome, <strong>{{user.first_name}}</strong>.
-                   
-        Change password /          
-        Log out
-            
-    </span>
-   
-</div>
+
+<div class="topBar">
+	<div class="topBarContents">
+	<span class="titleTop">Ultra-Remote-Medicine</span>
+	
+	
+     <span class="btn-group" style="float: right">
+		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+		{{user.first_name}}
+		<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="left: auto;right: 0px;">
+			<li><a tabindex="-1" href="#">Profile</a></li>
+			<li class="divider"></li>
+			<li><a tabindex="-1" href="#">Log Out</a></li>
+		</ul>
+	</span>
+	</div>
 </div>

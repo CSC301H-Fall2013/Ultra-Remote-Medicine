@@ -3,15 +3,23 @@
 <html>
 
 <head>
+<link rel="stylesheet" href="{% static "headerStyle.css" %}"/>
+  <title>Doctor dashboard | Ultra-Remote-Medicine</title>
+  
 <link rel="stylesheet" type="text/css" href="{% static "headerStyle.css" %}" />
-<title>Doctor dashboard | Ultra-Remote-Medicine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap -->
+  <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
 </head>
 
 <body>
 
+
 	{% include "_topBar.html" %}
 
-	<div class="pageContents">
+	<div class="pageContents"  style="zIndex:0">
 
 		<h1>Dashboard: {{user.first_name}}</h1>
 
