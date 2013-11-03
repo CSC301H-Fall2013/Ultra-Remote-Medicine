@@ -20,7 +20,7 @@
 
 	{% include "_topBar.html" %}
 
-	<div class="pageContents">
+	<div class="pageLeftFormat">
 
 		<form action="new_patient" method="post">
 			{% csrf_token %} {{ form.as_p }} <input type="submit" value="Submit" />

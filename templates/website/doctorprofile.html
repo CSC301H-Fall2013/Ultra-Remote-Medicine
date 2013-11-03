@@ -3,8 +3,7 @@
 <html>
 
 <head>
-<link rel="stylesheet" href="{% static " headerStyle.css" %}"/>
-<title>Doctor {{user.first_name}} | Ultra-Remote-Medicine</title>
+  <title>Doctor {{user.first_name}} {{user.last_name}} | Ultra-Remote-Medicine</title>
 
   <link rel="stylesheet" type="text/css" href="{% static "headerStyle.css" %}" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,26 +16,24 @@
 
 <body>
 
-
 	{% include "_topBar.html" %}
 
-	<div class="pageContents">
+	<div class="pageCentered" style="text-align: center;">
 
-		<div style="margin:0 auto; width:70%;">
+		<div id="profilecontainer" style="display: inline-block; text-align: left">
+			<h1>Doctor {{user.first_name}} {{user.last_name}}</h1>
 
-			<div id="profilecontainer" style="text-align:center;">
-				<h1>Doctor {{user.first_name}} {{user.last_name}}</h1>
 			<!-- The following is not visible by default-->
-			<div id='profileinfo'>
+			<div id='profileinfo'">
 				<form id='profileinfoform' method='post' action="">
 					{% csrf_token %}
-					<table border="0" cellpadding="5" style="height: 200px; margin:0 auto; text-align:left">
+					<table border="0" cellpadding="5"
+						style="height: 200px; margin: 0 auto; text-align: left">
 						<tr>
-							<td style="width: 400px; vertical-align: top">
-								First Name: {{form.first_name}} <br>
-								Last Name: {{form.last_name}} <br>
-								Phone Number: {{form.phone_number}} <br>
-								Address: {{form.address}}
+							<td style="width: 400px; vertical-align: top">First Name:
+								{{form.first_name}} <br> Last Name: {{form.last_name}} <br>
+								Phone Number: {{form.phone_number}} <br> Address:
+								{{form.address}}
 							</td>
 							<td style="width: 300px; vertical-align: top">
 								{{form.comments}}</td>
@@ -51,8 +48,11 @@
 					</table>
 				</form>
 			</div>
-			<div id="profilestatic">
-				<table border="0" cellpadding="5" style="height: 200px; margin:0 auto; text-align:left">
+
+
+			<div id="profilestatic" style="display: inline-block; width: auto;"">
+				<table border="0" cellpadding="5"
+					style="height: 200px; margin: 0 auto; text-align: left">
 					<tr>
 						<td style="width: 400px; vertical-align: top; margin: 0;">
 							First Name: {{user.first_name}} <br>
@@ -61,21 +61,21 @@
 							Address: {{address}} <br>
 							Registration Time: {{registration_time}} <br>
 							Specialties: 
-							{% for specialty in specialties %}
-								{{specialty.name}},
-							{% endfor %}
+							{% for specialty in specialties %} 
+							{{specialty.name}},
+							 {% endfor %}
 						</td>
 						<td style="width: 300px; vertical-align: top">{{comments}}</td>
 					</tr>
 					<tr style="height: 50px">
+						<td>
 						{% if viewer = user %}
-							<td><input id="edit" onclick="enterEditMode()" type="submit"
-								name="submit" value="Edit Profile" /></td>
+						<input id="edit" onclick="enterEditMode()" type="submit"
+							name="submit" value="Edit Profile" /></td>
 						{% endif %}
 						<td></td>
 					</tr>
 				</table>
-			</div>
 			</div>
 		</div>
 
