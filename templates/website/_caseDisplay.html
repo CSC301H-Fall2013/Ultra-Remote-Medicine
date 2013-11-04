@@ -37,9 +37,11 @@
 				</select></td>
 				<td>{{case.age}}</td>
 				<td>{{case.patient_ref.gender}}</td>
-				<td>5
-					<button type="button">Edit</button>
-				</td>
+				<td><select>
+						<option value="High">High</option>
+						<option value="Medium" selected>Medium</option>
+						<option value="Low">Low</option>
+				</select></td>
 				<td>{{case.case_ref.date_opened}}</td>
 				{% endfor %}
 			</tr>

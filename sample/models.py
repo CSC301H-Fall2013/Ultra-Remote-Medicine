@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 from django.contrib.auth.models import User
 
 '''
@@ -17,8 +18,8 @@ class Doctor(models.Model):
     phone = models.CharField(max_length=63)
     address = models.CharField(max_length=254)
     registration_time = models.DateTimeField()
-    specialties = models.ManyToManyField('SpecialtyType', blank=True,
-                                         null=True)
+    specialties = models.ManyToManyField('SpecialtyType', blank=True,null=True)
+    
     schedule = models.ManyToManyField('TimeSlot', blank=True, null=True)
     comments = models.TextField(blank=True)
 
@@ -27,11 +28,17 @@ class Doctor(models.Model):
 
     def user_last_name(self): 
          return self.user.last_name
-     
+    
+    def get_some_value(self):
+        return ", " . join([x.__str__() for x in self.specialties.all()])
+    
     user_first_name.admin_order_field = 'user__first_name' 
     user_last_name.admin_order_field = 'user__last_name'
     user_first_name.short_description = 'First Name'
     user_last_name.short_description = 'Last Name'
+    #get_some_value.admin_order_field = 'specialties__name'
+    #get_some_value.admin_order_field = '", " . join([x.__str__() for x in specialties.all()])'
+    get_some_value.short_description = 'Specialties'
 
     def __unicode__(self):
         return (str(self.id) + ". " + self.user.first_name + " " +

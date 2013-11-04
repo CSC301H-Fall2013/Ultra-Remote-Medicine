@@ -1,15 +1,22 @@
 from django.contrib import admin
+from django import forms
+from django.contrib.auth.models import User
 
 from sample.models import (Doctor, Worker, Patient, Measurement,
         MeasurementType, SpecialtyType, TimeSlot, Case, Scan, Annotation)
 
-def first_name(self):
-    return self.user.first_name
+# class specialtyForm(forms.ModelForm):
+#     specialties = forms.ModelMultipleChoiceField(queryset=User.objects.order_by('name'))
+#     class Meta:
+#         model = SpecialtyType
 
-def last_name(self):
-    return self.user.last_name
-
-class searchUser(admin.ModelAdmin):
+class searchDoctor(admin.ModelAdmin):
+    list_display = ['user_first_name', 'user_last_name', 'get_some_value']
+    #list_display = ['user_first_name', 'user_last_name']
+    #form = specialtyForm
+    search_fields = ['user__first_name', 'user__last_name', 'specialties__name']
+    
+class searchWorker(admin.ModelAdmin):
     list_display = ['user_first_name', 'user_last_name']
     search_fields = ['user__first_name', 'user__last_name']
     
@@ -38,8 +45,8 @@ class searchScan(admin.ModelAdmin):
 class searchAnnotation(admin.ModelAdmin):
     search_fields = ['picture', 'author', 'comments']
 
-admin.site.register(Doctor, searchUser)
-admin.site.register(Worker, searchUser)
+admin.site.register(Doctor, searchDoctor)
+admin.site.register(Worker, searchWorker)
 admin.site.register(Patient, searchPatient)
 admin.site.register(MeasurementType, searchMType)
 admin.site.register(Measurement, searchMeasurement)
