@@ -28,8 +28,8 @@
 				<form id='profileinfoform' method='post' action="">
 					{% csrf_token %}
 					<table border="0" cellpadding="5"
-						style="height: 200px; margin: 0 auto; text-align: left">
-						<tr>
+						style="margin: 0 auto; text-align: left">
+						<tr style="height: 200px">
 							<td style="width: 400px; vertical-align: top">First Name:
 								{{form.first_name}} <br> Last Name: {{form.last_name}} <br>
 								Phone Number: {{form.phone_number}} <br> Address:
@@ -52,8 +52,8 @@
 
 			<div id="profilestatic" style="display: inline-block; width: auto;"">
 				<table border="0" cellpadding="5"
-					style="height: 200px; margin: 0 auto; text-align: left">
-					<tr>
+					style="margin: 0 auto; text-align: left">
+					<tr style="height: 200px">
 						<td style="width: 400px; vertical-align: top; margin: 0;">
 							First Name: {{user.first_name}} <br>
 							Last Name: {{user.last_name}} <br>
@@ -108,7 +108,5 @@
 		profileinfo.style.display = 'none';
 	}
 </script>
-
-<body></body>
 
 </html>
