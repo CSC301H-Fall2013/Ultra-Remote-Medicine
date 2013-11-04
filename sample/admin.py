@@ -10,11 +10,6 @@ def last_name(self):
     return self.user.last_name
 
 class searchUser(admin.ModelAdmin):
-    #first_name = user.__unicode__.first_name
-    list_display = ['first_name', 'last_name']
-    search_fields = ['user_first_name', 'user__last_name']
-    
-class searchDoctor(admin.ModelAdmin):
     list_display = ['user_first_name', 'user_last_name']
     search_fields = ['user__first_name', 'user__last_name']
     
@@ -43,7 +38,7 @@ class searchScan(admin.ModelAdmin):
 class searchAnnotation(admin.ModelAdmin):
     search_fields = ['picture', 'author', 'comments']
 
-admin.site.register(Doctor, searchDoctor)
+admin.site.register(Doctor, searchUser)
 admin.site.register(Worker, searchUser)
 admin.site.register(Patient, searchPatient)
 admin.site.register(MeasurementType, searchMType)

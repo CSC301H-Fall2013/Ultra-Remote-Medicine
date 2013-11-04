@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 '''
 TODO:
-- Review the patient address representation.
+- Review patient address representation.
 - Review image linkage format.
 - Decide whether or not some foreign/m2m keys should be put in both related
     tables (if even possible)
@@ -22,15 +22,16 @@ class Doctor(models.Model):
     schedule = models.ManyToManyField('TimeSlot', blank=True, null=True)
     comments = models.TextField(blank=True)
 
-    def user_first_name(self):
-        return self.user.first_name
+    def user_first_name(self): 
+         return self.user.first_name
 
-    def user_last_name(self):
-        return self.user.last_name
-
-    user_first_name.admin_order_field = 'user__first_name'
+    def user_last_name(self): 
+         return self.user.last_name
+     
+    user_first_name.admin_order_field = 'user__first_name' 
     user_last_name.admin_order_field = 'user__last_name'
-
+    user_first_name.short_description = 'First Name'
+    user_last_name.short_description = 'Last Name'
 
     def __unicode__(self):
         return (str(self.id) + ". " + self.user.first_name + " " +
@@ -46,6 +47,17 @@ class Worker(models.Model):
     registration_time = models.DateTimeField()
     comments = models.TextField(blank=True)
 
+    def user_first_name(self): 
+         return self.user.first_name
+
+    def user_last_name(self): 
+         return self.user.last_name
+     
+    user_first_name.admin_order_field = 'user__first_name' 
+    user_last_name.admin_order_field = 'user__last_name'
+    user_first_name.short_description = 'First Name'
+    user_last_name.short_description = 'Last Name'
+    
     def __unicode__(self):
         return (str(self.id) + ". " + self.user.first_name + " " +
                 self.user.last_name)
