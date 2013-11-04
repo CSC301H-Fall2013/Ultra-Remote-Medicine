@@ -1,17 +1,19 @@
-<!--This is the page where field workers can add new patients-->
-
 {% load static from staticfiles %}
 <!DOCTYPE html>
 <html>
+
 <head>
-<link rel="stylesheet" type="text/css" href="{% static "headerStyle.css" %}" />
 <title>View Case | Ultra-Remote-Medicine</title>
-<script language="JavaScript">
-			function openFile() {
-			window.location = 'file:///' + document.form.selectedFile.value;
-			}
-		</script>
+
+  <link rel="stylesheet" type="text/css" href="{% static "headerStyle.css" %}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap -->
+  <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.css"%}"/>
+  <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
 </head>
+
 <body>
 
 	{% include "_topBar.html" %}

@@ -209,7 +209,7 @@ def display_case(request, case_id):
     case = Case.objects.filter(id=case_id)[0]
 
     return render_to_response('Case.html', {
-        'user': user
+        'viewer': user,
     }, context_instance=RequestContext(request))
 
 
