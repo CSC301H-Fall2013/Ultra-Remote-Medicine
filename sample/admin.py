@@ -11,6 +11,7 @@ def last_name(self):
 
 class searchUser(admin.ModelAdmin):
     #first_name = user.__unicode__.first_name
+    list_display = ['first_name', 'last_name']
     search_fields = ['user_first_name', 'user__last_name']
     
 class searchDoctor(admin.ModelAdmin):

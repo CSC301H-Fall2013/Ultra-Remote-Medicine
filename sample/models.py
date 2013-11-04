@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 '''
 TODO:
-- Review patient address representation.
+- Review the patient address representation.
 - Review image linkage format.
 - Decide whether or not some foreign/m2m keys should be put in both related
     tables (if even possible)
