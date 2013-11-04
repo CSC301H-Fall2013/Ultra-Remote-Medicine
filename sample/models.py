@@ -22,6 +22,16 @@ class Doctor(models.Model):
     schedule = models.ManyToManyField('TimeSlot', blank=True, null=True)
     comments = models.TextField(blank=True)
 
+    def user_first_name(self):
+        return self.user.first_name
+
+    def user_last_name(self):
+        return self.user.last_name
+
+    user_first_name.admin_order_field = 'user__first_name'
+    user_last_name.admin_order_field = 'user__last_name'
+
+
     def __unicode__(self):
         return (str(self.id) + ". " + self.user.first_name + " " +
                 self.user.last_name)
