@@ -18,23 +18,28 @@
 
 	{% include "_topBar.html" %}
 
-	<div class="pageLeftFormat">
 
-		<h1>Dashboard: {{user.first_name}}</h1>
+	<div class="pageCentered">
 
-		<h2>
-			<b>Cases</b>
-		</h2>
+		<div id="profilecontainer" style="display: inline-block; text-align: left">
 
-		{% include "_caseDisplay.html" %}
+			<h1>Dashboard: {{user.first_name}}</h1>
+	
+			<h2>
+				<b>Cases</b>
+			</h2>
+	
+			{% include "_caseDisplay.html" %}
+	
+			<!-- csrf_token was removed, since this is simply a redirection button-->
+			<td><button type="button">Add New Case</button>
+				<form id="new_patient" action="{% url 'new_patient' %}" method='get'>
+					<button type="submit">Add New Patient</button>
+					<br>
+				</form></td>
+			<form action=""></form>
 
-		<!-- csrf_token was removed, since this is simply a redirection button-->
-		<td><button type="button">Add New Case</button>
-			<form id="new_patient" action="{% url 'new_patient' %}" method='get'>
-				<button type="submit">Add New Patient</button>
-				<br>
-			</form></td>
-		<form action=""></form>
+		</div>
 
 	</div>
 

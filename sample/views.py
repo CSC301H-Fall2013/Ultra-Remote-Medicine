@@ -166,7 +166,7 @@ def display_new_patient(request):
                 print "hard fail"
                 return HttpResponseServerError()
 
-            return HttpResponseRedirect("view_patient/" +
+            return HttpResponseRedirect("patient/" +
                 str(patient.id))
     else:
 
@@ -240,7 +240,6 @@ def _display_worker(request, user, worker):
     else:
         form = UpdateFieldWorkerForm()
         form.populate(worker)
-    print worker.user.first_name
 
     return render_to_response('workerprofile.html', {
         'viewer': request.user,

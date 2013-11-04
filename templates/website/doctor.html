@@ -19,7 +19,9 @@
 
 	{% include "_topBar.html" %}
 
-	<div class="pageLeftFormat">
+	<div class="pageCentered">
+
+		<div id="profilecontainer" style="display: inline-block; text-align: left">
 
 		<h1>Dashboard: {{user.first_name}}</h1>
 
@@ -28,6 +30,8 @@
 		</h2>
 
 		{% include "_caseDisplay.html" %}
+		
+		</div>
 
 	</div>
 
