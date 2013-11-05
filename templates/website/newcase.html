@@ -5,7 +5,7 @@
 <html>
 
 <head>
-<title>Register new patient | Ultra-Remote-Medicine</title>
+<title>Open new case | Ultra-Remote-Medicine</title>
 
 <link rel="stylesheet" type="text/css" href="{% static "headerStyle.css" %}" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +24,7 @@
 
 		<div class="profilecontainer">
 
-			<h1>Open new Case</h1>
+			<h1>Open new case</h1>
 
 			<form action="{% url 'new_case' %}" method="post"> {% csrf_token %}
 				Patient: {{form.patient}} <br>

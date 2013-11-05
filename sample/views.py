@@ -283,8 +283,16 @@ def display_case(request, case_id):
 
     case = Case.objects.filter(id=case_id)[0]
 
-    return render_to_response('Case.html', {
+    return render_to_response('case.html', {
         'viewer': user,
+        'user': user,
+        'firstName': case.patient.first_name,
+        'lastName': case.patient.last_name,
+        'patient_id': case.patient.id,
+        'gender': case.patient.gender,
+        'date_of_birth': case.patient.date_of_birth,
+        'health_id': case.patient.health_id,
+        'case_id': case_id,
     }, context_instance=RequestContext(request))
 
 
