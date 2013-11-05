@@ -1,6 +1,7 @@
 <!--  Component for displaying a table of cases. -->
 
-<table border="1" cellpadding="5">
+{% if cases|length > 0 %}
+		<table border="1" cellpadding="5">
 			<tr>
 				<td>
 					<button type="button">Case</button>
@@ -24,25 +25,28 @@
 					<button type="button">Date</button>
 				</td>
 			</tr>
-			{% for case in cases %}
-			<tr>
-
-				<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">Case {{case.case_ref.id}}</a></td>
-				<td><a href="{% url 'display_patient' case.patient_ref.id %}" target="_blank">
-						{{case.patient_ref.last_name}}, {{case.patient_ref.first_name}} </a></td>
-				<td><select>
-						<option value="pending(not seen)">pending(not seen)</option>
-						<option value="pending(seen)">pending(seen)</option>
-						<option value="completed" selected>completed</option>
-				</select></td>
-				<td>{{case.age}}</td>
-				<td>{{case.patient_ref.gender}}</td>
-				<td><select>
-						<option value="High">High</option>
-						<option value="Medium" selected>Medium</option>
-						<option value="Low">Low</option>
-				</select></td>
-				<td>{{case.case_ref.date_opened}}</td>
-				{% endfor %}
-			</tr>
+			
+				{% for case in cases %}
+					<tr>
+						<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">Case {{case.case_ref.id}}</a></td>
+						<td><a href="{% url 'display_patient' case.patient_ref.id %}" target="_blank">
+								{{case.patient_ref.last_name}}, {{case.patient_ref.first_name}} </a></td>
+						<td><select>
+								<option value="pending(not seen)">pending(not seen)</option>
+								<option value="pending(seen)">pending(seen)</option>
+								<option value="completed" selected>completed</option>
+						</select></td>
+						<td>{{case.age}}</td>
+						<td>{{case.patient_ref.gender}}</td>
+						<td><select>
+								<option value="High">High</option>
+								<option value="Medium" selected>Medium</option>
+								<option value="Low">Low</option>
+						</select></td>
+						<td>{{case.case_ref.date_opened}}</td>
+					</tr>
+				{% endfor %}	
 		</table>
+{% else %}	
+	There are no cases to be displayed.
+{% endif %}

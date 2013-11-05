@@ -229,6 +229,7 @@ def display_case_list(request):
         'viewer': user,
         'cases': case_attributes}, context_instance=RequestContext(request))
 
+
 def display_case(request, case_id):
     ''' Displays the specified case. '''
 
