@@ -19,7 +19,7 @@ class Doctor(models.Model):
     address = models.CharField(max_length=254)
     registration_time = models.DateTimeField()
     specialties = models.ManyToManyField('SpecialtyType', blank=True,null=True)
-    
+
     schedule = models.ManyToManyField('TimeSlot', blank=True, null=True)
     comments = models.TextField(blank=True)
 
@@ -28,10 +28,10 @@ class Doctor(models.Model):
 
     def user_last_name(self): 
          return self.user.last_name
-    
+
     def get_some_value(self):
         return ", " . join([x.__str__() for x in self.specialties.all()])
-    
+
     user_first_name.admin_order_field = 'user__first_name' 
     user_last_name.admin_order_field = 'user__last_name'
     user_first_name.short_description = 'First Name'
@@ -59,12 +59,12 @@ class Worker(models.Model):
 
     def user_last_name(self): 
          return self.user.last_name
-     
+
     user_first_name.admin_order_field = 'user__first_name' 
     user_last_name.admin_order_field = 'user__last_name'
     user_first_name.short_description = 'First Name'
     user_last_name.short_description = 'Last Name'
-    
+
     def __unicode__(self):
         return (str(self.id) + ". " + self.user.first_name + " " +
                 self.user.last_name)

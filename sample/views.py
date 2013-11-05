@@ -190,14 +190,23 @@ def display_patient(request, patient_id):
 
     patient = Patient.objects.filter(id=patient_id)[0]
 
+    date_of_birth = patient.date_of_birth
+    if date_of_birth == None:
+        date_of_birth = ""
+
     return render_to_response('Patient.html', {
         'viewer': user,
         'user': user,
         'firstName': patient.first_name,
         'lastName': patient.last_name,
-        'phone': patient.phone,
+        'patient_id': patient.id,
+        'gender': patient.gender,
+        'date_of_birth': date_of_birth,
         'address': patient.address,
-        'cases': case_attributes
+        'phone': patient.phone,
+        'email': patient.email,
+        'health_id': patient.health_id,
+        'cases': case_attributes,
     }, context_instance=RequestContext(request))
 
 

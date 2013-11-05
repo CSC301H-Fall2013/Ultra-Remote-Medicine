@@ -20,34 +20,36 @@
 
 	{% include "_topBar.html" %}
 
-	<div class="pageLeftFormat">
+	<div class="pageCentered">
 
-		<h1>Patient: {{firstName}} {{lastName}}</h1>
-		<table border="1" cellpadding="5">
-			<tr>
-				<td><img src="patient.png" width="104" height="142" alt=""><br></td>
-				<td>
-					<form action="">
-						Name: {{lastName}}, {{firstName}}
-						<br> Sex: {{gender}}
-						<br> DOB: {{date_of_birth}}
-						<br> Patient ID: {{health_id}}
-						<br> Phone:{{phone}}
-						<br> Address:{{address}}
-						<br> Email:{{email}} 
-						<br>
-						<button type="button">Edit</button>
-						<br>
-					</form>
-				</td>
-			</tr>
-		</table>
+		<div class="profilecontainer">
 
-		<h2>
-			<b>Cases</b>
-		</h2>
-
-		{% include "_caseDisplay.html" %}
+			<h1>Patient: {{firstName}} {{lastName}}</h1>
+			<table border="0" cellpadding="5">
+				<tr>
+					<td>
+						<form action="">
+							Name: {{lastName}}, {{firstName}}
+							<br> U.R.M Patient ID: {{patient_id}}
+							<br> Sex: {{gender}}
+							<br> DOB: {{date_of_birth}}
+							<br> Regional Health ID:{{health_id}}
+							<br> Address: {{address}}
+							<br> Phone: {{phone}}
+							<br> Email: {{email}} 
+							<br>
+						</form>
+					</td>
+				</tr>
+			</table>
+	
+			<h2>
+				<b>Cases</b>
+			</h2>
+	
+			{% include "_caseDisplay.html" %}
+			
+		</div>
 
 	</div>
 
