@@ -17,6 +17,7 @@ class CaseAttribute():
     ''' A class that contains pre-processed information about a case.
     This is transmitted to the display template. '''
 
+
     def __init__(self, case_reference):
         self.case_ref = case_reference
         self.patient_ref = case_reference.patient
@@ -179,7 +180,6 @@ def display_new_patient(request):
                               {'form': form,
                                'viewer': request.user},
                               context_instance=RequestContext(request))
-
 
 def display_patient(request, patient_id):
     ''' Display patient information. '''
