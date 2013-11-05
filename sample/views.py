@@ -207,10 +207,11 @@ def display_patient(request, patient_id):
         'patient_id': patient.id,
         'gender': patient.gender,
         'date_of_birth': date_of_birth,
+        'gps_coordinates': patient.gps_coordinates,
+        'health_id': patient.health_id,
         'address': patient.address,
         'phone': patient.phone,
         'email': patient.email,
-        'health_id': patient.health_id,
         'cases': case_attributes,
     }, context_instance=RequestContext(request))
 

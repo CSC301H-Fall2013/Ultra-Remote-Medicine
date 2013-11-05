@@ -26,8 +26,18 @@
 
 			<h1>Register New Patient</h1>
 
-			<form action="new_patient" method="post">
-				{% csrf_token %} {{ form.as_p }} <input type="submit" value="Submit" />
+			<form action="new_patient" method="post"> {% csrf_token %}
+				First Name: {{form.first_name}} <br>
+				Last Name: {{form.last_name}} <br>
+				Sex: {{form.sex}} <br>
+				Date of Birth: {{form.date_of_birth}} <br>
+				Regional Health ID: {{form.health_id}} <br>
+				GPS Coordinates: {{form.gps_coordinates}} <br>
+				Address: {{form.address}} <br>
+				Phone Number: {{form.phone_number}} <br>
+				Email: {{form.email}} <br>
+				Photo Link: {{form.photo_link}} <br>
+				<input type="submit" value="Submit" />
 			</form>
 
 		</div>
