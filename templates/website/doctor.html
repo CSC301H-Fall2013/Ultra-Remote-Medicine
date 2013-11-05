@@ -25,8 +25,11 @@
 
 		<h1>Dashboard: {{user.first_name}}</h1>
 
-		<h2>
-			<b>Cases</b>
+		<input type ="text" class ="span3 search-query" placeholder="search..."/>
+		<button class = "btn-primary">Search <i class="icon-search"></i> </button>
+		</br>
+		
+			<h1><b>Cases</b></h1>
 		</h2>
 
 		{% include "_caseDisplay.html" %}
