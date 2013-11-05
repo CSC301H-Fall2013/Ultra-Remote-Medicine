@@ -17,6 +17,15 @@ class JQueryUIDatepickerWidget(forms.DateInput):
               "libs/jqueryui/.8.6/jquery-ui.min.js",)
 
 
+class NewCaseForm(forms.Form):
+    ''' The form used on the new case page.'''
+
+    patient = forms.IntegerField();
+    comments = forms.CharField(required=False, widget=forms.Textarea)
+    priority = forms.ChoiceField(required=False, choices=((10, 'Low'),
+        (20, 'Medium'), (30, 'High')))
+
+
 class NewPatientForm(forms.Form):
     ''' The form used on the new patient page.'''
 

@@ -7,8 +7,9 @@ from django.core.urlresolvers import reverse_lazy
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
+from django.utils import timezone
 
-from sample.forms import NewPatientForm, UpdateFieldWorkerForm,\
+from sample.forms import NewPatientForm, NewCaseForm, UpdateFieldWorkerForm,\
     UpdateDoctorForm
 from sample.models import Doctor, Worker, Patient, Case
 
@@ -178,6 +179,51 @@ def display_new_patient(request):
     return render_to_response('newPatient.html', 
                               {'form': form,
                                'viewer': request.user},
+                              context_instance=RequestContext(request))
+    
+
+def display_new_case(request):
+    ''' Display the new case page and process submitted new-case
+        forms. '''
+
+    user = request.user
+    worker = request.user.worker
+
+    if request.method == 'POST':
+
+        form = NewCaseForm(request.POST)
+        if form.is_valid():
+            
+            patient_id = form.cleaned_data['patient']
+            comments = form.cleaned_data['comments']
+            priority = form.cleaned_data['priority']
+
+            try:
+                patient = Patient.objects.filter(id=patient_id)[0]
+                
+                case = Case(
+                    patient=patient,
+                    submitter_comments=comments,
+                    priority=priority,
+                    submitter=worker,
+                    date_opened=timezone.now())
+                case.save()
+            except IntegrityError, e:
+                print str(e)
+                print "hard fail"
+                return HttpResponseServerError()
+
+            return HttpResponseRedirect("case/" +
+                str(case.id))
+    else:
+
+        # The page has just been entered and so the form hasn't
+        # been submitted yet.
+        form = NewCaseForm()
+
+    return render_to_response('newcase.html', 
+                              {'form': form,
+                               'viewer': user},
                               context_instance=RequestContext(request))
 
 

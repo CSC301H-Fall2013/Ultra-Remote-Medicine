@@ -188,6 +188,7 @@ class Case(models.Model):
     # except perhaps by having each Scan reference its associated Case (if
     # there is one).
     scans = models.ManyToManyField(Scan, blank=True, null=True)
+    priority = models.IntegerField(choices=((10, 'High'), (20, 'Medium'), (30, 'Low')))
 
     submitter_comments = models.TextField(blank=True)
     date_opened = models.DateField()
