@@ -17,7 +17,6 @@
 </head>
 
 <body>
-
 	{% include "_topBar.html" %}
 
 	<div class="pageCentered">
@@ -25,9 +24,12 @@
 		<div class="profilecontainer">
 
 			<h1>Patient: {{firstName}} {{lastName}}</h1>
-			<table border="0" cellpadding="5">
+			<table border="0" cellpadding="5" style="display: inline-block; margin: 0 auto; text-align: left">
 				<tr>
-					<td>
+					<td style="width: 250px; height: 250 px; margin: 0; text-align: center;">
+						<img id="patientPic" src="{{photo_link}}" style="display: inline-block; max-width:200px; max-height:200px; width: auto; height: auto;" />
+					</td>
+					<td style="height: 250 px; margin: 0; text-align: left;">
 						<form action="">
 							Name: {{lastName}}, {{firstName}}
 							<br> U.R.M Patient ID: {{patient_id}}
@@ -54,5 +56,23 @@
 
 	</div>
 
+<script>
+	/*img = document.getElementById("patientPic");
+	//function correctImageSize(img){
+	    if(img.width > img.height){
+	    	img.style.width = 200;
+	    } else {
+	    	img.style.height = 200;
+	    }
+	    img.style.display = 'block';
+	    
+	    document.write("pedo");
+    //}
+    
+    //correctImageSize(document.getElementById("patientPic")); 
+    */
+</script>
+
 </body>
+
 </html>

@@ -27,23 +27,23 @@
 			<div id='profileinfo'">
 				<form id='profileinfoform' method='post' action="">
 					{% csrf_token %}
-					<table border="0" cellpadding="5"
-						style="margin: 0 auto; text-align: left">
+					<table border="0" cellpadding="5" style="margin: 0 auto; text-align: left">
 						<tr style="height: 200px">
-							<td style="width: 400px; vertical-align: top">First Name:
-								{{form.first_name}} <br> Last Name: {{form.last_name}} <br>
-								Phone Number: {{form.phone_number}} <br> Address:
-								{{form.address}}
+							<td style="width: 400px; vertical-align: top">
+								First Name: {{form.first_name}} <br> 
+								Last Name: {{form.last_name}} <br>
+								Phone Number: {{form.phone_number}} <br> 
+								Address: {{form.address}}
 							</td>
 							<td style="width: 300px; vertical-align: top">
 								{{form.comments}}</td>
 						</tr>
 						<tr style="height: 50px">
-							<td><input id="submitChanges" type="submit"
-								name="submitChanges" value="Submit Changes" /> <input
-								id="cancelEditButton" onclick="cancelEditMode()" type="button"
-								name="cancelEditButton" value="Cancel" /></td>
-							<td></td>
+							<td>
+								<input id="submitChanges" type="submit" name="submitChanges" value="Submit Changes" />
+								<input id="cancelEditButton" onclick="cancelEditMode()" type="button" name="cancelEditButton" value="Cancel" />
+							</td>
+							<td/>
 						</tr>
 					</table>
 				</form>

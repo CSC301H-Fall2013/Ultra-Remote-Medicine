@@ -146,7 +146,7 @@ def display_new_patient(request):
             date_of_birth = form.cleaned_data['date_of_birth']
             phone_number = form.cleaned_data['phone_number']
             health_id = form.cleaned_data['health_id']
-            # photo_link = form.cleaned_data['photo_link']
+            photo_link = form.cleaned_data['photo_link']
             sex = form.cleaned_data['sex']
             email = form.cleaned_data['email']
 
@@ -160,7 +160,8 @@ def display_new_patient(request):
                     phone=phone_number,
                     health_id=health_id,
                     gender=sex,
-                    email=email)
+                    email=email,
+                    photo_link=photo_link)
                 patient.save()
             except IntegrityError:
                 print "hard fail"
@@ -202,6 +203,7 @@ def display_patient(request, patient_id):
     return render_to_response('Patient.html', {
         'viewer': user,
         'user': user,
+        'photo_link': patient.photo_link,
         'firstName': patient.first_name,
         'lastName': patient.last_name,
         'patient_id': patient.id,
