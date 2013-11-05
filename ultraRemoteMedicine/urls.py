@@ -28,7 +28,8 @@ urlpatterns += patterns('sample.views',
     url('^case/(?P<case_id>\d+)$',
         'display_case', name='display_case'),
     url('^profile/(?P<user_id>\d+)$',
-        'display_profile', name='display_profile'))
+        'display_profile', name='display_profile'),
+    url('^cases$', 'display_case_list', name='case_list'))
 
 
 if settings.DEBUG:

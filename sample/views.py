@@ -218,6 +218,17 @@ def display_patient(request, patient_id):
     }, context_instance=RequestContext(request))
 
 
+def display_case_list(request):
+    ''' Displays the list of cases.'''
+
+    user = request.user
+
+    case_attributes = create_case_attributes(Case.objects)
+
+    return render_to_response('caselist.html', {
+        'viewer': user,
+        'cases': case_attributes}, context_instance=RequestContext(request))
+
 def display_case(request, case_id):
     ''' Displays the specified case. '''
 
