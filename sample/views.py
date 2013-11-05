@@ -185,10 +185,15 @@ def display_patient(request, patient_id):
 
     user = request.user
 
-    # TODO: Filter these so that they are only cases regarding the patient.
+    patient = Patient.objects.filter(id=patient_id)[0]
+
     case_attributes = create_case_attributes(Case.objects)
 
-    patient = Patient.objects.filter(id=patient_id)[0]
+    # Define the filter function for patient cases
+    def filter_function(x):
+        return x.patient_ref == patient
+
+    case_attributes = filter(filter_function, case_attributes)
 
     date_of_birth = patient.date_of_birth
     if date_of_birth == None:
