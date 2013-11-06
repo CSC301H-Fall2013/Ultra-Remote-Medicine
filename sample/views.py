@@ -180,11 +180,12 @@ def display_new_patient(request):
                               {'form': form,
                                'viewer': request.user},
                               context_instance=RequestContext(request))
-    
 
-def display_new_case(request):
+
+def display_new_case(request, patient_id):
     ''' Display the new case page and process submitted new-case
-        forms. '''
+        forms. patient_id specifies the default patient the case is for. Set
+        to "X" if no patient is selected. '''
 
     user = request.user
     worker = request.user.worker
@@ -193,14 +194,14 @@ def display_new_case(request):
 
         form = NewCaseForm(request.POST)
         if form.is_valid():
-            
+
             patient_id = form.cleaned_data['patient']
             comments = form.cleaned_data['comments']
             priority = form.cleaned_data['priority']
 
             try:
                 patient = Patient.objects.filter(id=patient_id)[0]
-                
+
                 case = Case(
                     patient=patient,
                     submitter_comments=comments,
@@ -220,6 +221,7 @@ def display_new_case(request):
         # The page has just been entered and so the form hasn't
         # been submitted yet.
         form = NewCaseForm()
+        form.populate(patient_id)
 
     return render_to_response('newcase.html', 
                               {'form': form,

@@ -26,7 +26,7 @@
 
 			<h1>Open new case</h1>
 
-			<form action="{% url 'new_case' %}" method="post"> {% csrf_token %}
+			<form action="{% url 'new_case' "X" %}" method="post"> {% csrf_token %}
 				Patient: {{form.patient}} <br>
 				Priority: {{form.priority}} <br>
 				Comments: {{form.comments}} <br>

@@ -25,6 +25,12 @@ class NewCaseForm(forms.Form):
     priority = forms.ChoiceField(required=False, choices=((10, 'Low'),
         (20, 'Medium'), (30, 'High')))
 
+    def populate(self, patient_id):
+        ''' Populates this form with default information. '''
+
+        if patient_id != 'X':
+            self.fields['patient'].initial = patient_id
+
 
 class NewPatientForm(forms.Form):
     ''' The form used on the new patient page.'''

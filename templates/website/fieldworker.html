@@ -23,7 +23,7 @@
 
 		<div class="profilecontainer">
 
-			<h1>Dashboard: {{user.first_name}}</h1>
+			<h1>Dashboard: {{user.first_name}} {{user.last_name}} </h1>
 	
 			<h2>
 				<b>Cases</b>
@@ -35,7 +35,7 @@
 			<br>
 	
 			<!-- csrf_token was removed, since this is simply a redirection button-->
-				<form id="new_case" action="{% url 'new_case' %}" method='get'>
+				<form id="new_case" action="{% url 'new_case' 'X' %}" method='get'>
 					<button class = "btn btn-default" type="submit">Add New Case</button>
 					<br>
 				</form>

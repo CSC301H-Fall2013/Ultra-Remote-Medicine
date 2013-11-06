@@ -30,7 +30,7 @@ urlpatterns += patterns('sample.views',
     url('^profile/(?P<user_id>\d+)$',
         'display_profile', name='display_profile'),
     url('^cases$', 'display_case_list', name='case_list'),
-    url('^newcase$', 'display_new_case', name='new_case'))
+    url('^newcase/(?P<patient_id>\w+)$', 'display_new_case', name='new_case'))
 
 
 if settings.DEBUG:
