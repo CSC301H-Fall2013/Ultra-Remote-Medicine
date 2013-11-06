@@ -159,7 +159,7 @@ class TimeSlot(models.Model):
                  + self._convert_date_time_to_string(self.end_time))
 
     def __unicode__(self):
-        return self.to_string()
+        return unicode(self.to_string())
 
 ''' Represents an original picture or scan of a Patient in the database.'''
 class Scan(models.Model):
