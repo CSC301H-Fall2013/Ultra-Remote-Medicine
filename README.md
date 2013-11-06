@@ -38,3 +38,7 @@ Password: doctor
 
 User2: doctor2
 Password: doctor
+
+Sprint2 Preliminary:
+All the pdf files are uploaded to gh-pages/sprint2
+Check the website or the wiki page to read these pdf's.
