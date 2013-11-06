@@ -293,6 +293,8 @@ def display_case(request, case_id):
         'date_of_birth': case.patient.date_of_birth,
         'health_id': case.patient.health_id,
         'case_id': case_id,
+        'priority': case.priority,
+        'comments': case.submitter_comments,
     }, context_instance=RequestContext(request))
 
 
