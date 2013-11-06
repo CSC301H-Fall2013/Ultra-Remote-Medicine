@@ -19,8 +19,8 @@ To access the server, double click the executable Ultra-Remote-Medicine.bat
 To access the admin login page, type /admin at the end of the website (http://ultra-remote-medicine.herokuapp.com/admin/)
 
 Here is the admin login information:
-User: admin
-Password: admin
+User: admin 
+Password: admin 
 
 Here is the main page for doctors and field workers (You can access it by double clicking the executable):
 http://ultra-remote-medicine.herokuapp.com/
