@@ -52,6 +52,13 @@
 	
 			{% include "_caseDisplay.html" %}
 			
+			<br>
+			<br>
+			<form id="new_case" action="{% url 'display_case' 1 %}" method='get'>
+				<button class = "btn btn-default" type="submit">Add New Case</button>
+				<br>
+			</form>
+			
 		</div>
 
 	</div>

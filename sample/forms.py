@@ -17,6 +17,21 @@ class JQueryUIDatepickerWidget(forms.DateInput):
               "libs/jqueryui/.8.6/jquery-ui.min.js",)
 
 
+class NewCaseForm(forms.Form):
+    ''' The form used on the new case page.'''
+
+    patient = forms.IntegerField();
+    comments = forms.CharField(required=False, widget=forms.Textarea)
+    priority = forms.ChoiceField(required=False, choices=((10, 'Low'),
+        (20, 'Medium'), (30, 'High')))
+
+    def populate(self, patient_id):
+        ''' Populates this form with default information. '''
+
+        if patient_id != 'X':
+            self.fields['patient'].initial = patient_id
+
+
 class NewPatientForm(forms.Form):
     ''' The form used on the new patient page.'''
 

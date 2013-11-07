@@ -18,7 +18,29 @@
 
 	{% include "_topBar.html" %}
 
-	
+	<div class="pageCentered">
+		<div class="profilecontainer">
+			
+			<h1>Case {{case_id}}</h1>
+			<table border="0" cellpadding="5" style="display: inline-block; margin: 0 auto; text-align: left">
+				<tr>
+					<td style="height: 250 px; margin: 0; text-align: left;">
+						<form action="">
+							<br>Name: {{lastName}}, {{firstName}}
+							<br>U.R.M Patient ID: {{patient_id}}
+							<br>Gender: {{gender}}
+							<br>Regional Health ID:{{health_id}}
+							<br>Case ID: {{case_id}}
+							<br>Priority: {{priority}}
+							<br>Comments: {{comments}}
+							<br>
+						</form>
+					</td>
+				</tr>
+			</table>
+			
+		</div>
+	</div>
 
 </body>
 </html>

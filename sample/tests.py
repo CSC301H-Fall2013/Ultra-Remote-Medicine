@@ -21,8 +21,8 @@ def createUser(username, emailaddress, docpassword):
 
 class SetInfoTests(TestCase):
     """
-    Test cases to see whether information on doctor's and worker's profile page
-    is set up correctly
+    Test cases to see whether information on doctor's, worker's and patient's 
+    profile page is set up correctly
     """
     def test_doctor_first_name(self):
         user = createUser('doctor1', 'a@a.com', 'doctor')
@@ -115,6 +115,78 @@ class SetInfoTests(TestCase):
             worker1.comments = 'uncomm'
         except IntegrityError:
             return HttpResponseServerError()
-        self.assertEqual(worker1.comments,'uncomm')  
+        self.assertEqual(worker1.comments,'uncomm')
+        
+    def test_patient_first_name(self):
+        try:
+            patient = Patient()
+            patient.first_name = 'troll'
+        except IntegrityError:
+            return HttpResponseServerError()
+        self.assertEqual(patient.first_name, 'troll')
+        
+    def test_patient_last_name(self):
+        try:
+            patient = Patient()
+            patient.last_name = 'ho'
+        except IntegrityError:
+            return HttpResponseServerError()
+        self.assertEqual(patient.last_name, 'ho')
+        
+    def test_patient_gps(self):
+        try:
+            patient = Patient()
+            patient.gps_coordinates = '101010'
+        except IntegrityError:
+            return HttpResponseServerError()
+        self.assertEqual(patient.gps_coordinates, '101010')
+        
+    def test_patient_address(self):
+        try:
+            patient = Patient()
+            patient.address = '420 street'
+        except IntegrityError:
+            return HttpResponseServerError()
+        self.assertEqual(patient.address, '420 street')
+        
+    def test_patient_dob(self):
+        try:
+            patient = Patient()
+            patient.date_of_birth = '10/06/1999'
+        except IntegrityError:
+            return HttpResponseServerError()
+        self.assertEqual(patient.date_of_birth, '10/06/1999')
+        
+    def test_patient_phone(self):
+        try:
+            patient = Patient()
+            patient.phone = '416'
+        except IntegrityError:
+            return HttpResponseServerError()
+        self.assertEqual(patient.phone, '416')
+        
+    def test_patient_health_id(self):
+        try:
+            patient = Patient()
+            patient.health_id = '12345'
+        except IntegrityError:
+            return HttpResponseServerError()
+        self.assertEqual(patient.health_id, '12345')
+        
+    def test_patient_gender(self):
+        try:
+            patient = Patient()
+            patient.gender = 'Male'
+        except IntegrityError:
+            return HttpResponseServerError()
+        self.assertEqual(patient.gender, 'Male')
+        
+    def test_patient_email(self):
+        try:
+            patient = Patient()
+            patient.email = 'a@a.com'
+        except IntegrityError:
+            return HttpResponseServerError()
+        self.assertEqual(patient.email, 'a@a.com')
     
     

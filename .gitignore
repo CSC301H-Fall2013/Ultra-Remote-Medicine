@@ -3,6 +3,8 @@
 
 #Files
 sqlite3.db
+.project
+.pydevproject
 
 #Folders
 staticfiles

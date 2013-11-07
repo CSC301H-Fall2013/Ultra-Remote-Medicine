@@ -159,7 +159,7 @@ class TimeSlot(models.Model):
                  + self._convert_date_time_to_string(self.end_time))
 
     def __unicode__(self):
-        return self.to_string()
+        return unicode(self.to_string())
 
 ''' Represents an original picture or scan of a Patient in the database.'''
 class Scan(models.Model):
@@ -188,6 +188,8 @@ class Case(models.Model):
     # except perhaps by having each Scan reference its associated Case (if
     # there is one).
     scans = models.ManyToManyField(Scan, blank=True, null=True)
+    priority = models.IntegerField(choices=((10, 'High'), (20, 'Medium'),
+                                            (30, 'Low')))
 
     submitter_comments = models.TextField(blank=True)
     date_opened = models.DateField()

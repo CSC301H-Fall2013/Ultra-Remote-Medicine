@@ -1,30 +1,35 @@
 <!--  Component for displaying a table of cases. -->
 
 {% if cases|length > 0 %}
-		<table border="1" cellpadding="5">
+<body>
+	<table class = "table table-bordered">
+		<thead>
 			<tr>
 				<td>
-					<button type="button">Case</button>
+					<button class = "btn btn-info">Case</button>
 				</td>
 				<td>
-					<button type="button">Patient Name</button>
+					<button class = "btn btn-info">Patient Name</button>
 				</td>
 				<td>
-					<button type="button">Status</button>
+					<button class = "btn btn-info">Status</button>
 				</td>
 				<td>
-					<button type="button">Age</button>
+					<button class = "btn btn-info">Age</button>
 				</td>
 				<td>
-					<button type="button">Gender</button>
+					<button class = "btn btn-info">Gender</button>
 				</td>
 				<td>
-					<button type="button">Priority</button>
+					<button class = "btn btn-info">Priority</button>
 				</td>
 				<td>
-					<button type="button">Date</button>
+					<button class = "btn btn-info">Date</button>
 				</td>
 			</tr>
+		</thead>
+		
+		<tbody>
 			
 				{% for case in cases %}
 					<tr>
@@ -46,7 +51,9 @@
 						<td>{{case.case_ref.date_opened}}</td>
 					</tr>
 				{% endfor %}	
-		</table>
+		</tbody>
+	</table>
+</body>
 {% else %}	
 	There are no cases to be displayed.
 {% endif %}
