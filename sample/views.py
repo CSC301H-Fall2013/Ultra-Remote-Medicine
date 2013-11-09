@@ -168,8 +168,7 @@ def display_new_patient(request):
                 print "hard fail"
                 return HttpResponseServerError()
 
-            return HttpResponseRedirect("patient/" +
-                str(patient.id))
+            return HttpResponseRedirect("/patient/" + str(patient.id))
     else:
 
         # The page has just been entered and so the form hasn't
@@ -214,8 +213,7 @@ def display_new_case(request, patient_id):
                 print "hard fail"
                 return HttpResponseServerError()
 
-            return HttpResponseRedirect("case/" +
-                str(case.id))
+            return HttpResponseRedirect("/case/" + str(case.id))
     else:
 
         # The page has just been entered and so the form hasn't
@@ -223,7 +221,7 @@ def display_new_case(request, patient_id):
         form = NewCaseForm()
         form.populate(patient_id)
 
-    return render_to_response('newcase.html', 
+    return render_to_response('newcase.html',
                               {'form': form,
                                'viewer': user},
                               context_instance=RequestContext(request))
