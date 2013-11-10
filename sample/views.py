@@ -1,3 +1,5 @@
+import operator
+
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseBadRequest, HttpResponseRedirect,\
@@ -27,11 +29,48 @@ class CaseAttribute():
 
 
 def create_case_attributes(cases):
-    ''' Creates a list of CaseAttributes that correspond to all known cases.'''
+    ''' Creates a list of CaseAttributes that correspond to the given sub-set 
+        of cases.'''
 
     attributes = [CaseAttribute(case) for case in\
                   cases.all()]
     return attributes
+
+
+class CommentEntry():
+    ''' A class that contains a comment that has been cleaned for displaying in
+        a view.'''
+
+    def __init__(self, comment_reference):
+        ''' Initializes this CommentEntry. Does not recurse through
+            children.'''
+
+        self.comment_reference = comment_reference
+        self.cleaned_time = comment_reference.time_posted
+        self.children = []
+
+
+def create_comment_entries(comments):
+    ''' Creates view-ready comment entries that correspond to the given list
+        of comments. This will recurse through children as well. At all levels,
+        the comments are sorted by time posted.
+
+        comments may be of type django.db.models.manager.Manager or Comment.
+        '''
+
+    if type(comments) == Comment:
+        sorted_comments = [comments]
+    else:
+        sorted_comments = comments.order_by('time_posted')
+
+    entries = []
+
+    for comment in sorted_comments:
+        entry = CommentEntry(comment)
+        entry.children = create_comment_entries(comment.children)
+        entries.append(entry)
+
+    return entries
 
 
 def home(request):
@@ -324,7 +363,7 @@ def display_case(request, case_id):
         'date_of_birth': case.patient.date_of_birth,
         'health_id': case.patient.health_id,
         'case_id': case_id,
-        'comments': case.submitter_comments,
+        'comments': create_comment_entries(case.submitter_comments)[0],
         'form': form
     }, context_instance=RequestContext(request))
 

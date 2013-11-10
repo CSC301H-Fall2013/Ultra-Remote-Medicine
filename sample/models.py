@@ -44,23 +44,25 @@ class Doctor(models.Model):
         return (str(self.id) + ". " + self.user.first_name + " " +
                 self.user.last_name)
 
+
 class Worker(models.Model):
     ''' Represents a worker, the job of whom primarily is to register new
     patients, submit new cases, and to take measurements, scans, pictures and
     other documentation.'''
+    
     user = models.OneToOneField(User)
     phone = models.CharField(max_length=63)
     address = models.CharField(max_length=254)
     registration_time = models.DateTimeField()
     comments = models.TextField(blank=True)
 
-    def user_first_name(self): 
-         return self.user.first_name
+    def user_first_name(self):
+        return self.user.first_name
 
-    def user_last_name(self): 
-         return self.user.last_name
+    def user_last_name(self):
+        return self.user.last_name
 
-    user_first_name.admin_order_field = 'user__first_name' 
+    user_first_name.admin_order_field = 'user__first_name'
     user_last_name.admin_order_field = 'user__last_name'
     user_first_name.short_description = 'First Name'
     user_last_name.short_description = 'Last Name'
@@ -68,6 +70,7 @@ class Worker(models.Model):
     def __unicode__(self):
         return (str(self.id) + ". " + self.user.first_name + " " +
                 self.user.last_name)
+
 
 class Patient(models.Model):
     ''' Represents a patient. Patients are not considered users,
@@ -93,19 +96,20 @@ class Patient(models.Model):
         return str(self.id) + ". " + self.last_name + ", " + self.first_name
 
 
-''' MeasurementType entries record the different types of measurements that
-    can be taken. All Measurement instances are of a particular
-    MeasurementType.'''
 class MeasurementType(models.Model):
+    ''' MeasurementType entries record the different types of measurements that
+        can be taken. All Measurement instances are of a particular
+        MeasurementType.'''
     name = models.CharField(max_length=63)
     units = models.CharField(max_length=63)
 
     def __unicode__(self):
         return str(self.id) + ". " + self.name
 
-''' A Measurement taken at a particular time of a patient. Each Measurement
-    is of a particular MeasurementType.'''
+
 class Measurement(models.Model):
+    ''' A Measurement taken at a particular time of a patient. Each Measurement
+        is of a particular MeasurementType.'''
     worker = models.ForeignKey(Worker)
     patient = models.ForeignKey(Patient)
     time_taken = models.DateTimeField()
@@ -115,20 +119,23 @@ class Measurement(models.Model):
     def __unicode__(self):
         return "Measurement " + str(self.id)
 
-''' SpecaialtyType entries record the different types of specialties that
-    doctors can have. This is used instead of constant values or direct
-    string values to encourage consistency.'''
+
 class SpecialtyType(models.Model):
+    ''' SpecaialtyType entries record the different types of specialties that
+        doctors can have. This is used instead of constant values or direct
+        string values to encourage consistency.'''
     name = models.CharField(max_length=63)
 
     def __unicode__(self):
         return str(self.id) + ". " + self.name
 
-''' TimeSlot elements represent blocks of time that are available. Together,
-    TimeSlot elements form a user's schedule. All times are stored in GMT.
+
+class TimeSlot(models.Model):
+    ''' TimeSlot elements represent blocks of time that are available.
+        Together, TimeSlot elements form a user's schedule. All times are
+        stored in GMT.
 
     Note that this system is still under revision. '''
-class TimeSlot(models.Model):
 
     # TODO: Restrict these so that they are weekly cycles, rather than a
     # single point in time.
@@ -161,8 +168,9 @@ class TimeSlot(models.Model):
     def __unicode__(self):
         return unicode(self.to_string())
 
-''' Represents an original picture or scan of a Patient in the database.'''
+
 class Scan(models.Model):
+    ''' Represents an original picture or scan of a Patient in the database.'''
     patient = models.ForeignKey(Patient)
     picture_linkage = models.URLField()
     comments = models.TextField(blank=True)
@@ -170,10 +178,11 @@ class Scan(models.Model):
     def __unicode__(self):
         return "Scan " + str(self.id)
 
-''' Case entries represent individual problems that a Patient can have. A
-    Case is "opened" when a user detects the problem and is "closed" when the
-    problem is considered solved. '''
+
 class Case(models.Model):
+    ''' Case entries represent individual problems that a Patient can have. A
+        Case is "opened" when a user detects the problem and is "closed" when
+        the problem is considered solved. '''
 
     # TODO: enforce a constraint where Case.scans.patient = Case.patient
 
@@ -191,7 +200,10 @@ class Case(models.Model):
     priority = models.IntegerField(choices=((10, 'High'), (20, 'Medium'),
                                             (30, 'Low')))
 
-    submitter_comments = models.ForeignKey("Comment")
+    submitter_comments = models.ForeignKey("Comment",
+            related_name="submitted_case_set")
+    reviewer_comments = models.ManyToManyField("Comment", blank=True,
+            null=True, related_name="reviewed_case_set")
     date_opened = models.DateField()
     date_closed = models.DateField(null=True, blank=True)
 
@@ -211,9 +223,9 @@ class Comment(models.Model):
         return unicode(self.id) + ". " + self.text
 
 
-''' Represents an annotation made to a picture or scan of a Patient. Both
-    workers and doctors can create annotations. '''
 class Annotation(models.Model):
+    ''' Represents an annotation made to a picture or scan of a Patient. Both
+        workers and doctors can create annotations. '''
 
     picture = models.ForeignKey(Scan)
     author = models.ForeignKey(User)

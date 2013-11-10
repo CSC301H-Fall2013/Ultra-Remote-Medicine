@@ -5,7 +5,7 @@
 
 		<img src="http://i.imgur.com/py2Th5m.png"
 			style="display: inline-block; max-width: 64px; max-height: px; width: auto; height: auto;">
-		{%if comments.author.doctor%}
+		{%if comments.comment_reference.author.doctor%}
 		<br>	Doctor
 		{%else%}
 		<br>	Worker
@@ -13,13 +13,13 @@
 	</div>
 	<div class="media-body">
 		<div style="height: auto; min-height: 80px;">
-			<span class="media-heading"><b>{{comments.author.first_name}} {{comments.author.last_name}}:</b></span>
-			<span style="float: right"> {{comments.time_posted.date}} at {{comments.time_posted.time}} GMT</span>
+			<span class="media-heading"><b>{{comments.comment_reference.author.first_name}} {{comments.comment_reference.author.last_name}}:</b></span>
+			<span style="float: right"> {{comments.comment_reference.time_posted.date}} at {{comments.comment_reference.time_posted.time}} GMT</span>
 			<br>
-			{{comments.text}}
+			{{comments.comment_reference.text}}
 		</div>
 		{%if comments.children|length > 0 %}
-		{%for child in comments.children.all %}
+		{%for child in comments.children %}
 		{%with comments=child template_name="_commentDisplay.html" %} 
 		{%include template_name%}
 		{%endwith%} 
