@@ -54,31 +54,17 @@
 			
 			<br>
 			<br>
+			
+			{% if user.worker %}
 			<form id="new_case" action="{% url 'new_case' patient_id %}" method='get'>
 				<button class = "btn btn-default" type="submit">Add New Case</button>
 				<br>
 			</form>
+			{% endif %}
 			
 		</div>
 
 	</div>
-
-<script>
-	/*img = document.getElementById("patientPic");
-	//function correctImageSize(img){
-	    if(img.width > img.height){
-	    	img.style.width = 200;
-	    } else {
-	    	img.style.height = 200;
-	    }
-	    img.style.display = 'block';
-	    
-	    document.write("pedo");
-    //}
-    
-    //correctImageSize(document.getElementById("patientPic")); 
-    */
-</script>
 
 </body>
 

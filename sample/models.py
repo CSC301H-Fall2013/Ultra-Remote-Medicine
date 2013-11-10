@@ -191,20 +191,33 @@ class Case(models.Model):
     priority = models.IntegerField(choices=((10, 'High'), (20, 'Medium'),
                                             (30, 'Low')))
 
-    submitter_comments = models.TextField(blank=True)
+    submitter_comments = models.ForeignKey("Comment")
     date_opened = models.DateField()
     date_closed = models.DateField(null=True, blank=True)
 
     def __unicode__(self):
         return "Case " + str(self.id)
 
+
+class Comment(models.Model):
+    ''' Represents a comment made on something or on another comment.'''
+
+    author = models.ForeignKey(User)
+    children = models.ManyToManyField("Comment", blank=True, null=True)
+    text = models.TextField(blank=True)
+
+    def __unicode__(self):
+        return unicode(self.id) + ". " + self.text
+
+
 ''' Represents an annotation made to a picture or scan of a Patient. Both
     workers and doctors can create annotations. '''
 class Annotation(models.Model):
+
     picture = models.ForeignKey(Scan)
     author = models.ForeignKey(User)
     annotation_picture_linkage = models.URLField()
-    comments = models.TextField(blank=True)
+    comments = models.ForeignKey("Comment")
 
     def __unicode__(self):
         return "Annotation " + str(self.id)

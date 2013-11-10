@@ -11,7 +11,7 @@ from django.utils import timezone
 
 from sample.forms import NewPatientForm, NewCaseForm, UpdateFieldWorkerForm,\
     UpdateDoctorForm
-from sample.models import Doctor, Worker, Patient, Case
+from sample.models import Doctor, Worker, Patient, Case, Comment
 
 
 class CaseAttribute():
@@ -201,9 +201,14 @@ def display_new_case(request, patient_id):
             try:
                 patient = Patient.objects.filter(id=patient_id)[0]
 
+                comment = Comment(
+                    author=worker.user,
+                    text=comments)
+                comment.save()
+
                 case = Case(
                     patient=patient,
-                    submitter_comments=comments,
+                    submitter_comments=comment,
                     priority=priority,
                     submitter=worker,
                     date_opened=timezone.now())

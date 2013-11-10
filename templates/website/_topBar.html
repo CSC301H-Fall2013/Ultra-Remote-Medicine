@@ -13,10 +13,9 @@
 	
 	
      <span class="btn-group" style="float: right">
-		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-		{{viewer.first_name}}
-		<span class="caret"></span>
-		</a>
+		<button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+    		{{viewer.first_name}} <span class="caret"></span>
+  		</button>
 		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="left: auto;right: 0px;">
 			<li><a tabindex="-1" href="{% url 'display_profile' viewer.id %}">Profile</a></li>
 			<li class="divider"></li>

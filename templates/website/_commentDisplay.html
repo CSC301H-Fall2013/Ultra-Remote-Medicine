@@ -1,0 +1,18 @@
+<!--  Component for displaying a tree of comments. -->
+<div class="media">
+  <img class="media-object pull-left" src="http://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Rob_Ford_Mayor.jpg/368px-Rob_Ford_Mayor.jpg" style="display: inline-block; max-width:64px; max-height:64px; width: auto; height: auto;">
+	<div class="media-body">
+	  <h4 class="media-heading">{{comments.author.first_name}} {{comments.author.last_name}}</h4>
+			    
+	  {{comments.text}}
+	    {%if comments.children|length > 0 %}
+	    	
+	         {%for child in comments.children.all %}
+	              {%with comments=child template_name="_commentDisplay.html" %}
+	                   {%include template_name%}
+	              {%endwith%}
+	         {%endfor%}
+	    {%endif%}
+</div>
+</div>   
+ 
