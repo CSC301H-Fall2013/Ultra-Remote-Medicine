@@ -205,6 +205,7 @@ class Comment(models.Model):
     author = models.ForeignKey(User)
     children = models.ManyToManyField("Comment", blank=True, null=True)
     text = models.TextField(blank=True)
+    time_posted = models.DateTimeField()
 
     def __unicode__(self):
         return unicode(self.id) + ". " + self.text
