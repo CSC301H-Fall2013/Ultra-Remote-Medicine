@@ -203,7 +203,8 @@ def display_new_case(request, patient_id):
 
                 comment = Comment(
                     author=worker.user,
-                    text=comments)
+                    text=comments,
+                    time_posted=timezone.now())
                 comment.save()
 
                 case = Case(
