@@ -20,7 +20,7 @@ class JQueryUIDatepickerWidget(forms.DateInput):
 class NewCaseForm(forms.Form):
     ''' The form used on the new case page.'''
 
-    patient = forms.IntegerField();
+    patient = forms.IntegerField()
     comments = forms.CharField(required=False, widget=forms.Textarea)
     priority = forms.ChoiceField(required=False, choices=((10, 'Low'),
         (20, 'Medium'), (30, 'High')))
@@ -30,6 +30,19 @@ class NewCaseForm(forms.Form):
 
         if patient_id != 'X':
             self.fields['patient'].initial = patient_id
+
+
+class UpdateCaseForm(forms.Form):
+    ''' The form used on the case page. '''
+
+    priority = forms.ChoiceField(required=False,
+            widget=forms.Select(attrs={"onChange": 'this.form.submit()'}),
+            choices=((10, 'Low'), (20, 'Medium'), (30, 'High')))
+
+    def populate(self, case):
+        ''' Populates this form with default information. '''
+
+        self.fields["priority"].initial = case.priority
 
 
 class NewPatientForm(forms.Form):

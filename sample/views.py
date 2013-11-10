@@ -10,7 +10,7 @@ from django.db import IntegrityError
 from django.utils import timezone
 
 from sample.forms import NewPatientForm, NewCaseForm, UpdateFieldWorkerForm,\
-    UpdateDoctorForm
+    UpdateDoctorForm, UpdateCaseForm
 from sample.models import Doctor, Worker, Patient, Case, Comment
 
 
@@ -21,6 +21,8 @@ class CaseAttribute():
     def __init__(self, case_reference):
         self.case_ref = case_reference
         self.patient_ref = case_reference.patient
+
+        # TODO: Make this value correspond to the actual age.
         self.age = 30
 
 
@@ -175,7 +177,7 @@ def display_new_patient(request):
         # been submitted yet.
         form = NewPatientForm()
 
-    return render_to_response('newPatient.html', 
+    return render_to_response('newPatient.html',
                               {'form': form,
                                'viewer': request.user},
                               context_instance=RequestContext(request))
@@ -289,6 +291,29 @@ def display_case(request, case_id):
 
     case = Case.objects.filter(id=case_id)[0]
 
+    if request.method == 'POST':
+
+        form = UpdateCaseForm(request.POST)
+        if form.is_valid():
+
+            priority = form.cleaned_data['priority']
+
+            try:
+
+                case.priority = priority
+                case.save()
+            except IntegrityError, e:
+                print str(e)
+                print "hard fail"
+                return HttpResponseServerError()
+
+    else:
+
+        # The page has just been entered and so the form hasn't
+        # been submitted yet.
+        form = UpdateCaseForm()
+        form.populate(case)
+
     return render_to_response('case.html', {
         'viewer': user,
         'user': user,
@@ -299,8 +324,8 @@ def display_case(request, case_id):
         'date_of_birth': case.patient.date_of_birth,
         'health_id': case.patient.health_id,
         'case_id': case_id,
-        'priority': case.priority,
         'comments': case.submitter_comments,
+        'form': form
     }, context_instance=RequestContext(request))
 
 

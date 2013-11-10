@@ -25,20 +25,21 @@
 			<table border="0" cellpadding="5" style="display: inline-block; margin: 0 auto; text-align: left">
 				<tr>
 					<td style="height: 250 px; margin: 0; text-align: left;">
-						<form action="">
+						<form action="{% url 'display_case' case_id %}" method="post"> {% csrf_token %}
 							<br>Patient Name: {{lastName}}, {{firstName}}
 							<br>U.R.M Patient ID: {{patient_id}}
 							<br>Gender: {{gender}}
-							<br>Regional Health ID:{{health_id}}
+							<br>Regional Health ID: {{health_id}}
 							<br>Case ID: {{case_id}}
-							<br>Priority: {{priority}}
+							<br>Priority: {{form.priority}}
 							<br>
 						</form>
 					</td>
 				</tr>
 			</table>
-			
-
+				<br>
+				<b>Submitter Comments</b>
+				<br>
 				{% include "_commentDisplay.html" %}
 			
 		</div>
