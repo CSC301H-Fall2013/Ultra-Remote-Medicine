@@ -13,7 +13,7 @@ from django.utils import timezone
 
 from sample.forms import NewPatientForm, NewCaseForm, UpdateFieldWorkerForm,\
     UpdateDoctorForm, UpdateCaseForm
-from sample.models import Doctor, Worker, Patient, Case, Comment
+from sample.models import Doctor, Worker, Patient, Case, Comment, CommentGroup
 
 
 class CaseAttribute():
@@ -29,7 +29,7 @@ class CaseAttribute():
 
 
 def create_case_attributes(cases):
-    ''' Creates a list of CaseAttributes that correspond to the given sub-set 
+    ''' Creates a list of CaseAttributes that correspond to the given sub-set
         of cases.'''
 
     attributes = [CaseAttribute(case) for case in\
@@ -54,22 +54,57 @@ def create_comment_entries(comments):
     ''' Creates view-ready comment entries that correspond to the given list
         of comments. This will recurse through children as well. At all levels,
         the comments are sorted by time posted.
-
-        comments may be of type django.db.models.manager.Manager or Comment.
         '''
 
-    if type(comments) == Comment:
-        sorted_comments = [comments]
-    else:
-        sorted_comments = comments.order_by('time_posted')
+    sorted_comments = comments.order_by('-time_posted')
 
     entries = []
-
     for comment in sorted_comments:
         entry = CommentEntry(comment)
         entry.children = create_comment_entries(comment.children)
         entries.append(entry)
 
+    return entries
+
+
+class CommentGroupEntry():
+    ''' A class that contains a comment that has been cleaned for displaying in
+        a view.'''
+
+    def __init__(self):
+        ''' Initializes this CommentGroupEntry. Does not recurse through
+            children.'''
+
+        self.contents = []
+
+
+def create_comment_group_entries(comment_groups):
+    ''' Creates view-ready comment group entries that correspond to the given
+        list of comment groups. This will recurse through the comments and
+        their children as well. At all levels, the comments are sorted by time
+        posted. The groups are sorted by the latest time posted.
+
+        comments may be of type django.db.models.manager.Manager or Comment.'''
+
+    entries = []
+    for comment_group in comment_groups:
+        entry = CommentGroupEntry()
+        entry.contents = create_comment_entries(comment_group.comments)
+        print entry.contents
+        entries.append(entry)
+
+    # The function to use in order to sort groups according to which has last
+    # been updated.
+    def compare_group(x, y):
+        x_older = (x.contents[0].comment_reference.time_posted <
+            y.contents[0].comment_reference.time_posted)
+
+        if x_older:
+            return 1
+        else:
+            return -1
+
+    entries.sort(cmp=compare_group)
     return entries
 
 
@@ -248,9 +283,13 @@ def display_new_case(request, patient_id):
                     time_posted=timezone.now())
                 comment.save()
 
+                comment_group = CommentGroup()
+                comment_group.save()
+                comment_group.comments.add(comment)
+
                 case = Case(
                     patient=patient,
-                    submitter_comments=comment,
+                    submitter_comments=comment_group,
                     priority=priority,
                     submitter=worker,
                     date_opened=timezone.now())
@@ -338,7 +377,6 @@ def display_case(request, case_id):
             priority = form.cleaned_data['priority']
 
             try:
-
                 case.priority = priority
                 case.save()
             except IntegrityError, e:
@@ -363,7 +401,10 @@ def display_case(request, case_id):
         'date_of_birth': case.patient.date_of_birth,
         'health_id': case.patient.health_id,
         'case_id': case_id,
-        'comments': create_comment_entries(case.submitter_comments)[0],
+        'submitter_comments': create_comment_group_entries(
+                [case.submitter_comments])[0],
+        'reviewer_comments': create_comment_group_entries(
+                case.reviewer_comments.all()),
         'form': form
     }, context_instance=RequestContext(request))
 

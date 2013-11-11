@@ -3,12 +3,12 @@
 	<div class="media-object pull-left" id="avatarcontainer"
 		style="display: inline-block; height: auto; min-height: 80px; width: auto; min-width: 80px;">
 
-		<img src="http://i.imgur.com/py2Th5m.png"
+		<img src="http://upload.wikimedia.org/wikipedia/commons/3/32/Eduard_Khil.jpg"
 			style="display: inline-block; max-width: 64px; max-height: px; width: auto; height: auto;">
 		{%if comments.comment_reference.author.doctor%}
-		<br>	Doctor
+			<br>Doctor
 		{%else%}
-		<br>	Worker
+			<br>Worker
 		{%endif%}
 	</div>
 	<div class="media-body">
@@ -19,11 +19,11 @@
 			{{comments.comment_reference.text}}
 		</div>
 		{%if comments.children|length > 0 %}
-		{%for child in comments.children %}
-		{%with comments=child template_name="_commentDisplay.html" %} 
-		{%include template_name%}
-		{%endwith%} 
-		{%endfor%} 
+			{%for child in comments.children %}
+				{%with comments=child template_name="_commentDisplay.html" %} 
+					{%include template_name%}
+				{%endwith%} 
+			{%endfor%} 
 		{%endif%}
 	</div>
 </div>

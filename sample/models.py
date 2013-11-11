@@ -10,6 +10,7 @@ TODO:
     tables (if even possible)
 '''
 
+
 class Doctor(models.Model):
     ''' Represents a doctor, the job of whom primarily is to annotate and
     review cases and scans submitted by workers, and issue instructions to
@@ -18,26 +19,25 @@ class Doctor(models.Model):
     phone = models.CharField(max_length=63)
     address = models.CharField(max_length=254)
     registration_time = models.DateTimeField()
-    specialties = models.ManyToManyField('SpecialtyType', blank=True,null=True)
+    specialties = models.ManyToManyField('SpecialtyType', blank=True,
+                                          null=True)
 
     schedule = models.ManyToManyField('TimeSlot', blank=True, null=True)
     comments = models.TextField(blank=True)
 
-    def user_first_name(self): 
-         return self.user.first_name
+    def user_first_name(self):
+        return self.user.first_name
 
-    def user_last_name(self): 
-         return self.user.last_name
+    def user_last_name(self):
+        return self.user.last_name
 
     def get_some_value(self):
         return ", " . join([x.__str__() for x in self.specialties.all()])
 
-    user_first_name.admin_order_field = 'user__first_name' 
+    user_first_name.admin_order_field = 'user__first_name'
     user_last_name.admin_order_field = 'user__last_name'
     user_first_name.short_description = 'First Name'
     user_last_name.short_description = 'Last Name'
-    #get_some_value.admin_order_field = 'specialties__name'
-    #get_some_value.admin_order_field = '", " . join([x.__str__() for x in specialties.all()])'
     get_some_value.short_description = 'Specialties'
 
     def __unicode__(self):
@@ -49,7 +49,7 @@ class Worker(models.Model):
     ''' Represents a worker, the job of whom primarily is to register new
     patients, submit new cases, and to take measurements, scans, pictures and
     other documentation.'''
-    
+
     user = models.OneToOneField(User)
     phone = models.CharField(max_length=63)
     address = models.CharField(max_length=254)
@@ -200,9 +200,9 @@ class Case(models.Model):
     priority = models.IntegerField(choices=((10, 'High'), (20, 'Medium'),
                                             (30, 'Low')))
 
-    submitter_comments = models.ForeignKey("Comment",
+    submitter_comments = models.ForeignKey("CommentGroup",
             related_name="submitted_case_set")
-    reviewer_comments = models.ManyToManyField("Comment", blank=True,
+    reviewer_comments = models.ManyToManyField("CommentGroup", blank=True,
             null=True, related_name="reviewed_case_set")
     date_opened = models.DateField()
     date_closed = models.DateField(null=True, blank=True)
@@ -221,6 +221,12 @@ class Comment(models.Model):
 
     def __unicode__(self):
         return unicode(self.id) + ". " + self.text
+
+
+class CommentGroup(models.Model):
+    ''' Represents a group of comments made on something. '''
+
+    comments = models.ManyToManyField(Comment)
 
 
 class Annotation(models.Model):

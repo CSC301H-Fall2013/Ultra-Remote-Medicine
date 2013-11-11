@@ -3,8 +3,8 @@ from django import forms
 from django.contrib.auth.models import User
 
 from sample.models import (Doctor, Worker, Patient, Measurement,
-        MeasurementType, SpecialtyType, TimeSlot, Case, Comment, Scan,
-        Annotation)
+        MeasurementType, SpecialtyType, TimeSlot, Case, Comment, CommentGroup,
+        Scan, Annotation)
 
 # class specialtyForm(forms.ModelForm):
 #     specialties = forms.ModelMultipleChoiceField(
@@ -61,5 +61,6 @@ admin.site.register(SpecialtyType, searchSpeciality)
 admin.site.register(TimeSlot, searchTimeslot)
 admin.site.register(Case, searchCase)
 admin.site.register(Comment, searchComment)
+admin.site.register(CommentGroup)
 admin.site.register(Scan, searchScan)
 admin.site.register(Annotation, searchAnnotation)

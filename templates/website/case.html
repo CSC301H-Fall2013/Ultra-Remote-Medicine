@@ -37,11 +37,30 @@
 					</td>
 				</tr>
 			</table>
-				<br>
-				<b>Submitter Comments</b>
-				<br>
-				{% include "_commentDisplay.html" %}
+				<h1>Comments</h1>
 			
+				<br>
+				<b>{{submitter_comments.contents.0.comment_reference.author.first_name}} {{submitter_comments.contents.0.comment_reference.author.last_name}} (Submitter)</b>
+				<br>
+				{%for comment_entry in submitter_comments.contents%}
+					{%with comments=comment_entry template_name="_commentDisplay.html" %} 
+						{% include "_commentDisplay.html" %}
+					{%endwith%}
+				{%endfor%}
+				
+				<!-- Reviewer comments -->
+				{%for comment_group in reviewer_comments%}
+					<br>
+					<b>{{comment_group.contents.0.comment_reference.author.first_name}} {{comment_group.contents.0.comment_reference.author.last_name}}</b>
+					<br>
+					{%for comment_entry in comment_group.contents%}
+						{%with comments=comment_entry template_name="_commentDisplay.html" %} 
+							{% include "_commentDisplay.html" %}
+						{%endwith%}
+					{%endfor%}
+				{%endfor%}
+				
+				
 		</div>
 	</div>
 
