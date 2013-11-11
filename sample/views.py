@@ -1,3 +1,5 @@
+import operator
+
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseBadRequest, HttpResponseRedirect,\
@@ -10,8 +12,8 @@ from django.db import IntegrityError
 from django.utils import timezone
 
 from sample.forms import NewPatientForm, NewCaseForm, UpdateFieldWorkerForm,\
-    UpdateDoctorForm
-from sample.models import Doctor, Worker, Patient, Case
+    UpdateDoctorForm, UpdateCaseForm
+from sample.models import Doctor, Worker, Patient, Case, Comment, CommentGroup
 
 
 class CaseAttribute():
@@ -22,15 +24,95 @@ class CaseAttribute():
     def __init__(self, case_reference):
         self.case_ref = case_reference
         self.patient_ref = case_reference.patient
+
+        if case_reference.priority == 10:
+            self.priority_text = "High"
+        elif case_reference.priority == 20:
+            self.priority_text = "Medium"
+        elif case_reference.priority == 30:
+            self.priority_text = "Low"
+
+        # TODO: Make this value correspond to the actual age.
         self.age = 30
 
 
 def create_case_attributes(cases):
-    ''' Creates a list of CaseAttributes that correspond to all known cases.'''
+    ''' Creates a list of CaseAttributes that correspond to the given sub-set
+        of cases.'''
 
     attributes = [CaseAttribute(case) for case in\
                   cases.all()]
     return attributes
+
+
+class CommentEntry():
+    ''' A class that contains a comment that has been cleaned for displaying in
+        a view.'''
+
+    def __init__(self, comment_reference):
+        ''' Initializes this CommentEntry. Does not recurse through
+            children.'''
+
+        self.comment_reference = comment_reference
+        self.cleaned_time = comment_reference.time_posted
+        self.children = []
+
+
+def create_comment_entries(comments):
+    ''' Creates view-ready comment entries that correspond to the given list
+        of comments. This will recurse through children as well. At all levels,
+        the comments are sorted by time posted.
+        '''
+
+    sorted_comments = comments.order_by('-time_posted')
+
+    entries = []
+    for comment in sorted_comments:
+        entry = CommentEntry(comment)
+        entry.children = create_comment_entries(comment.children)
+        entries.append(entry)
+
+    return entries
+
+
+class CommentGroupEntry():
+    ''' A class that contains a comment that has been cleaned for displaying in
+        a view.'''
+
+    def __init__(self):
+        ''' Initializes this CommentGroupEntry. Does not recurse through
+            children.'''
+
+        self.contents = []
+
+
+def create_comment_group_entries(comment_groups):
+    ''' Creates view-ready comment group entries that correspond to the given
+        list of comment groups. This will recurse through the comments and
+        their children as well. At all levels, the comments are sorted by time
+        posted. The groups are sorted by the latest time posted.
+
+        comments may be of type django.db.models.manager.Manager or Comment.'''
+
+    entries = []
+    for comment_group in comment_groups:
+        entry = CommentGroupEntry()
+        entry.contents = create_comment_entries(comment_group.comments)
+        entries.append(entry)
+
+    # The function to use in order to sort groups according to which has last
+    # been updated.
+    def compare_group(x, y):
+        x_older = (x.contents[0].comment_reference.time_posted <
+            y.contents[0].comment_reference.time_posted)
+
+        if x_older:
+            return 1
+        else:
+            return -1
+
+    entries.sort(cmp=compare_group)
+    return entries
 
 
 def home(request):
@@ -169,8 +251,7 @@ def display_new_patient(request):
                 print "hard fail"
                 return HttpResponseServerError()
 
-            return HttpResponseRedirect("patient/" +
-                str(patient.id))
+            return HttpResponseRedirect("/patient/" + str(patient.id))
     else:
 
         # The page has just been entered and so the form hasn't
@@ -203,9 +284,19 @@ def display_new_case(request, patient_id):
             try:
                 patient = Patient.objects.filter(id=patient_id)[0]
 
+                comment = Comment(
+                    author=worker.user,
+                    text=comments,
+                    time_posted=timezone.now())
+                comment.save()
+
+                comment_group = CommentGroup()
+                comment_group.save()
+                comment_group.comments.add(comment)
+
                 case = Case(
                     patient=patient,
-                    submitter_comments=comments,
+                    submitter_comments=comment_group,
                     priority=priority,
                     submitter=worker,
                     date_opened=timezone.now())
@@ -215,8 +306,7 @@ def display_new_case(request, patient_id):
                 print "hard fail"
                 return HttpResponseServerError()
 
-            return HttpResponseRedirect("case/" +
-                str(case.id))
+            return HttpResponseRedirect("/case/" + str(case.id))
     else:
 
         # The page has just been entered and so the form hasn't
@@ -286,6 +376,28 @@ def display_case(request, case_id):
 
     case = Case.objects.filter(id=case_id)[0]
 
+    if request.method == 'POST':
+
+        form = UpdateCaseForm(request.POST)
+        if form.is_valid():
+
+            priority = form.cleaned_data['priority']
+
+            try:
+                case.priority = priority
+                case.save()
+            except IntegrityError, e:
+                print str(e)
+                print "hard fail"
+                return HttpResponseServerError()
+
+    else:
+
+        # The page has just been entered and so the form hasn't
+        # been submitted yet.
+        form = UpdateCaseForm()
+        form.populate(case)
+
     return render_to_response('case.html', {
         'viewer': user,
         'user': user,
@@ -296,8 +408,11 @@ def display_case(request, case_id):
         'date_of_birth': case.patient.date_of_birth,
         'health_id': case.patient.health_id,
         'case_id': case_id,
-        'priority': case.priority,
-        'comments': case.submitter_comments,
+        'submitter_comments': create_comment_group_entries(
+                [case.submitter_comments])[0],
+        'reviewer_comments': create_comment_group_entries(
+                case.reviewer_comments.all()),
+        'form': form
     }, context_instance=RequestContext(request))
 
 

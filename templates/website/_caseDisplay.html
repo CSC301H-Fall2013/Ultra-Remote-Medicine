@@ -31,6 +31,8 @@
 		
 		<tbody>
 			
+				
+			
 				{% for case in cases %}
 					<tr>
 						<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">Case {{case.case_ref.id}}</a></td>
@@ -43,11 +45,14 @@
 						</select></td>
 						<td>{{case.age}}</td>
 						<td>{{case.patient_ref.gender}}</td>
-						<td><select>
-								<option value="High">High</option>
-								<option value="Medium" selected>Medium</option>
-								<option value="Low">Low</option>
-						</select></td>
+						<td>{{case.priority_text}}</td>
+						<!-- 
+							<td><select>
+									<option value="High" selected="selected">High</option>
+									<option value="Medium" selected="selected">Medium</option>
+									<option value="Low" selected="selected">Low</option>
+							</select></td>
+						-->
 						<td>{{case.case_ref.date_opened}}</td>
 					</tr>
 				{% endfor %}	
