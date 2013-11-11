@@ -22,14 +22,12 @@
 	    />
 	    
 	    <ImageView
-	        android:contentDescription="@string/"
 	        android:layout_width="@dimen/video_width"
 	        android:layout_height="@dimen/video_height"
-	        android:src="@drawable/ideal_image"
-   			android:layout_marginBottom="30dp"
-   			android:layout_gravity="center_horizontal"
-	    />
-	    
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginBottom="30dp"
+	        android:contentDescription="@string/ideal_image_label"
+	        android:src="@drawable/ideal_image" />
 	    
 	    <TextView
 	        android:layout_width="wrap_content"
