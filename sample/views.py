@@ -24,6 +24,13 @@ class CaseAttribute():
         self.case_ref = case_reference
         self.patient_ref = case_reference.patient
 
+        if case_reference.priority == 10:
+            self.priority_text = "High"
+        elif case_reference.priority == 20:
+            self.priority_text = "Medium"
+        elif case_reference.priority == 30:
+            self.priority_text = "Low"
+
         # TODO: Make this value correspond to the actual age.
         self.age = 30
 
@@ -90,7 +97,6 @@ def create_comment_group_entries(comment_groups):
     for comment_group in comment_groups:
         entry = CommentGroupEntry()
         entry.contents = create_comment_entries(comment_group.comments)
-        print entry.contents
         entries.append(entry)
 
     # The function to use in order to sort groups according to which has last

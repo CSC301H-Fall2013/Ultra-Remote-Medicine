@@ -22,8 +22,8 @@ class NewCaseForm(forms.Form):
 
     patient = forms.IntegerField()
     comments = forms.CharField(required=False, widget=forms.Textarea)
-    priority = forms.ChoiceField(required=False, choices=((10, 'Low'),
-        (20, 'Medium'), (30, 'High')))
+    priority = forms.ChoiceField(required=False, choices=((10, 'High'),
+        (20, 'Medium'), (30, 'Low')))
 
     def populate(self, patient_id):
         ''' Populates this form with default information. '''
@@ -37,7 +37,7 @@ class UpdateCaseForm(forms.Form):
 
     priority = forms.ChoiceField(required=False,
             widget=forms.Select(attrs={"onChange": 'this.form.submit()'}),
-            choices=((10, 'Low'), (20, 'Medium'), (30, 'High')))
+            choices=((10, 'High'), (20, 'Medium'), (30, 'Low')))
 
     def populate(self, case):
         ''' Populates this form with default information. '''
