@@ -1,30 +1,24 @@
 <!--  Component for displaying a table of cases. -->
 
 {% if cases|length > 0 %}
-<body>
+
 	<table class = "table table-bordered">
 		<thead>
 			<tr>
 				<td>
-					<button class = "btn btn-info">Case</button>
-				</td>
-				<td>
 					<button class = "btn btn-info">Patient Name</button>
 				</td>
 				<td>
-					<button class = "btn btn-info">Status</button>
-				</td>
-				<td>
-					<button class = "btn btn-info">Age</button>
-				</td>
-				<td>
-					<button class = "btn btn-info">Gender</button>
-				</td>
-				<td>
-					<button class = "btn btn-info">Priority</button>
+					<button class = "btn btn-info">Case</button>
 				</td>
 				<td>
 					<button class = "btn btn-info">Date</button>
+				</td>
+				<td>
+					<button class = "btn btn-info">Reviewer</button>
+				</td>
+				<td>
+					<button class = "btn btn-info">Priority</button>
 				</td>
 			</tr>
 		</thead>
@@ -35,16 +29,27 @@
 			
 				{% for case in cases %}
 					<tr>
-						<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">Case {{case.case_ref.id}}</a></td>
 						<td><a href="{% url 'display_patient' case.patient_ref.id %}" target="_blank">
 								{{case.patient_ref.last_name}}, {{case.patient_ref.first_name}} </a></td>
-						<td><select>
-								<option value="pending(not seen)">pending(not seen)</option>
-								<option value="pending(seen)">pending(seen)</option>
-								<option value="completed" selected>completed</option>
-						</select></td>
-						<td>{{case.age}}</td>
-						<td>{{case.patient_ref.gender}}</td>
+						<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">Case {{case.case_ref.id}}</a></td>
+						<!--
+							<td><select>
+									<option value="pending(not seen)">pending(not seen)</option>
+									<option value="pending(seen)">pending(seen)</option>
+									<option value="completed" selected>completed</option>
+							</select></td>
+						 -->
+						<td>{{case.case_ref.date_opened}}</td>
+						{%if case.case_ref.lock_holder == None%}
+							{%if viewer.doctor%}
+								<td>Adopt this Case</td>
+							{%else%}
+								<td>None</td>
+							{%endif%}
+						{%else%}
+							<td><a href="{% url 'display_profile' case.case_ref.lock_holder.id %}" target="_blank">
+									{{case.case_ref.lock_holder}} </a></td>
+						{%endif%}
 						<td>{{case.priority_text}}</td>
 						<!-- 
 							<td><select>
@@ -53,12 +58,11 @@
 									<option value="Low" selected="selected">Low</option>
 							</select></td>
 						-->
-						<td>{{case.case_ref.date_opened}}</td>
 					</tr>
 				{% endfor %}	
 		</tbody>
 	</table>
-</body>
 {% else %}	
 	There are no cases to be displayed.
+	<br>
 {% endif %}
