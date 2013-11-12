@@ -20,7 +20,7 @@ class Doctor(models.Model):
     address = models.CharField(max_length=254)
     registration_time = models.DateTimeField()
     specialties = models.ManyToManyField('SpecialtyType', blank=True,
-                                          null=True)
+                                         null=True)
 
     schedule = models.ManyToManyField('TimeSlot', blank=True, null=True)
     comments = models.TextField(blank=True)

@@ -18,20 +18,33 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('sample.views',
-    url('^$', 'home', name='home'),
-    url('^login$', 'process_login', name='login'),
-    url('^doctor$', 'display_doctor', name='doctor'),
-    url('^field$', 'display_field_worker', name='field'),
-    url('^new_patient$', 'display_new_patient', name='new_patient'),
-    url('^patient/(?P<patient_id>\d+)$',
-        'display_patient', name='display_patient'),
-    url('^case/(?P<case_id>\d+)$',
-        'display_case', name='display_case'),
-    url('^profile/(?P<user_id>\d+)$',
-        'display_profile', name='display_profile'),
-    url('^cases$', 'display_case_list', name='case_list'),
-    url('^newcase/(?P<patient_id>\w+)$', 'display_new_case', name='new_case'))
+                        url('^$', 'home', name='home'))
 
+urlpatterns += patterns('sample.authentication',
+                        url('^login$', 'process_login', name='login'))
+
+urlpatterns += patterns('sample.doctor',
+                        url('^doctor$', 'display_doctor', name='doctor'))
+
+urlpatterns += patterns('sample.worker',
+                        url('^field$', 'display_field_worker', name='field'))
+
+urlpatterns += patterns('sample.patient',
+                        url('^new_patient$', 'display_new_patient',
+                            name='new_patient'),
+                        url('^patient/(?P<patient_id>\d+)$',
+                            'display_patient', name='display_patient'))
+
+urlpatterns += patterns('sample.profiles',
+                        url('^profile/(?P<user_id>\d+)$',
+                            'display_profile', name='display_profile'))
+
+urlpatterns += patterns('sample.case',
+                        url('^case/(?P<case_id>\d+)$', 'display_case',
+                            name='display_case'),
+                        url('^cases$', 'display_case_list', name='case_list'),
+                        url('^newcase/(?P<patient_id>\w+)$',
+                            'display_new_case', name='new_case'))
 
 if settings.DEBUG:
     urlpatterns += patterns('django.contrib.staticfiles.views',
