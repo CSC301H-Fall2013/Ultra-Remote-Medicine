@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Ultra Remote Medicine</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-  </head>
+<head>
+  <title>Log in | Ultra-Remote-Medicine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap -->
+  <link type="text/css" rel="stylesheet" href="css/bootstrap.css"/>
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+</head>
   <div class = "center">
-     <br>
     <br>
     <br>
     <br>
@@ -18,36 +19,70 @@
     <br>
     <br>
     <br>
-    <center> <h1> Ultra Remote Medicine </h1> </center>
-  
+    <br>
+    <center>
+      <h1>Ultra Remote Medicine</h1>
+    </center>
     <br>
     <br>
+    <center>
     <div class="row-fluid">
-          <div class="span4"></div>
-          <div class="span4">
-            <p class ="text center">
-             <form class="form-horizontal">
-                <div class="control-group">
-                  <label class="control-label" for="inputEmail">Username</label>
-                    <div class="controls">
-                      <input type="text" id="inputEmail" placeholder="Username">
-                    </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label" for="inputPassword">Password</label>
-                    <div class="controls">
-                      <input type="password" id="inputPassword" placeholder="Password">
-                    </div>
-                </div>
-                  <div class="control-group">
-                    <div class="controls">
-                      <button type="submit" class="btn btn-primary">Log in</button>
-
-                    </div>
-                  </div>
-              </form>
-              </p>
+      <div class="span4"></div>
+      <div class="span4">
+        <p class ="text center">
+          <div class="control-group">
+            <form id="login-form" action="/login" method="post">
+              <input type='hidden' name='csrfmiddlewaretoken' value='UXF4qGBwyVyXxdXQfaf74QXK7fFYdF27' />
+              <label class="control-label" for="username">Username</label>
+              <div class="controls">
+                <input type="text" id="username" name="username" placeholder="Username"></div>
             </div>
-
+            <div class="control-group">
+              <label class="control-label" for="password">Password</label>
+              <div class="controls">
+                <input type="password" id="password" name="password" placeholder="Password"></div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <button type="submit" class="btn btn-primary">Log in</button>
+              </div>
+            </div>
+          </form>
+        </p>
+      </div>
+    </center>
+    </div>
   </div>
+  <script> //$(function(){
+//     $('input[name="username"]').focus();
+//     $('#submit').on('click',function(e){
+//         validateAndSubmit();
+//     });
+
+//     $('#login-form').on('keypress','input', function(e){
+//         var inputs = $(this).closest('form').find(':input');
+//         if(e.keyCode===13){
+//           if($(this).attr('name')==="password"){
+//             $('#submit').click();
+//           }
+//           else{
+//             inputs.eq(inputs.index(this)+ 1 ).focus();
+//           }
+//         }
+//     });
+
+//     function validateAndSubmit(){
+//         //TODO:Validate. If not valid return false
+//         $('#login-form').submit();
+//     }
+//     if(window.location.href.indexOf("?e=p") > -1){
+//        alert("Password is wrong.");
+//     }
+//     if(window.location.href.indexOf("?e=a") > -1){
+//         alert("Inactive account.");
+//     }
+//     if(window.location.href.indexOf("?e=u") > -1){
+//         alert("User does not exists");
+//     }
+// });</script>
 </html>
