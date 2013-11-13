@@ -13,6 +13,13 @@ public interface NepalUltrasoundAPI {
 	boolean setURL(String url);
 	String getURL();
 	
-	HttpResponse send(String personName, String comments, Bitmap image, String personAge)
+	HttpResponse send(String patientFirstName, 
+			String patientLastName, String patientSex, String patientDOB,
+			String patientHealthID, String patientGPSCoordinates, String patientAddress,
+			String patientPhoneNumber, String patientEmail, Bitmap image)
+		throws ClientProtocolException, IOException;
+	
+	HttpResponse sendcase(String patientID, 
+			String patientPriority, String patientComments, Bitmap image)
 		throws ClientProtocolException, IOException;
 }

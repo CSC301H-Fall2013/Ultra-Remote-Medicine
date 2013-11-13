@@ -25,69 +25,149 @@
 	        
 	    <TableRow>
 	        <TextView
-	            android:text="@string/metadata_patient_name_label"
+	            android:text="@string/metadata_patient_first_name_label"
+	        	android:textColor="@color/label_color"
+				android:layout_marginBottom="4dp"
+	            android:gravity="right"
+	            android:padding="3dip" />
+
+	        <EditText
+	            android:id="@+id/patient_first_name"
+	            android:layout_width="@dimen/metadata_textview_length"
+	            android:layout_height="@dimen/metadata_textview_heigh"
+	            android:inputType="text"
+	            android:padding="3dip" />
+
+	    </TableRow>
+	    
+	    <TableRow>
+	        <TextView
+	            android:text="@string/metadata_patient_last_name_label"
 	        	android:textColor="@color/label_color"
 				android:layout_marginBottom="4dp"
 	            android:gravity="right"
 	            android:padding="3dip" />
 	        <EditText
-		        android:id="@+id/patient_name"
+		        android:id="@+id/patient_last_name"
 	            android:inputType="text"
 	            android:padding="3dip"
+	            android:layout_height="@dimen/metadata_textview_heigh"
 	    		android:layout_width="@dimen/metadata_textview_length" />
 	    </TableRow>
 	    
-	    
-	    <TableRow>
+	   <TableRow>
 	        <TextView
-	            android:text="@string/metadata_age_label"
+	            android:text="@string/metadata_sex_label"
 	        	android:textColor="@color/label_color"
 				android:layout_marginBottom="4dp"
 	            android:gravity="right"
 	            android:padding="3dip" />
 
-	        <EditText
-		        android:id="@+id/patient_age"
+	    <!--    <Spinner
+	            android:id="@+id/patient_sex"
 	            android:layout_width="@dimen/metadata_textview_length"
-	            android:ems="10"
-	            android:inputType="number"
-	            android:padding="3dip" >
-
-	            <requestFocus />
-	        </EditText>
-
-	    </TableRow>
-	
-	    <TableRow>
-	        <TextView
-	            android:text="@string/metadata_gestation_age_label"
-	        	android:textColor="@color/label_color"
-				android:layout_marginBottom="4dp"
-	            android:gravity="right"
-	            android:padding="3dip" />
-	        <EditText
-		        android:id="@+id/patient_gestation_age"
-	            android:inputType="number"
+	            android:layout_height="@dimen/metadata_textview_heigh"
+	            android:entries="@array/metadata_sex_label_spinner"
 	            android:padding="3dip"
+	            android:textAlignment="center" />
+	    -->
+	    <EditText
+		        android:id="@+id/patient_sex"
+	            android:inputType="text"
+	            android:padding="3dip"
+	            android:layout_height="@dimen/metadata_textview_heigh"
 	            android:layout_width="@dimen/metadata_textview_length" />
 	    </TableRow>
 	    
-	    
 	    <TableRow>
 	        <TextView
-	            android:text="@string/metadata_comments_label"
+	            android:text="@string/metadata_dob_label"
 	        	android:textColor="@color/label_color"
 				android:layout_marginBottom="4dp"
 	            android:gravity="right"
 	            android:padding="3dip" />
 	        <EditText
-		        android:id="@+id/comments"
-	            android:inputType="textMultiLine"
+		        android:id="@+id/patient_dob"
+	            android:inputType="date"
 	            android:padding="3dip"
-	            android:layout_width="@dimen/metadata_textview_length"
-	            android:minLines="5" />
+	            android:layout_height="@dimen/metadata_textview_heigh"
+	            android:layout_width="@dimen/metadata_textview_length" />
 	    </TableRow>
-	   
+	    
+	    <TableRow>
+	        <TextView
+	            android:text="@string/metadata_health_id_label"
+	        	android:textColor="@color/label_color"
+				android:layout_marginBottom="4dp"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	        <EditText
+		        android:id="@+id/patient_health_id"
+	            android:inputType="text"
+	            android:padding="3dip"
+	            android:layout_height="@dimen/metadata_textview_heigh"
+	            android:layout_width="@dimen/metadata_textview_length" />
+	    </TableRow>
+	    
+	    <TableRow>
+	        <TextView
+	            android:text="@string/metadata_gps_coordinates_label"
+	        	android:textColor="@color/label_color"
+				android:layout_marginBottom="4dp"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	        <EditText
+		        android:id="@+id/patient_gps_coordinates"
+	            android:inputType="text"
+	            android:padding="3dip"
+	            android:layout_height="@dimen/metadata_textview_heigh"
+	            android:layout_width="@dimen/metadata_textview_length" />
+	    </TableRow>
+	    
+	    <TableRow>
+	        <TextView
+	            android:text="@string/metadata_address_label"
+	        	android:textColor="@color/label_color"
+				android:layout_marginBottom="4dp"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	        <EditText
+		        android:id="@+id/patient_address"
+	            android:inputType="text"
+	            android:padding="3dip"
+	            android:layout_height="@dimen/metadata_textview_heigh"
+	            android:layout_width="@dimen/metadata_textview_length" />
+	    </TableRow>
+	    
+	    <TableRow>
+	        <TextView
+	            android:text="@string/metadata_phone_number_label"
+	        	android:textColor="@color/label_color"
+				android:layout_marginBottom="4dp"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	        <EditText
+		        android:id="@+id/patient_phone_number"
+	            android:inputType="phone"
+	            android:padding="3dip"
+	            android:layout_height="@dimen/metadata_textview_heigh"
+	            android:layout_width="@dimen/metadata_textview_length" />
+	    </TableRow>
+	    
+	    <TableRow>
+	        <TextView
+	            android:text="@string/metadata_email_label"
+	        	android:textColor="@color/label_color"
+				android:layout_marginBottom="4dp"
+	            android:gravity="right"
+	            android:padding="3dip" />
+	        <EditText
+		        android:id="@+id/patient_email"
+	            android:inputType="textWebEmailAddress"
+	            android:padding="3dip"
+	            android:layout_height="@dimen/metadata_textview_heigh"
+	            android:layout_width="@dimen/metadata_textview_length" />
+	    </TableRow>
 	    
 	    <TableRow>
 		    <Button

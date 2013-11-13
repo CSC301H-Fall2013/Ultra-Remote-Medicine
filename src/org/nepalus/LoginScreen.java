@@ -20,7 +20,7 @@ public class LoginScreen extends Activity {
         Button nextButton = (Button) findViewById(R.id.login_submit);
         nextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-            	Intent i = new Intent(mContext, WalkthroughScreen.class);
+            	Intent i = new Intent(mContext, MetadataScreen.class);
             	startActivity(i);
             }
         });

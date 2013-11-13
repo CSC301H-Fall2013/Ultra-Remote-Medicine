@@ -15,8 +15,8 @@
 	    <TextView
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:textColor="@color/label_color"
-	        android:text="@string/login_username_label" />
+	        android:text="@string/login_username_label"
+	        android:textColor="@color/label_color" />
 	
 	    <EditText
 	        android:layout_width="fill_parent"

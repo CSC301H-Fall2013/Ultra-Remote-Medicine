@@ -20,17 +20,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class MetadataScreen extends Activity {
+public class AddNewPatientScreen extends Activity {
 	private Activity mActivity;
-	private EditText mPatientFirstName;
-	private EditText mPatientLastName;
-	private EditText mPatientSex;
-	private EditText mPatientDOB;
-	private EditText mPatientHealthID;
-	private EditText mPatientGPSCoordinates;
-	private EditText mPatientAddress;
-	private EditText mPatientPhoneNumber;
-	private EditText mPatientEmail;
+	private EditText mPatientID;
+	private EditText mPatientPriority;
+	private EditText mPatientComments;
 	
     private NepalUltrasoundAPI api = new NepalUltrasoundSender();
 	
@@ -41,20 +35,14 @@ public class MetadataScreen extends Activity {
         setContentView(R.layout.metadata);
         
         mActivity = this;
-        mPatientFirstName = (EditText) findViewById(R.id.patient_first_name);
-        mPatientLastName = (EditText) findViewById(R.id.patient_last_name);
-        mPatientSex = (EditText) findViewById(R.id.patient_sex);
-        mPatientDOB = (EditText) findViewById(R.id.patient_dob);
-        mPatientHealthID = (EditText) findViewById(R.id.patient_health_id);
-        mPatientGPSCoordinates = (EditText) findViewById(R.id.patient_gps_coordinates);
-        mPatientAddress = (EditText) findViewById(R.id.patient_address);
-        mPatientPhoneNumber = (EditText) findViewById(R.id.patient_phone_number);
-        mPatientEmail = (EditText) findViewById(R.id.patient_email);
+        mPatientID = (EditText) findViewById(R.id.patient_id);
+        mPatientPriority = (EditText) findViewById(R.id.patient_priority);
+        mPatientComments = (EditText) findViewById(R.id.patient_comments);
         		
-        ImageView thumbnail = (ImageView) findViewById(R.id.ultrasound_thumbnail);
+        ImageView thumbnail = (ImageView) findViewById(R.id.ultrasound_case_thumbnail);
         thumbnail.setImageURI(UltrasoundImageScreen.getOutputMediaFileUri());
         
-        Button nextButton = (Button) findViewById(R.id.finish);
+        Button nextButton = (Button) findViewById(R.id.casefinish);
         nextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
             	submit();
@@ -65,16 +53,9 @@ public class MetadataScreen extends Activity {
     }
     
     private void submit(){    	    	
-    	final String patientFirstName = mPatientFirstName.getText().toString();    	
-    	final String patientLastName = mPatientLastName.getText().toString();
-    	final String patientSex = mPatientSex.getText().toString();
-    	final String patientDOB = mPatientDOB.getText().toString();
-    	final String patientHealthID = mPatientHealthID.getText().toString();
-    	final String patientGPSCoordinates = mPatientGPSCoordinates.getText().toString();
-    	final String patientAddress = mPatientAddress.getText().toString();
-    	final String patientPhoneNumber = mPatientPhoneNumber.getText().toString();
-    	final String patientEmail = mPatientEmail.getText().toString();
-    	
+    	final String patientID = mPatientID.getText().toString();    	
+    	final String patientPriority = mPatientPriority.getText().toString(); 
+    	final String patientComments = mPatientComments.getText().toString(); 
     	
     	BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
     	final Bitmap photo;
@@ -95,10 +76,8 @@ public class MetadataScreen extends Activity {
 	            public void run() {
 	            	try {
 	            		api.setURL("http://192.168.100.245:3000/send");
-						HttpResponse response = api.send(patientFirstName, 
-								patientLastName, patientSex, patientDOB,
-								patientHealthID, patientGPSCoordinates, patientAddress,
-								patientPhoneNumber, patientEmail, photo);
+						HttpResponse response = api.sendcase(patientID, 
+								patientPriority, patientComments, photo);
 						Log.d("API", "sent");											
 					} catch (ClientProtocolException e) {
 						Log.d("API", e.getMessage());						
