@@ -26,11 +26,12 @@ def createUser(username, emailaddress, docpassword):
 class SetInfoTests(TestCase):
     """
     Test cases to see whether information on doctor's, worker's and patient's 
-    profile page is set up correctly
+    profile page is set up correctly. Also checks whether the information is
+    updated correctly when changed.
     """
     
     def test_doctor_first_name(self):
-        user = createUser('doctor2', 'a@a.com', 'doctorf')
+        user = createUser('doctor1', 'a@a.com', 'doctor')
         user.save()
         try:
             doctor1 = Doctor(user=user)
@@ -43,12 +44,54 @@ class SetInfoTests(TestCase):
         
         self.assertEqual(doctor1.user.first_name,'F')
         self.client = Client()
-        self.client.login(username="doctor2", password='doctorf')
+        self.client.login(username="doctor1", password='doctor')
         url = reverse('display_profile', args=[user.id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        print response.context['viewer'].first_name
-    
+        self.assertEqual(response.context['user'].first_name, 'F')
+        try:
+            doctor1.user.first_name = 'G'
+            user.save()
+            #doctor1.save()
+        except IntegrityError:
+            return HttpResponseServerError()
+        url = reverse('display_profile', args=[user.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(doctor1.user.first_name,'G')
+        self.assertEqual(response.context['user'].first_name, 'G')
+        
+    def test_doctor_change_priority(self):
+        user = createUser('doctor1', 'a@a.com', 'doctor')
+        user.save()
+        try:
+            doctor1 = Doctor(user=user)
+            doctor1.user.first_name = 'F'
+            doctor1.registration_time = timezone.now()
+            case1 = Case()
+            user.save()
+            doctor1.save()
+        except IntegrityError:
+            return HttpResponseServerError()
+        
+        self.client = Client()
+        self.client.login(username="doctor1", password='doctor')
+        url = reverse('display_profile', args=[user.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['user'].first_name, 'F')
+        try:
+            doctor1.user.first_name = 'G'
+            user.save()
+            #doctor1.save()
+        except IntegrityError:
+            return HttpResponseServerError()
+        url = reverse('display_profile', args=[user.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(doctor1.user.first_name,'G')
+        self.assertEqual(response.context['user'].first_name, 'G')
+        
     def test_doctor_last_name(self):
         user = createUser('doctor1', 'a@a.com', 'doctor')
         try:
@@ -134,6 +177,7 @@ class SetInfoTests(TestCase):
         try:
             patient = Patient()
             patient.first_name = 'troll'
+            patient.save()
         except IntegrityError:
             return HttpResponseServerError()
         self.assertEqual(patient.first_name, 'troll')
@@ -142,6 +186,7 @@ class SetInfoTests(TestCase):
         try:
             patient = Patient()
             patient.last_name = 'ho'
+            patient.save()
         except IntegrityError:
             return HttpResponseServerError()
         self.assertEqual(patient.last_name, 'ho')
@@ -150,6 +195,7 @@ class SetInfoTests(TestCase):
         try:
             patient = Patient()
             patient.gps_coordinates = '101010'
+            patient.save()
         except IntegrityError:
             return HttpResponseServerError()
         self.assertEqual(patient.gps_coordinates, '101010')
@@ -158,6 +204,7 @@ class SetInfoTests(TestCase):
         try:
             patient = Patient()
             patient.address = '420 street'
+            patient.save()
         except IntegrityError:
             return HttpResponseServerError()
         self.assertEqual(patient.address, '420 street')
@@ -165,15 +212,17 @@ class SetInfoTests(TestCase):
     def test_patient_dob(self):
         try:
             patient = Patient()
-            patient.date_of_birth = '10/06/1999'
+            patient.date_of_birth = '1999-10-10'
+            patient.save()
         except IntegrityError:
             return HttpResponseServerError()
-        self.assertEqual(patient.date_of_birth, '10/06/1999')
+        self.assertEqual(patient.date_of_birth, '1999-10-10')
         
     def test_patient_phone(self):
         try:
             patient = Patient()
             patient.phone = '416'
+            patient.save()
         except IntegrityError:
             return HttpResponseServerError()
         self.assertEqual(patient.phone, '416')
@@ -182,6 +231,7 @@ class SetInfoTests(TestCase):
         try:
             patient = Patient()
             patient.health_id = '12345'
+            patient.save()
         except IntegrityError:
             return HttpResponseServerError()
         self.assertEqual(patient.health_id, '12345')
@@ -190,6 +240,7 @@ class SetInfoTests(TestCase):
         try:
             patient = Patient()
             patient.gender = 'Male'
+            patient.save()
         except IntegrityError:
             return HttpResponseServerError()
         self.assertEqual(patient.gender, 'Male')
@@ -198,6 +249,7 @@ class SetInfoTests(TestCase):
         try:
             patient = Patient()
             patient.email = 'a@a.com'
+            patient.save()
         except IntegrityError:
             return HttpResponseServerError()
         self.assertEqual(patient.email, 'a@a.com')
