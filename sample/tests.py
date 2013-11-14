@@ -1,6 +1,7 @@
 from django.test import TestCase
 from sample.models import (Doctor, Worker, Patient, Measurement,
-        MeasurementType, SpecialtyType, TimeSlot, Case, Scan, Annotation)
+        MeasurementType, SpecialtyType, TimeSlot, Case, Scan, Annotation,
+        Comment, CommentGroup)
 from django.contrib.auth.models import User
 from psycopg2 import IntegrityError
 from django.core.urlresolvers import reverse
@@ -27,6 +28,86 @@ def createUser(username, emailaddress, docpassword):
 
 
 client = Client()
+
+
+def populate_default_test_data():
+    ''' Populates the database with default test data. '''
+
+    try:
+        worker_user = createUser('theworker', 'o@hola.com', 'password')
+        worker_user.save()
+        worker = Worker(user=worker_user)
+        worker.registration_time = timezone.now()
+        worker.save()
+
+    except IntegrityError:
+        print 'Failed to create a default worker user'
+        return HttpResponseServerError()
+
+    try:
+        doctor_user = createUser('thedoctor', 'o@boo.com', 'thepassword')
+        doctor_user.save()
+        doctor = Doctor(user=doctor_user)
+        doctor.user_id = worker_user.id
+        doctor.registration_time = timezone.now()
+        doctor.save()
+    except IntegrityError:
+        print 'Failed to create a default doctor'
+        return HttpResponseServerError()
+
+    try:
+        sample_patient = Patient(
+                first_name="Jacobi",
+                last_name="Miniti",
+                gps_coordinates="101010",
+                address="Yonge street",
+                date_of_birth="1999-06-10",
+                phone="646646646464",
+                health_id="324324234",
+                gender="Male",
+                email="test@test.com"
+            )
+
+        sample_patient.save()
+    except IntegrityError:
+        print 'Failed to create a default patient'
+        return HttpResponseServerError()
+
+    try:
+        comment = Comment(author=worker_user,
+                          text="Trololololol.",
+                          time_posted=timezone.now())
+        comment.save()
+    except IntegrityError:
+        print 'Failed to create a default comment'
+        return HttpResponseServerError()
+
+    try:
+        comment_group = CommentGroup()
+        comment_group.save()
+        comment_group.comments.add(comment)
+    except IntegrityError:
+        print 'Failed to create a default comment group'
+        return HttpResponseServerError()
+
+    try:
+        sample_case = Case(
+                patient=sample_patient,
+                submitter=worker,
+                lock_holder=None,
+                priority=10,
+                submitter_comments=comment_group,
+                date_opened="11-11-2012"
+            )
+
+        sample_patient.save()
+    except IntegrityError:
+        print 'Failed to create a default worker user'
+        return HttpResponseServerError()
+
+    return [worker_user, worker, doctor_user, doctor, sample_patient, comment,
+            comment_group, sample_case]
+
 
 class SetInfoTests(TestCase):
     """
