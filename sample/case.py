@@ -115,6 +115,7 @@ def display_case(request, case_id):
         'date_of_birth': case.patient.date_of_birth,
         'health_id': case.patient.health_id,
         'case_id': case_id,
+        'priority': case.priority,
         'submitter_comments':
         create_comment_group_entries([case.submitter_comments])[0],
         'reviewer_comments':

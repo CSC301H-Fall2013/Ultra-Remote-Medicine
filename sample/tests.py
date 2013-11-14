@@ -13,6 +13,7 @@ import unittest
 from django.http import HttpResponseServerError
 import datetime
 
+
 def createUser(username, emailaddress, docpassword):
     try:
         user = User(username=username,
@@ -109,6 +110,46 @@ def populate_default_test_data():
             comment_group, sample_case]
 
 
+class NewCaseTests(TestCase):
+    '''
+    Test cases for creating a new case.
+    '''
+
+    def test_add_regular_case(self):
+        '''  '''
+        defaults = populate_default_test_data()
+        patient = defaults[4]
+
+        self.client = Client()
+        self.client.login(username="theworker", password="password")
+
+        url = reverse('new_case', args=['X'])
+        response = self.client.post(url,
+            {'patient': patient.id,
+             'comments': 'Trololololol.',
+             'priority': 10})
+
+        self.assertEqual(response.status_code, 302, "Bad status code")
+
+        # Test that the case page reflects the new case.
+        url = response['location']
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        case_id = response.context['case_id']
+        case = Case.objects.filter(id=case_id)[0]
+
+        self.assertEqual(response.context['firstName'], patient.first_name)
+        self.assertEqual(response.context['lastName'], patient.last_name)
+        self.assertEqual(response.context['patient_id'], patient.id)
+        self.assertEqual(response.context['gender'], patient.gender)
+        self.assertEqual(response.context['date_of_birth'],
+                datetime.date(1999, 06,10))
+        #self.assertEqual(response.context['submitter_comments'],
+        #        case.submitter_comments.comments[0], 'Trololololol.')
+        self.assertEqual(response.context['priority'], case.priority)
+
+
 class SetInfoTests(TestCase):
     """
     Test cases to see whether information on doctor's, worker's and patient's 
@@ -127,7 +168,7 @@ class SetInfoTests(TestCase):
             doctor1.save()
         except IntegrityError:
             return HttpResponseServerError()
-        
+
         self.assertEqual(doctor1.user.first_name,'F')
         self.client = Client()
         self.client.login(username="doctor1", password='doctor')
@@ -146,7 +187,7 @@ class SetInfoTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(doctor1.user.first_name,'G')
         self.assertEqual(response.context['user'].first_name, 'G')
-        
+
     def test_doctor_change_priority(self):
         user = createUser('doctor1', 'a@a.com', 'doctor')
         user.save()
@@ -158,7 +199,7 @@ class SetInfoTests(TestCase):
             doctor1.save()
         except IntegrityError:
             return HttpResponseServerError()
-        
+
         self.client = Client()
         self.client.login(username="doctor1", password='doctor')
         url = reverse('display_profile', args=[user.id])
