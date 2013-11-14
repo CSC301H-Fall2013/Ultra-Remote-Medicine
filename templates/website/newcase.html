@@ -24,7 +24,7 @@
 
 		<div class="profilecontainer">
 
-			<h1>Open new case</h1>
+			<h1><b>Open new case</b></h1>
 
 			<form action="{% url 'new_case' 'X' %}" method="post"> {% csrf_token %}
 				Patient: {{form.patient}} <br>
