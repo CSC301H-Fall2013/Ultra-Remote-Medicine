@@ -31,20 +31,22 @@ class searchMType(admin.ModelAdmin):
     search_fields = ['name']
 
 class searchMeasurement(admin.ModelAdmin):
-    search_fields = ['worker', 'patient', 'measurement_type']
+    search_fields = ['value']
 
 class searchSpeciality(admin.ModelAdmin):
     search_fields = ['name']
+    list_display = ['name']
 
 class searchTimeslot(admin.ModelAdmin):
     search_fields = ['start_time', 'end_time']
 
 class searchCase(admin.ModelAdmin):
-    search_fields = ['patient', 'submitter', 'lock_holder', 'specialties',
-                      'submitter_comments']
+    search_fields = ['id']
+    list_display = ['id']
 
 class searchComment(admin.ModelAdmin):
-    search_fields = ['author', 'parent']
+    search_fields = ['text']
+    list_display = ['text']
 
 class searchScan(admin.ModelAdmin):
     search_fields = ['patient', 'comments']
