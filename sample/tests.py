@@ -4,6 +4,11 @@ from sample.models import (Doctor, Worker, Patient, Measurement,
 from django.contrib.auth.models import User
 from psycopg2 import IntegrityError 
 from django.core.urlresolvers import reverse
+from django.utils import timezone
+from django.contrib.auth import login, authenticate
+from django.test.client import RequestFactory
+from django.test.client import Client
+import unittest
 
 def createUser(username, emailaddress, docpassword):
     try:
@@ -14,7 +19,6 @@ def createUser(username, emailaddress, docpassword):
             is_superuser=False,
         )
         user.set_password(docpassword)
-        user.save()
         return user
     except IntegrityError:
         return HttpResponseServerError()
@@ -24,17 +28,26 @@ class SetInfoTests(TestCase):
     Test cases to see whether information on doctor's, worker's and patient's 
     profile page is set up correctly
     """
+    
     def test_doctor_first_name(self):
-        user = createUser('doctor1', 'a@a.com', 'doctor')
+        user = createUser('doctor2', 'a@a.com', 'doctorf')
+        user.save()
         try:
             doctor1 = Doctor(user=user)
             doctor1.user.first_name = 'F'
+            doctor1.registration_time = timezone.now()
+            user.save()
+            doctor1.save()
         except IntegrityError:
             return HttpResponseServerError()
+        
         self.assertEqual(doctor1.user.first_name,'F')
-        #response = self.client.get('templates/website/doctorprofile.html')
-        #self.assertEqual(response.status_code, 200)
-        #response = self.client.get(reverse('profile:doctorprofile'))
+        self.client = Client()
+        self.client.login(username="doctor2", password='doctorf')
+        url = reverse('display_profile', args=[user.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        print response.context['viewer'].first_name
     
     def test_doctor_last_name(self):
         user = createUser('doctor1', 'a@a.com', 'doctor')
