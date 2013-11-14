@@ -98,10 +98,9 @@ def populate_default_test_data():
                 lock_holder=None,
                 priority=10,
                 submitter_comments=comment_group,
-                date_opened="11-11-2012"
+                date_opened="2012-12-12"
             )
-
-        sample_patient.save()
+        sample_case.save()
     except IntegrityError:
         print 'Failed to create a default worker user'
         return HttpResponseServerError()
@@ -189,34 +188,64 @@ class SetInfoTests(TestCase):
         self.assertEqual(response.context['user'].first_name, 'G')
 
     def test_doctor_change_priority(self):
-        user = createUser('doctor1', 'a@a.com', 'doctor')
-        user.save()
+        defaults = populate_default_test_data()
+        user = defaults[2]
+        #user.save()
         try:
-            doctor1 = Doctor(user=user)
-            doctor1.user.first_name = 'F'
-            doctor1.registration_time = timezone.now()
-            user.save()
-            doctor1.save()
+            doctor1 = defaults[3]
+            patient1 = defaults[4]
+            #user.save()
+            #doctor1.save()
+            #patient1.save()
         except IntegrityError:
             return HttpResponseServerError()
 
         self.client = Client()
-        self.client.login(username="doctor1", password='doctor')
-        url = reverse('display_profile', args=[user.id])
+        self.client.login(username="thedoctor", password='thepassword')
+        url = reverse('display_case', args=[defaults[-1].id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['user'].first_name, 'F')
+        self.assertEqual(defaults[-1].priority, 10)
         try:
-            doctor1.user.first_name = 'G'
-            user.save()
+            defaults[-1].priority = 30
+            defaults[-1].save()
             #doctor1.save()
         except IntegrityError:
             return HttpResponseServerError()
-        url = reverse('display_profile', args=[user.id])
+        url = reverse('display_case', args=[defaults[-1].id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(doctor1.user.first_name,'G')
-        self.assertEqual(response.context['user'].first_name, 'G')
+        self.assertEqual(defaults[-1].priority, 30)
+        
+    def test_worker_change_priority(self):
+        defaults = populate_default_test_data()
+        user = defaults[0]
+        #user.save()
+        try:
+            worker1 = defaults[1]
+            patient1 = defaults[4]
+            #user.save()
+            #doctor1.save()
+            #patient1.save()
+        except IntegrityError:
+            return HttpResponseServerError()
+        
+        self.client = Client()
+        self.client.login(username="theworker", password='password')
+        url = reverse('display_case', args=[defaults[-1].id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(defaults[-1].priority, 10)
+        try:
+            defaults[-1].priority = 30
+            defaults[-1].save()
+            #doctor1.save()
+        except IntegrityError:
+            return HttpResponseServerError()
+        url = reverse('display_case', args=[defaults[-1].id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(defaults[-1].priority, 30)
 
     def test_doctor_last_name(self):
         user = createUser('doctor1', 'a@a.com', 'doctor')

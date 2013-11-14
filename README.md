@@ -44,7 +44,7 @@ User2: doctor2
 
 Password: doctor
 
-**Sprint2 Preliminary:**
+**Sprint 2:**
 
 All the pdf files are uploaded to gh-pages/sprint2
 
