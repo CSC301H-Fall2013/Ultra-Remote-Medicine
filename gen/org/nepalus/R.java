@@ -34,24 +34,26 @@ public final class R {
     }
     public static final class id {
         public static final int casefinish=0x7f090004;
-        public static final int end_walkthrough=0x7f090012;
-        public static final int finish=0x7f090010;
-        public static final int login_submit=0x7f090005;
-        public static final int patient_address=0x7f09000d;
+        public static final int end_walkthrough=0x7f090014;
+        public static final int finish=0x7f090012;
+        public static final int login_password=0x7f090006;
+        public static final int login_submit=0x7f090007;
+        public static final int login_username=0x7f090005;
+        public static final int patient_address=0x7f09000f;
         public static final int patient_comments=0x7f090003;
-        public static final int patient_dob=0x7f09000a;
-        public static final int patient_email=0x7f09000f;
-        public static final int patient_first_name=0x7f090007;
-        public static final int patient_gps_coordinates=0x7f09000c;
-        public static final int patient_health_id=0x7f09000b;
+        public static final int patient_dob=0x7f09000c;
+        public static final int patient_email=0x7f090011;
+        public static final int patient_first_name=0x7f090009;
+        public static final int patient_gps_coordinates=0x7f09000e;
+        public static final int patient_health_id=0x7f09000d;
         public static final int patient_id=0x7f090001;
-        public static final int patient_last_name=0x7f090008;
-        public static final int patient_phone_number=0x7f09000e;
+        public static final int patient_last_name=0x7f09000a;
+        public static final int patient_phone_number=0x7f090010;
         public static final int patient_priority=0x7f090002;
-        public static final int patient_sex=0x7f090009;
-        public static final int tutorial_video_view=0x7f090011;
+        public static final int patient_sex=0x7f09000b;
+        public static final int tutorial_video_view=0x7f090013;
         public static final int ultrasound_case_thumbnail=0x7f090000;
-        public static final int ultrasound_thumbnail=0x7f090006;
+        public static final int ultrasound_thumbnail=0x7f090008;
     }
     public static final class layout {
         public static final int addnewcase=0x7f030000;

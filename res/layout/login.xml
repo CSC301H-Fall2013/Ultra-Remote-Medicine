@@ -19,6 +19,7 @@
 	        android:textColor="@color/label_color" />
 	
 	    <EditText
+	        android:id="@+id/login_username"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:inputType="text" />
@@ -30,6 +31,7 @@
 	        android:text="@string/login_password_label" />
 	    
 	    <EditText
+	        android:id="@+id/login_password"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:inputType="textPassword"
