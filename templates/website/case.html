@@ -14,6 +14,8 @@
   <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
 </head>
 
+{% include "_commentDisplayScript.html" %}
+
 <body>
 
 	{% include "_topBar.html" %}
@@ -43,7 +45,7 @@
 				<b>{{submitter_comments.contents.0.comment_reference.author.first_name}} {{submitter_comments.contents.0.comment_reference.author.last_name}} (Submitter)</b>
 				<br>
 				{%for comment_entry in submitter_comments.contents%}
-					{%with comments=comment_entry template_name="_commentDisplay.html" %} 
+					{%with comments=comment_entry template_name="_commentDisplay.html" can_reply=True %} 
 						{% include "_commentDisplay.html" %}
 					{%endwith%}
 				{%endfor%}
@@ -54,7 +56,7 @@
 					<b>{{comment_group.contents.0.comment_reference.author.first_name}} {{comment_group.contents.0.comment_reference.author.last_name}}</b>
 					<br>
 					{%for comment_entry in comment_group.contents%}
-						{%with comments=comment_entry template_name="_commentDisplay.html" %} 
+						{%with comments=comment_entry template_name="_commentDisplay.html" can_reply=True %} 
 							{% include "_commentDisplay.html" %}
 						{%endwith%}
 					{%endfor%}

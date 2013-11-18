@@ -3,7 +3,7 @@ from django import forms
 
 class JQueryUIDatepickerWidget(forms.DateInput):
     ''' Widget designed to allow the user to pick the date. Source:
-        Stackoverflow Doesn't work.'''
+        Stackoverflow. Doesn't work.'''
 
     def __init__(self, **kwargs):
         super(forms.DateInput, self).__init__(attrs={"size": 10,
