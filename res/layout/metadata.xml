@@ -163,7 +163,7 @@
 	            android:padding="3dip" />
 	        <EditText
 		        android:id="@+id/patient_email"
-	            android:inputType="textWebEmailAddress"
+	            android:inputType="text"
 	            android:padding="3dip"
 	            android:layout_height="@dimen/metadata_textview_heigh"
 	            android:layout_width="@dimen/metadata_textview_length" />
