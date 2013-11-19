@@ -12,6 +12,8 @@ def display_doctor(request):
 
     case_attributes = create_case_attributes(Case.objects)
 
+    print "Ahahahaha"
+
     return render_to_response('doctor.html', {
         'viewer': user,
         'user': user,
@@ -19,6 +21,7 @@ def display_doctor(request):
         'address': doctor.address,
         'registration_time': doctor.registration_time,
         'specialties': doctor.specialties.all(),
+        'schedule': 'hohoho',
         'comments': doctor.comments,
         'id': doctor.id,
         'cases': case_attributes
