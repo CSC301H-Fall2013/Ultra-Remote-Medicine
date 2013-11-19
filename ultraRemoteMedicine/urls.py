@@ -46,6 +46,9 @@ urlpatterns += patterns('sample.case',
                         url('^newcase/(?P<patient_id>\w+)$',
                             'display_new_case', name='new_case'))
 
+urlpatterns += patterns('sample.mobile',
+                        url('^mobile/login$', 'process_login'))
+
 if settings.DEBUG:
     urlpatterns += patterns('django.contrib.staticfiles.views',
                             url(r'^static/(?P<path>.*)$', 'serve'))
