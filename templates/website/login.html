@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Bootstrap -->
   <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.css"%}"/>
+   <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap-responsive.css"%}"/>
   <script src="http://code.jquery.com/jquery.js"></script>
   <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
 </head>
@@ -24,12 +25,13 @@
     <br>
     <br>
     </div>
-  </div>
+     
+   
   <div class="row">
     <div class="col-md-4"></div>
      
 	        <div class="row-fluid">
-				<div class="span11 pagination-centered"><img src="{% static "bootstrap/image/logo.jpg"%}" alt="header" /></div>
+				<div><img src="{% static "bootstrap/image/logo.jpg"%}" alt="header"  class="img-responsive" alt="Responsive image"align = "middle" /></div>
 			</div>
 		
 	</div>
@@ -40,19 +42,19 @@
           <div class="form-group">
                <form id="login-form" action="{% url 'login' %}" method="post">
               {% csrf_token %}
-           <label for="inputEmail3" class="col-sm-2 control-label">Username</label>
+          
             <div class="col-sm-5">
               <input type="username" class="form-control" id="username" name = "username" placeholder="Username">
             </div>
           </div>
           <div class="form-group">
-            <label for="password" class="col-sm-2 control-label">Password</label>
+            
             <div class="col-sm-5">
               <input type="password" class="form-control" id="password" name="password" placeholder="Password">
             </div>
           </div>
           <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-6">
+            <div class="col-sm-offset-1 col-sm-6">
               <button type="submit" class="btn btn-primary">Log in</button>
             </div>
           </form>

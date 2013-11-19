@@ -1,64 +1,56 @@
+{% load static from staticfiles %}
 <!--  Component for displaying a table of cases. -->
-
+<script src="{% static "bootstrap/js/sorttable.js"%}"></script>
+<style>
+	/* Sortable tables */
+	table.sortable thead {
+    background-color:#1E90FF;
+    color:#000000;
+    font-weight: bold;
+    cursor: default;
+}
+</style>
 {% if cases|length > 0 %}
 
-	<table class = "table table-bordered" id="results">
-		<thead>
+    <div class="table-responsive">
+	    
+		<table class="sortable table table-bordered table-condensed table-hover" >
 			<tr>
-				<td>
-					<div class="btn-group">
-						<button class = "btn btn-info dropdown-toggle"  type="button" data-toggle="dropdown">Patient Name<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu">
-						    <li><a href="#" onclick="SortTable(0);">First Name</li>
-							<li><a href="#" onclick="SortTable(1);">Last Name</li>
-						</ul>
-					</div>
-					
-				</td>
-				<td>
-					<button class = "btn btn-info">Case</button>
-				</td>
-				<td>
-					<button class = "btn btn-info">Date</button>
-				</td>
-				<td>
-					<button class = "btn btn-info">Reviewer</button>
-				</td>
-				<td>
-					<button class = "btn btn-info">Priority</button>
-				</td>
+				<th>
+					Patient Name
+				</th>
+				<th>
+					Case
+				</th>
+				<th>
+					Date
+				</th>
+				<th>
+					Reviewer
+				</th>
+				<th>
+					Priority
+				</th>
 			</tr>
-		</thead>
-		
-		<tbody>
 			
+			{% for case in cases %}
+			<tr>
+				<td><a href="{% url 'display_patient' case.patient_ref.id %}" target="_blank">
+					{{case.patient_ref.first_name}}, {{case.patient_ref.last_name}} </a></td>
+				<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">Case {{case.case_ref.id}}</a></td>
 				
-			
-				{% for case in cases %}
-					<tr>
-						<td><a href="{% url 'display_patient' case.patient_ref.id %}" target="_blank">
-								{{case.patient_ref.first_name}}, {{case.patient_ref.last_name}} </a></td>
-						<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">Case {{case.case_ref.id}}</a></td>
-						<!--
-							<td><select>
-									<option value="pending(not seen)">pending(not seen)</option>
-									<option value="pending(seen)">pending(seen)</option>
-									<option value="completed" selected>completed</option>
-							</select></td>
-						 -->
-						<td>{{case.case_ref.date_opened}}</td>
-						{%if case.case_ref.lock_holder == None%}
-							{%if viewer.doctor%}
-								<td>Adopt this Case</td>
-							{%else%}
-								<td>None</td>
-							{%endif%}
+				<td>{{case.case_ref.date_opened}}</td>
+					{%if case.case_ref.lock_holder == None%}
+						{%if viewer.doctor%}
+							<td>Adopt this Case</td>
 						{%else%}
-							<td><a href="{% url 'display_profile' case.case_ref.lock_holder.id %}" target="_blank">
-									{{case.case_ref.lock_holder}} </a></td>
+							<td>None</td>
 						{%endif%}
-						<td>{{case.priority_text}}</td>
+					{%else%}
+						<td><a href="{% url 'display_profile' case.case_ref.lock_holder.id %}" target="_blank">
+								{{case.case_ref.lock_holder}} </a></td>
+					{%endif%}
+					<td>{{case.priority_text}}</td>
 						<!-- 
 							<td><select>
 									<option value="High" selected="selected">High</option>
@@ -66,77 +58,12 @@
 									<option value="Low" selected="selected">Low</option>
 							</select></td>
 						-->
-					</tr>
-				{% endfor %}	
-		</tbody>
-	</table>
+			</tr>
+			{% endfor %}
+
+		</table>
+	</div>
 {% else %}	
 	There are no cases to be displayed.
 	<br>
 {% endif %}
-
-	<script language="JavaScript" type="text/javascript">
-	<!--
-	var sortedOn = 0;
-	
-	function SortTable(sortOn) {
-	
-		var table = document.getElementById('results');
-		var tbody = table.getElementsByTagName('tbody')[0];
-		var rows = tbody.getElementsByTagName('tr');
-
-		var rowArray = new Array();
-		for (var i=0, length=rows.length; i<length; i++) {
-			rowArray[i] = rows[i].cloneNode(true);
-		}
-		
-		if (sortOn == sortedOn) { rowArray.reverse(); }
-		else {
-			sortedOn = sortOn;
-			if (sortedOn == 0) {
-				rowArray.sort();
-			}
-			else if (sortedOn == 1) {
-				rowArray.sort(RowCompareLastName);
-			}
-			else {
-				rowArray.sort(RowCompareNumbers);
-			}
-		}
-		
-		var newTbody = document.createElement('tbody');
-		for (var i=0, length=rowArray.length; i<length; i++) {
-			newTbody.appendChild(rowArray[i]);
-		}
-		
-		table.replaceChild(newTbody, tbody);
-	}
-	
-	function RowCompareFirstName(a, b) {
-	
-		var aVal = a.getElementsByTagName('td')[sortedOn].firstChild.nodeValue;
-		var bVal = b.getElementsByTagName('td')[sortedOn].firstChild.nodeValue;
-		var one=aVal.split(",");
-		var two=bVal.split(",");
-		if(one[0] == two[0]){return 0;}
-		else if(one[0] > two[0]){return -1;}
-		else{return 1;}
-	}
-	function RowCompareLastName(a, b) {
-	
-		var aVal = a.getElementsByTagName('td')[sortedOn].firstChild.nodeValue;
-		var bVal = b.getElementsByTagName('td')[sortedOn].firstChild.nodeValue;
-		var one=aVal.split(",");
-		var two=bVal.split(",");
-		return (one[1] == two[1]? 0 : (one[1] > two[1]? 1 : -1));
-	}
-
-	function RowCompareNumbers(a, b) {
-	
-		var aVal = parseInt(a.getElementsByTagName('td')[sortedOn].firstChild.nodeValue);
-		var bVal = parseInt(b.getElementsByTagName('td')[sortedOn].firstChild.nodeValue);
-		return (aVal - bVal);
-	}
-	
-	
-	</script>
