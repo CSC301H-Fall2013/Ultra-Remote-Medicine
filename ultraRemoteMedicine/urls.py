@@ -3,18 +3,19 @@ from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'ultraRemoteMedicine.views.home', name='home'),
-    # url(r'^ultraRemoteMedicine/', include('ultraRemoteMedicine.foo.urls')),
+                       # Examples:
+                       # url(r'^$', 'ultraRemoteMedicine.views.home', name='home'),
+                       # url(r'^ultraRemoteMedicine/', include('ultraRemoteMedicine.foo.urls')),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+                       # Uncomment the admin/doc line below to enable admin documentation:
+                       # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+                       # Uncomment the next line to enable the admin:
+                       url(r'^admin/', include(admin.site.urls)),
 )
 
 urlpatterns += patterns('sample.views',
@@ -45,6 +46,10 @@ urlpatterns += patterns('sample.case',
                         url('^cases$', 'display_case_list', name='case_list'),
                         url('^newcase/(?P<patient_id>\w+)$',
                             'display_new_case', name='new_case'))
+
+urlpatterns += patterns('sample.mobilelogin',
+                        url('^mobile/login',
+                            'mobile_login', name='mobilelogin'))
 
 if settings.DEBUG:
     urlpatterns += patterns('django.contrib.staticfiles.views',
