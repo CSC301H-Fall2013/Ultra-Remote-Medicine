@@ -102,6 +102,6 @@ class PostCommentForm(forms.Form):
     ''' The main form for posting a comment.'''
 
     comments = forms.CharField(required=False, widget=forms.Textarea)
-    comment_id = forms.HiddenInput()
+    comment_id = forms.CharField(required=False, widget=forms.HiddenInput())
     # comment_id = forms.IntegerField(widget=forms.HiddenInput(
     # attrs={'id': 'commentIdentifier'}))

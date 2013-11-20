@@ -95,6 +95,7 @@ def display_case(request, case_id, mode='v'):
 
                 comment_id = comment_form.cleaned_data['comment_id']
                 comments = comment_form.cleaned_data['comments']
+                print "Gospi Argo"
 
                 try:
                     case.save()
@@ -105,7 +106,7 @@ def display_case(request, case_id, mode='v'):
 
             else:
 
-                print "Invalid UpdateCasePirorityForm."
+                print "Invalid PostCommentForm."
 
         elif mode == 'p':
 

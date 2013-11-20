@@ -43,7 +43,7 @@
 			</form>
 		</div>
 	</div>
-	Hohoho {{comment_form.comment_id}}.id
+	Hohoho
 </body>
 
 <script>
@@ -66,7 +66,7 @@
 		parent_div.appendChild(comment_box);
 		comment_box.style.display = 'block';
 
-		var identifierElement = document.getElementById("{{comment_form.comment_id.id}}");
+		var identifierElement = document.getElementById("{{comment_form.comment_id.auto_id}}");
 		alert(comment_id);
 		identifierElement.setValue(comment_id);
 		
