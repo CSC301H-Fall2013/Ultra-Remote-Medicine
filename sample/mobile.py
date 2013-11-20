@@ -1,32 +1,70 @@
 import json
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import User
+from django.db import IntegrityError
+from sample.forms import NewPatientForm
+from sample.models import Patient
+from django.utils.importlib import import_module
+from django.contrib.auth import get_user
+from django.conf import settings
+from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, load_backend
+
+
+def is_worker(session_key):
+
+    engine = import_module(settings.SESSION_ENGINE)
+    session = engine.SessionStore(session_key)
+
+    try:
+        worker = session[SESSION_KEY]
+        sample_path = session[BACKEND_SESSION_KEY]
+        sample = load_backend(sample_path)
+        user = sample.get_user(worker) or AnonymousUser()
+    except KeyError:
+        user = AnonymousUser()
+
+    if user.is_authenticated():
+        return user.worker
+    else:
+        return False
 
 
 @csrf_exempt
 def process_login(request):
-    incomingData = json.loads(request.raw_post_data)
+
+    json_data = json.loads(request.raw_post_data)
+    try:
+        username = json_data['username']
+        password = json_data['password']
+    except KeyError:
+        json_response = json.dumps({"success": "false",
+                                    "type": "badRequest"})
+        return HttpResponse(json_response, mimetype='application/json')
 
     try:
-        username = incomingData['username']
-        password = incomingData['password']
-    except KeyError:
-        return HttpResponseBadRequest()
+        User.objects.get(username=username)
+    except ObjectDoesNotExist:
+        json_response = json.dumps({"success": "false",
+                                    "type": "invalidUser"})
+        return HttpResponse(json_response, mimetype='application/json')
 
     user = authenticate(username=username, password=password)
     if user is not None:
         if user.is_active:
             try:
                 login(request, user)
-                json_response = json.dumps({"success": "true", "type": "doctor",
+                json_response = json.dumps({"success": "true",
+                                            "type": "worker",
                                             "sessionid":
                                             request.session.session_key})
                 return HttpResponse(json_response, mimetype='application/json')
             except ObjectDoesNotExist:
-                login(request, user)
-                json_response = json.dumps({"success": "true", "type": "worker"})
+                json_response = json.dumps({"success": "false",
+                                            "type": "existence"})
                 return HttpResponse(json_response, mimetype='application/json')
         else:
             json_response = json.dumps({"success": "false", "type": "active"})
@@ -34,4 +72,56 @@ def process_login(request):
     else:
         # bad password
         json_response = json.dumps({"success": "false", "type": "password"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+
+@csrf_exempt
+def create_new_patient_m(request):
+
+    json_data = json.loads(request.raw_post_data)
+
+    try:
+        worker = is_worker(json_data['session_key'])
+        if not worker:
+            json_response = json.dumps({"success": "false",
+                                        "type": "notWorker"})
+            return HttpResponse(json_response, mimetype='application/json')
+    except:
+        json_response = json.dumps({"success": "false",
+                                    "type": "badRequest"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    form = NewPatientForm(json_data)
+    if form.is_valid():
+        first_name = form.cleaned_data['first_name']
+        last_name = form.cleaned_data['last_name']
+        gps_coordinates = form.cleaned_data['gps_coordinates']
+        address = form.cleaned_data['address']
+        date_of_birth = form.cleaned_data['date_of_birth']
+        phone_number = form.cleaned_data['phone_number']
+        health_id = form.cleaned_data['health_id']
+        photo_link = form.cleaned_data['photo_link']
+        sex = form.cleaned_data['sex']
+        email = form.cleaned_data['email']
+
+        try:
+            patient = Patient(
+                first_name=first_name,
+                last_name=last_name,
+                gps_coordinates=gps_coordinates,
+                address=address,
+                date_of_birth=date_of_birth,
+                phone=phone_number,
+                health_id=health_id,
+                gender=sex,
+                email=email,
+                photo_link=photo_link)
+            patient.save()
+        except IntegrityError:
+            json_response = json.dumps({"success": "false",
+                                        "type": "IntegrityError"})
+            return HttpResponse(json_response, mimetype='application/json')
+
+        json_response = json.dumps({"success": "true",
+                                    "type": "newPatient"})
         return HttpResponse(json_response, mimetype='application/json')
