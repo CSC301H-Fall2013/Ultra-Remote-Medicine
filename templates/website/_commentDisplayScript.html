@@ -12,35 +12,48 @@
 		{%else%}
 			<br>Worker
 		{%endif%}
-	</div>
-	<div class="media-body">
-			<table width="100%" border = "0">
-			    <col />
-			    <col width="230 px" />
-				<tr>
-					<td>
-						<b>Post Your Comment</b>
-					</td>
-					<td style="text-align: right">
-						<a id="cancel" href="javascript:;" onclick="cancel();">Cancel</a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div style="min-height: 55px; height: auto;">
+		</div>
+		<div class="media-body">
+			<form id='commentform' method='post' action="{{comment_post_action}}">
+				{% csrf_token %}
+				<table width="100%" border = "0">
+				    <col />
+				    <col width="230 px" />
+					<tr>
+						<td>
+							<b>Post Your Comment</b>
+						</td>
+						<td style="text-align: right">
+							<a id="cancel" href="javascript:;" onclick="cancel();">Cancel</a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="min-height: 55px; height: auto;">
+								{{comment_form.comments}}
+							</div>
+						</td>
+						<td style="text-align: right; vertical-align: top;">
 							
-						</div>
-					</td>
-					<td style="text-align: right; vertical-align: top;">
-						
-					</td>
-				</tr>
-			</table>
+						</td>
+					</tr>
+				</table>
+				
+				<input id="submitChanges" type="submit" name="submitChanges" value="Submit Changes" />
+			</form>
 		</div>
 	</div>
+	Hohoho {{comment_form.comment_id}}.id
 </body>
 
 <script>
+
+	<!-- Correct the display script. -->
+	{{comment_form.comments.auto_id}}.style.resize = 'none';
+	{{comment_form.comments.auto_id}}.rows = '3';
+	{{comment_form.comments.auto_id}}.style.width = '100%';
+	{{comment_form.comments.auto_id}}.style.height = '100px';
+
 	var current_comment_id = -1;
 
 	function replyTo(comment_id) {
@@ -52,6 +65,10 @@
 		var comment_box = document.getElementById("Country");
 		parent_div.appendChild(comment_box);
 		comment_box.style.display = 'block';
+
+		var identifierElement = document.getElementById("{{comment_form.comment_id.id}}");
+		alert(comment_id);
+		identifierElement.setValue(comment_id);
 		
 		// Hide all reply buttons.
 		for (i = 0; i < {{comment_count}}; i++) {
@@ -75,5 +92,7 @@
 			var reply_button = document.getElementById(reply_button_id);
 			reply_button.style.display = 'block';
 		}
+		
+		{{comment_form.comments.auto_id}}.value = '';
 	}
 </script>

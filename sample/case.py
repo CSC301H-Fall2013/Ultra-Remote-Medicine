@@ -1,4 +1,4 @@
-from sample.forms import NewCaseForm, UpdateCaseForm
+from sample.forms import NewCaseForm, UpdateCasePriorityForm, PostCommentForm
 from sample.models import Patient, Comment, Case, CommentGroup
 from django.utils import timezone
 from django.db import IntegrityError
@@ -7,6 +7,7 @@ from django.template import RequestContext
 from utilities import create_case_attributes, BoxedInteger, \
     create_comment_group_entries
 from django.http import HttpResponseRedirect, HttpResponseServerError
+from django.core.urlresolvers import reverse
 
 
 def display_new_case(request, patient_id):
@@ -77,7 +78,7 @@ def display_case_list(request):
         'cases': case_attributes}, context_instance=RequestContext(request))
 
 
-def display_case(request, case_id):
+def display_case(request, case_id, mode='v'):
     ''' Displays the specified case. '''
 
     user = request.user
@@ -86,31 +87,61 @@ def display_case(request, case_id):
 
     if request.method == 'POST':
 
-        form = UpdateCaseForm(request.POST)
-        if form.is_valid():
+        if mode == 'c':
 
-            priority = form.cleaned_data['priority']
+            priority_form = UpdateCasePriorityForm()
+            comment_form = PostCommentForm(request.POST)
+            if comment_form.is_valid():
 
-            try:
-                case.priority = priority
-                case.save()
-            except IntegrityError, e:
-                print str(e)
-                print "hard fail"
-                return HttpResponseServerError()
+                comment_id = comment_form.cleaned_data['comment_id']
+                comments = comment_form.cleaned_data['comments']
+
+                try:
+                    case.save()
+                except IntegrityError, e:
+                    print str(e)
+                    print "hard fail"
+                    return HttpResponseServerError()
+
+            else:
+
+                print "Invalid UpdateCasePirorityForm."
+
+        elif mode == 'p':
+
+            priority_form = UpdateCasePriorityForm(request.POST)
+            comment_form = PostCommentForm()
+            if priority_form.is_valid():
+
+                priority = priority_form.cleaned_data['priority']
+
+                try:
+                    case.priority = priority
+                    case.save()
+                except IntegrityError, e:
+                    print str(e)
+                    print "hard fail"
+                    return HttpResponseServerError()
+
+        else:
+
+            return HttpResponseServerError("Invalid POST mode.")
 
     else:
 
         # The page has just been entered and so the form hasn't
         # been submitted yet.
-        form = UpdateCaseForm()
-        form.populate(case)
+
+        priority_form = UpdateCasePriorityForm()
+        priority_form.populate(case)
+
+        comment_form = PostCommentForm()
 
     current_index = BoxedInteger(0)
     submitter_comments = create_comment_group_entries(
-        [case.submitter_comments], current_index)[0]
+            [case.submitter_comments], current_index)[0]
     reviewer_comments = create_comment_group_entries(
-        case.reviewer_comments.all(), current_index)
+            case.reviewer_comments.all(), current_index)
 
     return render_to_response('case.html', {
         'viewer': user,
@@ -126,5 +157,7 @@ def display_case(request, case_id):
         'submitter_comments': submitter_comments,
         'reviewer_comments': reviewer_comments,
         'comment_count': current_index.value,
-        'form': form
+        'priority_form': priority_form,
+        'comment_form': comment_form,
+        'comment_post_action': reverse('display_case', args=[case_id, 'c'])
     }, context_instance=RequestContext(request))

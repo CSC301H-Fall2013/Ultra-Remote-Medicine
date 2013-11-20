@@ -32,7 +32,7 @@ class NewCaseForm(forms.Form):
             self.fields['patient'].initial = patient_id
 
 
-class UpdateCaseForm(forms.Form):
+class UpdateCasePriorityForm(forms.Form):
     ''' The form used on the case page. '''
 
     priority = forms.ChoiceField(required=False,
@@ -96,3 +96,12 @@ class UpdateDoctorForm(forms.Form):
         self.fields["phone_number"].initial = doctor.phone
         self.fields["address"].initial = doctor.address
         self.fields["comments"].initial = doctor.comments
+
+
+class PostCommentForm(forms.Form):
+    ''' The main form for posting a comment.'''
+
+    comments = forms.CharField(required=False, widget=forms.Textarea)
+    comment_id = forms.HiddenInput()
+    # comment_id = forms.IntegerField(widget=forms.HiddenInput(
+    # attrs={'id': 'commentIdentifier'}))
