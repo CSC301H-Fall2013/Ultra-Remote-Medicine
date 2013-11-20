@@ -82,6 +82,7 @@ def is_worker(request):
     if user.is_authenticated():
         try:
             if user.worker:
+                print "i am here"
                 return json_data
         except:
             json_response = json.dumps({"success": "false",
@@ -130,25 +131,16 @@ def create_new_patient_m(request):
         json_response = json.dumps({"success": "true",
                                     "type": "newPatient"})
         return HttpResponse(json_response, mimetype='application/json')
+    else:
+        json_response = json.dumps({"success": "false",
+                                    "type": "invalidForm"})
+        return HttpResponse(json_response, mimetype='application/json')
 
 
 @csrf_exempt
 def display_patient_m(request):
 
-    json_data = json.loads(request.raw_post_data)
-
-    try:
-        worker = is_worker(json_data['session_key'])
-        if not worker:
-            json_response = json.dumps({"success": "false",
-                                        "type": "notWorker"})
-            return HttpResponse(json_response, mimetype='application/json')
-    except:
-        json_response = json.dumps({"success": "false",
-                                    "type": "badRequest"})
-        return HttpResponse(json_response, mimetype='application/json')
-
-    patient = Patient.objects.filter(id=json_data['patient_id'])[0]
+    patient = Patient.objects.filter(id=is_worker(request)['patient_id'])[0]
 
     case_attributes = create_case_attributes(Case.objects)
 
@@ -180,20 +172,8 @@ def display_patient_m(request):
 
 def create_new_case_m(request):
 
-    json_data = json.loads(request.raw_post_data)
-
-    try:
-        worker = is_worker(json_data['session_key'])
-        if not worker:
-            json_response = json.dumps({"success": "false",
-                                        "type": "notWorker"})
-            return HttpResponse(json_response, mimetype='application/json')
-    except:
-        json_response = json.dumps({"success": "false",
-                                    "type": "badRequest"})
-        return HttpResponse(json_response, mimetype='application/json')
-
-    form = NewCaseForm(json_data)
+    form = NewCaseForm(is_worker(request))
+    worker = request.user.worker
     if form.is_valid():
         patient_id = form.cleaned_data['patient']
         comments = form.cleaned_data['comments']
@@ -226,4 +206,8 @@ def create_new_case_m(request):
 
         json_response = json.dumps({"success": "true",
                                     "type": "newCase"})
+        return HttpResponse(json_response, mimetype='application/json')
+    else:
+        json_response = json.dumps({"success": "false",
+                                    "type": "invalidForm"})
         return HttpResponse(json_response, mimetype='application/json')
