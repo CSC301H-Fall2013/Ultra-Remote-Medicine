@@ -174,6 +174,7 @@ def display_patient_m(request):
 
     return HttpResponse(json_response, mimetype='application/json')
 
+
 @csrf_exempt
 def create_new_case_m(request):
 
@@ -183,7 +184,7 @@ def create_new_case_m(request):
                                     "type": "notWorker"})
         return HttpResponse(json_response, mimetype='application/json')
 
-    form = NewCaseForm(is_worker(data))
+    form = NewCaseForm(data)
     worker = request.user.worker
     if form.is_valid():
         patient_id = form.cleaned_data['patient']
