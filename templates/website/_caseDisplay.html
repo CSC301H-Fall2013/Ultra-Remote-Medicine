@@ -1,66 +1,57 @@
 {% load static from staticfiles %}
 <!--  Component for displaying a table of cases. -->
-<script src="{% static "bootstrap/js/sorttable.js"%}"></script>
-<style>
-	/* Sortable tables */
-	table.sortable thead {
-    background-color:#1E90FF;
-    color:#000000;
-    font-weight: bold;
-    cursor: default;
-}
-</style>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="{% static "DataTables-1.9.4/media/js/jquery.dataTables.js"%}"></script>
+<link type="text/css" rel="stylesheet" href="{% static "Datatables-1.9.4/media/css/jquery.dataTables.css"%}"/>
+<script>
+$(document).ready(function() {
+	$('#table_id').dataTable({
+		"sPaginationType": "full_numbers"});
+} );
+</script>
 {% if cases|length > 0 %}
 
     <div class="table-responsive">
 	    
-		<table class="sortable table table-bordered table-condensed table-hover" >
-			<tr>
-				<th>
-					Patient Name
-				</th>
-				<th>
-					Case
-				</th>
-				<th>
-					Date
-				</th>
-				<th>
-					Reviewer
-				</th>
-				<th>
-					Priority
-				</th>
-			</tr>
-			
-			{% for case in cases %}
-			<tr>
-				<td><a href="{% url 'display_patient' case.patient_ref.id %}" target="_blank">
-					{{case.patient_ref.first_name}}, {{case.patient_ref.last_name}} </a></td>
-				<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">Case {{case.case_ref.id}}</a></td>
-				
-				<td>{{case.case_ref.date_opened}}</td>
-					{%if case.case_ref.lock_holder == None%}
-						{%if viewer.doctor%}
-							<td>Adopt this Case</td>
+		<table id="table_id" class="display table table-striped table-bordered" >
+			<thead>
+				<tr>
+					<th>Patient Name</th>
+					<th>Case</th>
+					<th>Date</th>
+					<th>Reviewer</th>
+					<th>Priority</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for case in cases %}
+				<tr>
+					<td><a href="{% url 'display_patient' case.patient_ref.id %}" target="_blank">
+						{{case.patient_ref.first_name}}, {{case.patient_ref.last_name}} </a></td>
+					<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">Case {{case.case_ref.id}}</a></td>
+					
+					<td>{{case.case_ref.date_opened}}</td>
+						{%if case.case_ref.lock_holder == None%}
+							{%if viewer.doctor%}
+								<td>Adopt this Case</td>
+							{%else%}
+								<td>None</td>
+							{%endif%}
 						{%else%}
-							<td>None</td>
+							<td><a href="{% url 'display_profile' case.case_ref.lock_holder.id %}" target="_blank">
+									{{case.case_ref.lock_holder}} </a></td>
 						{%endif%}
-					{%else%}
-						<td><a href="{% url 'display_profile' case.case_ref.lock_holder.id %}" target="_blank">
-								{{case.case_ref.lock_holder}} </a></td>
-					{%endif%}
-					<td>{{case.priority_text}}</td>
-						<!-- 
-							<td><select>
-									<option value="High" selected="selected">High</option>
-									<option value="Medium" selected="selected">Medium</option>
-									<option value="Low" selected="selected">Low</option>
-							</select></td>
-						-->
-			</tr>
-			{% endfor %}
-
+						<td>{{case.priority_text}}</td>
+							<!-- 
+								<td><select>
+										<option value="High" selected="selected">High</option>
+										<option value="Medium" selected="selected">Medium</option>
+										<option value="Low" selected="selected">Low</option>
+								</select></td>
+							-->
+				</tr>
+				{% endfor %}
+			</tbody>
 		</table>
 	</div>
 {% else %}	
