@@ -47,7 +47,8 @@ urlpatterns += patterns('sample.case',
                             'display_new_case', name='new_case'))
 
 urlpatterns += patterns('sample.mobile',
-                        url('^mobile/login$', 'process_login'))
+                        url('^mobile/login$', 'process_login'),
+                        url('^mobile/add_patient$', 'create_new_patient_m'))
 
 if settings.DEBUG:
     urlpatterns += patterns('django.contrib.staticfiles.views',
