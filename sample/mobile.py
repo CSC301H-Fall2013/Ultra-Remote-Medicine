@@ -87,6 +87,10 @@ def is_worker(request):
             json_response = json.dumps({"success": "false",
                                         "type": "notWorker"})
             return HttpResponse(json_response, mimetype='application/json')
+    else:
+        json_response = json.dumps({"success": "false",
+                                    "type": "anonymousUser"})
+        return HttpResponse(json_response, mimetype='application/json')
 
 
 @csrf_exempt
