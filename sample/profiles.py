@@ -1,10 +1,19 @@
 from django.contrib.auth.models import User
+from sample.models import TimeSlot
 from sample.forms import UpdateFieldWorkerForm, UpdateDoctorForm
 from django.db import IntegrityError
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseServerError
 
+
+class TimeSlotDisplay:
+    
+    def __init__(self, original, is_last):
+        if is_last:
+            self.time_string = original.to_string()
+        else:
+            self.time_string = original.to_string() + ","
 
 def display_profile(request, user_id):
     '''Displays the profile page of a user. Does not allow editing (protected
@@ -86,6 +95,16 @@ def _display_doctor(request, user, doctor):
         form = UpdateDoctorForm()
         form.populate(doctor)
 
+    # Create Timeslot client-side objects
+    time_slots = []
+    is_last = False
+    i=1
+    for original in doctor.schedule.all():
+        if len(doctor.schedule.all()) == i:
+            is_last = True
+        time_slots.append(TimeSlotDisplay(original, is_last))
+        i+=1
+
     return render_to_response('doctorprofile.html', {
         'viewer': request.user,
         'form': form,
@@ -94,6 +113,7 @@ def _display_doctor(request, user, doctor):
         'address': doctor.address,
         'registration_time': doctor.registration_time,
         'specialties': doctor.specialties.all(),
+        'schedule': time_slots,
         'comments': doctor.comments,
         'id': doctor.id
     }, context_instance=RequestContext(request))

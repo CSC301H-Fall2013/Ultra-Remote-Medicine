@@ -1,0 +1,79 @@
+<!-- Script used by _commentDisplay. -->
+
+<body>
+	<div class="media" id="Country" style="display:none">
+		<div class="media-object pull-left" id="avatarcontainer"
+		style="display: inline-block; height: auto; min-height: 80px; width: auto; min-width: 80px;">
+
+		<img src="http://upload.wikimedia.org/wikipedia/commons/3/32/Eduard_Khil.jpg"
+			style="display: inline-block; max-width: 64px; max-height: px; width: auto; height: auto;">
+		{%if viewer.doctor %}
+			<br>Doctor
+		{%else%}
+			<br>Worker
+		{%endif%}
+	</div>
+	<div class="media-body">
+			<table width="100%" border = "0">
+			    <col />
+			    <col width="230 px" />
+				<tr>
+					<td>
+						<b>Post Your Comment</b>
+					</td>
+					<td style="text-align: right">
+						<a id="cancel" href="javascript:;" onclick="cancel();">Cancel</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div style="min-height: 55px; height: auto;">
+							
+						</div>
+					</td>
+					<td style="text-align: right; vertical-align: top;">
+						
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+
+<script>
+	var current_comment_id = -1;
+
+	function replyTo(comment_id) {
+		
+		current_comment_id = comment_id;
+		
+		var parent_div_id = "a" + comment_id;
+		var parent_div = document.getElementById(parent_div_id);
+		var comment_box = document.getElementById("Country");
+		parent_div.appendChild(comment_box);
+		comment_box.style.display = 'block';
+		
+		// Hide all reply buttons.
+		for (i = 0; i < {{comment_count}}; i++) {
+			var reply_button_id = "r" + i;
+			var reply_button = document.getElementById(reply_button_id);
+			reply_button.style.display = 'none';
+		}
+	}
+	
+	function cancel() {
+		
+		var parent_div_id = "a" + current_comment_id;
+		var parent_div = document.getElementById(parent_div_id);
+		var comment_box = document.getElementById("Country");
+		// parent_div.appendChild(comment_box);
+		comment_box.style.display = 'none';
+		
+		// Show all reply buttons.
+		for (i = 0; i < {{comment_count}}; i++) {
+			var reply_button_id = "r" + i;
+			var reply_button = document.getElementById(reply_button_id);
+			reply_button.style.display = 'block';
+		}
+	}
+</script>

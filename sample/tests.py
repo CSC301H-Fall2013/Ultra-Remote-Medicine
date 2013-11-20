@@ -1,6 +1,7 @@
 from django.test import TestCase
 from sample.models import (Doctor, Worker, Patient, Measurement,
-        MeasurementType, SpecialtyType, TimeSlot, Case, Scan, Annotation)
+        MeasurementType, SpecialtyType, TimeSlot, Case, Scan, Annotation,
+        Comment, CommentGroup)
 from django.contrib.auth.models import User
 from psycopg2 import IntegrityError
 from django.core.urlresolvers import reverse
@@ -11,6 +12,7 @@ from django.test.client import Client
 import unittest
 from django.http import HttpResponseServerError
 import datetime
+
 
 def createUser(username, emailaddress, docpassword):
     try:
@@ -27,6 +29,125 @@ def createUser(username, emailaddress, docpassword):
 
 
 client = Client()
+
+
+def populate_default_test_data():
+    ''' Populates the database with default test data. '''
+
+    try:
+        worker_user = createUser('theworker', 'o@hola.com', 'password')
+        worker_user.save()
+        worker = Worker(user=worker_user)
+        worker.registration_time = timezone.now()
+        worker.save()
+
+    except IntegrityError:
+        print 'Failed to create a default worker user'
+        return HttpResponseServerError()
+
+    try:
+        doctor_user = createUser('thedoctor', 'o@boo.com', 'thepassword')
+        doctor_user.save()
+        doctor = Doctor(user=doctor_user)
+        doctor.user_id = worker_user.id
+        doctor.registration_time = timezone.now()
+        doctor.save()
+    except IntegrityError:
+        print 'Failed to create a default doctor'
+        return HttpResponseServerError()
+
+    try:
+        sample_patient = Patient(
+                first_name="Jacobi",
+                last_name="Miniti",
+                gps_coordinates="101010",
+                address="Yonge street",
+                date_of_birth="1999-06-10",
+                phone="646646646464",
+                health_id="324324234",
+                gender="Male",
+                email="test@test.com"
+            )
+
+        sample_patient.save()
+    except IntegrityError:
+        print 'Failed to create a default patient'
+        return HttpResponseServerError()
+
+    try:
+        comment = Comment(author=worker_user,
+                          text="Trololololol.",
+                          time_posted=timezone.now())
+        comment.save()
+    except IntegrityError:
+        print 'Failed to create a default comment'
+        return HttpResponseServerError()
+
+    try:
+        comment_group = CommentGroup()
+        comment_group.save()
+        comment_group.comments.add(comment)
+    except IntegrityError:
+        print 'Failed to create a default comment group'
+        return HttpResponseServerError()
+
+    try:
+        sample_case = Case(
+                patient=sample_patient,
+                submitter=worker,
+                lock_holder=None,
+                priority=10,
+                submitter_comments=comment_group,
+                date_opened="2012-12-12"
+            )
+        sample_case.save()
+    except IntegrityError:
+        print 'Failed to create a default worker user'
+        return HttpResponseServerError()
+
+    return [worker_user, worker, doctor_user, doctor, sample_patient, comment,
+            comment_group, sample_case]
+
+
+class NewCaseTests(TestCase):
+    '''
+    Test cases for creating a new case.
+    '''
+
+    def test_add_regular_case(self):
+        '''  '''
+        defaults = populate_default_test_data()
+        patient = defaults[4]
+
+        self.client = Client()
+        self.client.login(username="theworker", password="password")
+
+        url = reverse('new_case', args=['X'])
+        response = self.client.post(url,
+            {'patient': patient.id,
+             'comments': 'Trololololol.',
+             'priority': 10})
+
+        self.assertEqual(response.status_code, 302, "Bad status code")
+
+        # Test that the case page reflects the new case.
+        url = response['location']
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        case_id = response.context['case_id']
+        case = Case.objects.filter(id=case_id)[0]
+
+        self.assertEqual(response.context['firstName'], patient.first_name)
+        self.assertEqual(response.context['lastName'], patient.last_name)
+        self.assertEqual(response.context['patient_id'], patient.id)
+        self.assertEqual(response.context['gender'], patient.gender)
+        self.assertEqual(response.context['date_of_birth'],
+                datetime.date(1999, 06,10))
+        #self.assertEqual(response.context['submitter_comments'],
+        #        case.submitter_comments.comments[0], 'Trololololol.')
+        self.assertEqual(response.context['priority'], case.priority)
+
 
 class SetInfoTests(TestCase):
     """
@@ -46,7 +167,7 @@ class SetInfoTests(TestCase):
             doctor1.save()
         except IntegrityError:
             return HttpResponseServerError()
-        
+
         self.assertEqual(doctor1.user.first_name,'F')
         self.client = Client()
         self.client.login(username="doctor1", password='doctor')
@@ -65,36 +186,66 @@ class SetInfoTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(doctor1.user.first_name,'G')
         self.assertEqual(response.context['user'].first_name, 'G')
-        
+
     def test_doctor_change_priority(self):
-        user = createUser('doctor1', 'a@a.com', 'doctor')
-        user.save()
+        defaults = populate_default_test_data()
+        user = defaults[2]
+        #user.save()
         try:
-            doctor1 = Doctor(user=user)
-            doctor1.user.first_name = 'F'
-            doctor1.registration_time = timezone.now()
-            user.save()
-            doctor1.save()
+            doctor1 = defaults[3]
+            patient1 = defaults[4]
+            #user.save()
+            #doctor1.save()
+            #patient1.save()
+        except IntegrityError:
+            return HttpResponseServerError()
+
+        self.client = Client()
+        self.client.login(username="thedoctor", password='thepassword')
+        url = reverse('display_case', args=[defaults[-1].id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(defaults[-1].priority, 10)
+        try:
+            defaults[-1].priority = 30
+            defaults[-1].save()
+            #doctor1.save()
+        except IntegrityError:
+            return HttpResponseServerError()
+        url = reverse('display_case', args=[defaults[-1].id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(defaults[-1].priority, 30)
+        
+    def test_worker_change_priority(self):
+        defaults = populate_default_test_data()
+        user = defaults[0]
+        #user.save()
+        try:
+            worker1 = defaults[1]
+            patient1 = defaults[4]
+            #user.save()
+            #doctor1.save()
+            #patient1.save()
         except IntegrityError:
             return HttpResponseServerError()
         
         self.client = Client()
-        self.client.login(username="doctor1", password='doctor')
-        url = reverse('display_profile', args=[user.id])
+        self.client.login(username="theworker", password='password')
+        url = reverse('display_case', args=[defaults[-1].id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['user'].first_name, 'F')
+        self.assertEqual(defaults[-1].priority, 10)
         try:
-            doctor1.user.first_name = 'G'
-            user.save()
+            defaults[-1].priority = 30
+            defaults[-1].save()
             #doctor1.save()
         except IntegrityError:
             return HttpResponseServerError()
-        url = reverse('display_profile', args=[user.id])
+        url = reverse('display_case', args=[defaults[-1].id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(doctor1.user.first_name,'G')
-        self.assertEqual(response.context['user'].first_name, 'G')
+        self.assertEqual(defaults[-1].priority, 30)
 
     def test_doctor_last_name(self):
         user = createUser('doctor1', 'a@a.com', 'doctor')

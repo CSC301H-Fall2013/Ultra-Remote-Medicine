@@ -62,7 +62,12 @@
 							Registration Time: {{registration_time}} <br>
 							Specialties: 
 							{% for specialty in specialties %} 
-							{{specialty.name}},
+							{{specialty.name}}
+							 {% endfor %}
+							 <br>
+							 Schedule: 
+							{% for s in schedule %} 
+							{{s.time_string}}
 							 {% endfor %}
 						</td>
 						<td style="width: 300px; vertical-align: top">{{comments}}</td>
