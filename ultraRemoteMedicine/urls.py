@@ -7,8 +7,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-                       url(r'^admin/', include(admin.site.urls)),
-)
+                       url(r'^admin/', include(admin.site.urls)))
 
 urlpatterns += patterns('sample.views',
                         url('^$', 'home', name='home'))
@@ -41,7 +40,8 @@ urlpatterns += patterns('sample.case',
 
 urlpatterns += patterns('sample.mobile',
                         url('^mobile/login$', 'process_login'),
-                        url('^mobile/add_patient$', 'create_new_patient_m'))
+                        url('^mobile/add_patient$', 'create_new_patient_m'),
+                        url('^mobile/view_patient$', 'display_patient_m'))
 
 if settings.DEBUG:
     urlpatterns += patterns('django.contrib.staticfiles.views',

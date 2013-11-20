@@ -12,6 +12,8 @@ from django.contrib.auth import get_user
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, load_backend
+from sample.models import Case
+from utilities import create_case_attributes
 
 
 def is_worker(session_key):
@@ -28,9 +30,10 @@ def is_worker(session_key):
         user = AnonymousUser()
 
     if user.is_authenticated():
-        return user.worker
-    else:
-        return False
+        try:
+            return user.worker
+        except:
+            return False
 
 
 @csrf_exempt
@@ -125,3 +128,50 @@ def create_new_patient_m(request):
         json_response = json.dumps({"success": "true",
                                     "type": "newPatient"})
         return HttpResponse(json_response, mimetype='application/json')
+
+
+@csrf_exempt
+def display_patient_m(request):
+
+    json_data = json.loads(request.raw_post_data)
+
+    try:
+        worker = is_worker(json_data['session_key'])
+        if not worker:
+            json_response = json.dumps({"success": "false",
+                                        "type": "notWorker"})
+            return HttpResponse(json_response, mimetype='application/json')
+    except:
+        json_response = json.dumps({"success": "false",
+                                    "type": "badRequest"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    patient = Patient.objects.filter(id=json_data['patient_id'])[0]
+
+    case_attributes = create_case_attributes(Case.objects)
+
+    # Define the filter function for patient cases
+    def filter_function(x):
+        return x.patient_ref == patient
+
+    case_attributes = filter(filter_function, case_attributes)
+
+    date_of_birth = patient.date_of_birth
+    if date_of_birth is None:
+        date_of_birth = ""
+
+    json_response = json.dumps({
+        'photo_link': patient.photo_link,
+        'firstName': patient.first_name,
+        'lastName': patient.last_name,
+        'patient_id': patient.id,
+        'gender': patient.gender,
+        'date_of_birth': date_of_birth,
+        'gps_coordinates': patient.gps_coordinates,
+        'health_id': patient.health_id,
+        'address': patient.address,
+        'phone': patient.phone,
+        'email': patient.email,
+        'cases': case_attributes})
+
+    return HttpResponse(json_response, mimetype='application/json')
