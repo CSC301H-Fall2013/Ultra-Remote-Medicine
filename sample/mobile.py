@@ -5,35 +5,16 @@ from django.contrib.auth import authenticate, login
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from sample.forms import NewPatientForm
+from sample.forms import NewPatientForm, NewCaseForm
 from sample.models import Patient
 from django.utils.importlib import import_module
 from django.contrib.auth import get_user
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, load_backend
-from sample.models import Case
+from sample.models import Case, Comment, CommentGroup
 from utilities import create_case_attributes
-
-
-def is_worker(session_key):
-
-    engine = import_module(settings.SESSION_ENGINE)
-    session = engine.SessionStore(session_key)
-
-    try:
-        worker = session[SESSION_KEY]
-        sample_path = session[BACKEND_SESSION_KEY]
-        sample = load_backend(sample_path)
-        user = sample.get_user(worker) or AnonymousUser()
-    except KeyError:
-        user = AnonymousUser()
-
-    if user.is_authenticated():
-        try:
-            return user.worker
-        except:
-            return False
+from django.utils import timezone
 
 
 @csrf_exempt
@@ -78,23 +59,40 @@ def process_login(request):
         return HttpResponse(json_response, mimetype='application/json')
 
 
-@csrf_exempt
-def create_new_patient_m(request):
+def is_worker(request):
 
     json_data = json.loads(request.raw_post_data)
 
+    engine = import_module(settings.SESSION_ENGINE)
     try:
-        worker = is_worker(json_data['session_key'])
-        if not worker:
-            json_response = json.dumps({"success": "false",
-                                        "type": "notWorker"})
-            return HttpResponse(json_response, mimetype='application/json')
-    except:
+        session = engine.SessionStore(json_data['session_key'])
+    except KeyError:
         json_response = json.dumps({"success": "false",
                                     "type": "badRequest"})
         return HttpResponse(json_response, mimetype='application/json')
 
-    form = NewPatientForm(json_data)
+    try:
+        worker = session[SESSION_KEY]
+        sample_path = session[BACKEND_SESSION_KEY]
+        sample = load_backend(sample_path)
+        user = sample.get_user(worker) or AnonymousUser()
+    except KeyError:
+        user = AnonymousUser()
+
+    if user.is_authenticated():
+        try:
+            if user.worker:
+                return json_data
+        except:
+            json_response = json.dumps({"success": "false",
+                                        "type": "notWorker"})
+            return HttpResponse(json_response, mimetype='application/json')
+
+
+@csrf_exempt
+def create_new_patient_m(request):
+
+    form = NewPatientForm(is_worker(request))
     if form.is_valid():
         first_name = form.cleaned_data['first_name']
         last_name = form.cleaned_data['last_name']
@@ -166,7 +164,7 @@ def display_patient_m(request):
         'lastName': patient.last_name,
         'patient_id': patient.id,
         'gender': patient.gender,
-        'date_of_birth': date_of_birth.strftime('%Y-%m-%dT%H:%M:%S'),
+        'date_of_birth': date_of_birth.strftime('%Y-%m-%d'),
         'gps_coordinates': patient.gps_coordinates,
         'health_id': patient.health_id,
         'address': patient.address,
@@ -174,3 +172,54 @@ def display_patient_m(request):
         'email': patient.email})
 
     return HttpResponse(json_response, mimetype='application/json')
+
+
+def create_new_case_m(request):
+
+    json_data = json.loads(request.raw_post_data)
+
+    try:
+        worker = is_worker(json_data['session_key'])
+        if not worker:
+            json_response = json.dumps({"success": "false",
+                                        "type": "notWorker"})
+            return HttpResponse(json_response, mimetype='application/json')
+    except:
+        json_response = json.dumps({"success": "false",
+                                    "type": "badRequest"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    form = NewCaseForm(json_data)
+    if form.is_valid():
+        patient_id = form.cleaned_data['patient']
+        comments = form.cleaned_data['comments']
+        priority = form.cleaned_data['priority']
+
+        try:
+            patient = Patient.objects.filter(id=patient_id)[0]
+
+            comment = Comment(
+                author=worker.user,
+                text=comments,
+                time_posted=timezone.now())
+            comment.save()
+
+            comment_group = CommentGroup()
+            comment_group.save()
+            comment_group.comments.add(comment)
+
+            case = Case(
+                patient=patient,
+                submitter_comments=comment_group,
+                priority=priority,
+                submitter=worker,
+                date_opened=timezone.now())
+            case.save()
+        except IntegrityError:
+            json_response = json.dumps({"success": "false",
+                                        "type": "IntegrityError"})
+            return HttpResponse(json_response, mimetype='application/json')
+
+        json_response = json.dumps({"success": "true",
+                                    "type": "newCase"})
+        return HttpResponse(json_response, mimetype='application/json')
