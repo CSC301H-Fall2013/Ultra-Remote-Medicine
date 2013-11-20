@@ -82,22 +82,21 @@ def is_worker(request):
     if user.is_authenticated():
         try:
             if user.worker:
-                print "i am here"
                 return json_data
         except:
-            json_response = json.dumps({"success": "false",
-                                        "type": "notWorker"})
-            return HttpResponse(json_response, mimetype='application/json')
-    else:
-        json_response = json.dumps({"success": "false",
-                                    "type": "anonymousUser"})
-        return HttpResponse(json_response, mimetype='application/json')
+            return False
 
 
 @csrf_exempt
 def create_new_patient_m(request):
 
-    form = NewPatientForm(is_worker(request))
+    data = is_worker(request)
+    if not data:
+        json_response = json.dumps({"success": "false",
+                                    "type": "notWorker"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    form = NewPatientForm(data)
     if form.is_valid():
         first_name = form.cleaned_data['first_name']
         last_name = form.cleaned_data['last_name']
@@ -140,7 +139,13 @@ def create_new_patient_m(request):
 @csrf_exempt
 def display_patient_m(request):
 
-    patient = Patient.objects.filter(id=is_worker(request)['patient_id'])[0]
+    data = is_worker(request)
+    if not data:
+        json_response = json.dumps({"success": "false",
+                                    "type": "notWorker"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    patient = Patient.objects.filter(id=data['patient_id'])[0]
 
     case_attributes = create_case_attributes(Case.objects)
 
@@ -172,7 +177,13 @@ def display_patient_m(request):
 
 def create_new_case_m(request):
 
-    form = NewCaseForm(is_worker(request))
+    data = is_worker(request)
+    if not data:
+        json_response = json.dumps({"success": "false",
+                                    "type": "notWorker"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    form = NewCaseForm(is_worker(data))
     worker = request.user.worker
     if form.is_valid():
         patient_id = form.cleaned_data['patient']
