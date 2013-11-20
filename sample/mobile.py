@@ -171,7 +171,6 @@ def display_patient_m(request):
         'health_id': patient.health_id,
         'address': patient.address,
         'phone': patient.phone,
-        'email': patient.email,
-        'cases': case_attributes})
+        'email': patient.email})
 
     return HttpResponse(json_response, mimetype='application/json')
