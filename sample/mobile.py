@@ -166,7 +166,7 @@ def display_patient_m(request):
         'lastName': patient.last_name,
         'patient_id': patient.id,
         'gender': patient.gender,
-        'date_of_birth': date_of_birth,
+        'date_of_birth': date_of_birth.strftime('%Y-%m-%dT%H:%M:%S'),
         'gps_coordinates': patient.gps_coordinates,
         'health_id': patient.health_id,
         'address': patient.address,
