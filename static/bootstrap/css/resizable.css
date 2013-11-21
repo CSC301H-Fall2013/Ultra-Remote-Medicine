@@ -1,0 +1,53 @@
+body {
+	color: #000;
+	background-color: #FFFFFF;
+}
+
+h1 {
+	border-bottom: 1px dotted #888;
+}
+
+.page {
+	color: #000;
+	background-color: #fff;
+	margin: 20px 40px;
+	padding: 10px;
+	border: 1px solid #ddd;
+}
+
+.note {
+	padding-left: 10px;
+	border-left: 3px solid #ddd;
+}
+
+.footnotes {
+	border-top: 1px solid #888;
+}
+
+.copyright {
+	text-align: right;
+	background-color: inherit;
+	color: #888;
+	font-size: 60%;
+}
+
+.w3c a { font-size:60%; width:88px; text-decoration:none; border:1px solid #888; padding:1px; background-color:#ad8; }
+
+table {
+	table-layout: fixed;
+	overflow: hidden;
+	border: 1px solid #bbb;
+}
+
+th {
+	color: #000;
+	background-color: #bbb;
+	border: 1px outset;
+}
+
+td {
+ 	color: #000;
+	background-color: #eee;
+}
+
+img { border:0px; }

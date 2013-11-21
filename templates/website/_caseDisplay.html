@@ -4,7 +4,10 @@
 <script src="{% static "DataTables-1.9.4/media/js/jquery.dataTables.js"%}"></script>
 <link type="text/css" rel="stylesheet" href="{% static "Datatables-1.9.4/media/css/jquery.dataTables.css"%}"/>
 <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
+<link rel='stylesheet' href="{% static "bootstrap/css/resizable.css"%}" type='text/css' media='screen' />
+
 <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
+<script type='text/javascript' src="{% static "bootstrap/js/resizable-tables.js"%}"></script>
 
 <script>
 $(document).ready(function() {
@@ -16,7 +19,7 @@ $(document).ready(function() {
 
     <div class="table-responsive">
 	    
-		<table id="table_id" class="display table table-striped table-bordered" >
+		<table id="table_id" class="display table table-striped table-bordered table-responsive resizable" >
 			<thead>
 				<tr>
 					<th>Patient Name</th>
