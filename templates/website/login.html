@@ -9,6 +9,12 @@
    <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap-responsive.css"%}"/>
   <script src="http://code.jquery.com/jquery.js"></script>
   <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
+  <style>
+	body{
+		 width: 100%;
+    height: 100%;
+	}
+  </style>
 </head>
   <div class = "center">
     <br>
@@ -18,50 +24,46 @@
     <br>
     <br>
     <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+    
     </div>
      
-   
-  <div class="row">
+    <body>
     <div class="col-md-4"></div>
      
 	        <div class="container">
-				<div style="width:200px;, height:200px;"><img src="{% static "bootstrap/image/logo.jpg"%}" alt="header"  class="container"/></div>
+				<div style="width: 100%;
+    height: 100%;"><img src="{% static "bootstrap/image/logo.jpg"%}" alt="header"  class="img-responsive container"/></div>
 			</div>
 		
 	</div>
-  <div class="row">
-    <div class="col-md-5"></div>
-      <div class="col-md-4">
-        <form class="form-horizontal" role="form" action="/login" method="post">
-          <div class="form-group">
-               <form id="login-form" action="{% url 'login' %}" method="post">
-              {% csrf_token %}
+	
+  <div class="container">
+	<div class="row">
+		<div class="col-md-5"></div>
+			<div class="col-md-4">
+				<form class="form-horizontal" role="form" action="/login" method="post">
+					<div class="form-group">
+						<form id="login-form" action="{% url 'login' %}" method="post">
+							{% csrf_token %}
           
-            <div class="col-sm-5">
-              <input type="username" class="form-control" id="username" name = "username" placeholder="Username">
-            </div>
-          </div>
-          <div class="form-group">
-            
-            <div class="col-sm-5">
-              <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-offset-1 col-sm-6">
-              <button type="submit" class="btn btn-primary">Log in</button>
-            </div>
-          </form>
-          </div>
-        </form>
-      </div>
+						<div class="col-sm-6">
+							<label for="inputUsernameEmail">Username</label>
+							<input type="username" class="form-control" id="username" name = "username" placeholder="Username">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-6">
+							<label for="inputPassword">Password</label>
+								<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary">Log in</button>
+						</form>
+			</div>
+				</form>
+		</div>
     </div>
+	</body>
 
   <script> //$(function(){
 //     $('input[name="username"]').focus();
