@@ -131,12 +131,14 @@
 				android:layout_marginBottom="4dp"
 	            android:gravity="right"
 	            android:padding="3dip" />
+
 	        <EditText
-		        android:id="@+id/patient_address"
-	            android:inputType="text"
-	            android:padding="3dip"
+	            android:id="@+id/patient_address"
+	            android:layout_width="@dimen/metadata_textview_length"
 	            android:layout_height="@dimen/metadata_textview_heigh"
-	            android:layout_width="@dimen/metadata_textview_length" />
+	            android:inputType="text"
+	            android:padding="3dip" />
+
 	    </TableRow>
 	    
 	    <TableRow>
@@ -161,12 +163,14 @@
 				android:layout_marginBottom="4dp"
 	            android:gravity="right"
 	            android:padding="3dip" />
+
 	        <EditText
-		        android:id="@+id/patient_email"
-	            android:inputType="text"
-	            android:padding="3dip"
+	            android:id="@+id/patient_email"
+	            android:layout_width="@dimen/metadata_textview_length"
 	            android:layout_height="@dimen/metadata_textview_heigh"
-	            android:layout_width="@dimen/metadata_textview_length" />
+	            android:inputType="text"
+	            android:padding="3dip" />
+
 	    </TableRow>
 	    
 	    <TableRow>
