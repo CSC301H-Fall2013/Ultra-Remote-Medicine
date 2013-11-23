@@ -1,13 +1,35 @@
 {% load static from staticfiles %}
 <!--  Component for displaying a table of cases. -->
+<!-- http://stackoverflow.com/questions/17732714/datatables-js-sort-columns-containing-html-links-with-integer-text
+	Used this js code for sorting HTML integers -->
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="{% static "DataTables-1.9.4/media/js/jquery.dataTables.js"%}"></script>
+<script src="dataTables.dataSourcePlugins.js"></script>
 <link type="text/css" rel="stylesheet" href="{% static "Datatables-1.9.4/media/css/jquery.dataTables.css"%}"/>
 <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
 <script>
+jQuery.fn.dataTableExt.oSort['numeric-html-asc']  = function(a,b) {
+    a = parseInt($(a).text());
+    b = parseInt($(b).text());
+    return ((a < b) ? -1 : ((a > b) ?  1 : 0));
+};
+ 
+jQuery.fn.dataTableExt.oSort['numeric-html-desc']  = function(a,b) {
+    a = parseInt($(a).text());
+    b = parseInt($(b).text());
+    return ((a < b) ? 1 : ((a > b) ?  -1 : 0));
+};
 $(document).ready(function() {
 	$('#table_id').dataTable({
-		"sPaginationType": "full_numbers"});
+		"sPaginationType": "full_numbers",
+		 "aoColumns": [
+            null,
+            { "sType": "numeric-html" },
+            null,
+            null,
+            null
+        ]
+        });
 } );
 </script>
 {% if cases|length > 0 %}
