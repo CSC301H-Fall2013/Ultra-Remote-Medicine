@@ -31,7 +31,7 @@ def display_new_case(request, patient_id):
                 patient = Patient.objects.filter(id=patient_id)[0]
 
                 comment = Comment(
-                    author=worker.user,
+                    author=user,
                     text=comments,
                     time_posted=timezone.now())
                 comment.save()
@@ -93,9 +93,18 @@ def display_case(request, case_id, mode='v'):
             comment_form = PostCommentForm(request.POST)
             if comment_form.is_valid():
 
+                # Id of the parent, actually
                 comment_id = comment_form.cleaned_data['comment_id']
+
                 comments = comment_form.cleaned_data['comments']
-                print "Gospi Argo"
+
+                parent_comment = Comment.objects.filter(id=comment_id)[0]
+
+                comment = Comment(author=user, text=comments, 
+                                  time_posted=timezone.now())
+                comment.save()
+
+                parent_comment.children.add(comment)
 
                 try:
                     case.save()
