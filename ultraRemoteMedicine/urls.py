@@ -34,7 +34,9 @@ urlpatterns += patterns('sample.profiles',
 
 urlpatterns += patterns('sample.case',
                         url('^case/(?P<case_id>\d+)$', 'display_case',
-                            name='display_case'),
+                                name='display_case'),
+                        url('^case/(?P<case_id>\d+)/(?P<mode>\w+)$',
+                                'display_case', name='display_case'),
                         url('^cases$', 'display_case_list', name='case_list'),
                         url('^newcase/(?P<patient_id>\w+)$',
                             'display_new_case', name='new_case'))
