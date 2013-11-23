@@ -4,11 +4,6 @@
 <script src="{% static "DataTables-1.9.4/media/js/jquery.dataTables.js"%}"></script>
 <link type="text/css" rel="stylesheet" href="{% static "Datatables-1.9.4/media/css/jquery.dataTables.css"%}"/>
 <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
-<link rel='stylesheet' href="{% static "bootstrap/css/resizable.css"%}" type='text/css' media='screen' />
-
-<script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
-<script type='text/javascript' src="{% static "bootstrap/js/resizable-tables.js"%}"></script>
-
 <script>
 $(document).ready(function() {
 	$('#table_id').dataTable({
@@ -19,7 +14,7 @@ $(document).ready(function() {
 
     <div class="table-responsive">
 	    
-		<table id="table_id" class="display table table-striped table-bordered table-responsive resizable" >
+		<table id="table_id" class="display table table-striped table-bordered" >
 			<thead>
 				<tr>
 					<th>Patient Name</th>
@@ -34,7 +29,7 @@ $(document).ready(function() {
 				<tr>
 					<td><a href="{% url 'display_patient' case.patient_ref.id %}" target="_blank">
 						{{case.patient_ref.first_name}}, {{case.patient_ref.last_name}} </a></td>
-					<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">Case {{case.case_ref.id}}</a></td>
+					<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">{{case.case_ref.id}}</a></td>
 					
 					<td>{{case.case_ref.date_opened}}</td>
 						{%if case.case_ref.lock_holder == None%}
