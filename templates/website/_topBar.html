@@ -5,13 +5,13 @@
 	  logged in user information. .--->
 
 
-<!-- 
+<!--
 
 <div class="topBar">
 	<div class="topBarContents">
 	<span class="titleTop">Ultra-Remote-Medicine</span>
-	
-	
+
+
      <span class="btn-group" style="float: right">
 		<button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
     		{{viewer.first_name}} <span class="caret"></span>
@@ -48,7 +48,7 @@
       	<li class="active"><a href= "{% url 'doctor' %}">Dashboard</a></li>
       {% endif %}
     </ul>
-    
+
     <ul class="nav navbar-nav navbar-right">
     	<form class="navbar-form navbar-left" role="search">
       <div class="form-group">
@@ -61,7 +61,7 @@
         <ul class="dropdown-menu">
             <li><a tabindex="-1" href="{% url 'display_profile' viewer.id %}">Profile</a></li>
 			<li class="divider"></li>
-			<li><a tabindex="-1" href="{% url 'home' %}">Log Out</a></li>
+			<li><a tabindex="-1" href="{% url 'logout' %}">Log Out</a></li>
         </ul>
       </li>
     </ul>

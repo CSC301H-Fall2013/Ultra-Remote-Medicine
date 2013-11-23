@@ -13,7 +13,8 @@ urlpatterns += patterns('sample.views',
                         url('^$', 'home', name='home'))
 
 urlpatterns += patterns('sample.authentication',
-                        url('^login$', 'process_login', name='login'))
+                        url('^login$', 'process_login', name='login'),
+                        url('^logout$', 'process_logout', name='logout'))
 
 urlpatterns += patterns('sample.doctor',
                         url('^doctor$', 'display_doctor', name='doctor'))

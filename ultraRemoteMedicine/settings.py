@@ -2,6 +2,7 @@
 import os
 import string
 import dj_database_url
+from django.core.urlresolvers import reverse_lazy
 
 PROJECT_DIR = string.replace(os.path.join(os.path.dirname(__file__),
                                           os.pardir),  '\\', '/')
@@ -178,3 +179,7 @@ LOGGING = {
         },
     }
 }
+
+# The URL where requests are redirected for login,
+# especially when using the login_required() decorator.
+LOGIN_URL = reverse_lazy('home')

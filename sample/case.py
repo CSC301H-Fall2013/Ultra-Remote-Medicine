@@ -7,8 +7,10 @@ from django.template import RequestContext
 from utilities import create_case_attributes, BoxedInteger, \
     create_comment_group_entries
 from django.http import HttpResponseRedirect, HttpResponseServerError
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def display_new_case(request, patient_id):
     ''' Display the new case page and process submitted new-case
         forms. patient_id specifies the default patient the case is for. Set
@@ -65,6 +67,7 @@ def display_new_case(request, patient_id):
                               context_instance=RequestContext(request))
 
 
+@login_required
 def display_case_list(request):
     ''' Displays the list of cases.'''
 
@@ -77,6 +80,7 @@ def display_case_list(request):
         'cases': case_attributes}, context_instance=RequestContext(request))
 
 
+@login_required
 def display_case(request, case_id):
     ''' Displays the specified case. '''
 

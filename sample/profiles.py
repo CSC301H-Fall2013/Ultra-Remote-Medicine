@@ -5,16 +5,19 @@ from django.db import IntegrityError
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseServerError
+from django.contrib.auth.decorators import login_required
 
 
 class TimeSlotDisplay:
-    
+
     def __init__(self, original, is_last):
         if is_last:
             self.time_string = original.to_string()
         else:
             self.time_string = original.to_string() + ","
 
+
+@login_required
 def display_profile(request, user_id):
     '''Displays the profile page of a user. Does not allow editing (protected
         at both view and model levels) of another user's profile.'''
@@ -27,6 +30,7 @@ def display_profile(request, user_id):
         return _display_doctor(request, user, user.doctor)
 
 
+@login_required
 def _display_worker(request, user, worker):
     '''Called by display_profile when it is determined that the user is a
     worker. Displays the profile of the specified worker.
@@ -67,6 +71,7 @@ def _display_worker(request, user, worker):
     }, context_instance=RequestContext(request))
 
 
+@login_required
 def _display_doctor(request, user, doctor):
     '''Called by display_profile when it is determined that the user is a
     doctor. Displays the profile of the specified doctor.
@@ -98,12 +103,12 @@ def _display_doctor(request, user, doctor):
     # Create Timeslot client-side objects
     time_slots = []
     is_last = False
-    i=1
+    i = 1
     for original in doctor.schedule.all():
         if len(doctor.schedule.all()) == i:
             is_last = True
         time_slots.append(TimeSlotDisplay(original, is_last))
-        i+=1
+        i += 1
 
     return render_to_response('doctorprofile.html', {
         'viewer': request.user,

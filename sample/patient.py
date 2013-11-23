@@ -6,8 +6,10 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from utilities import create_case_attributes
 from sample.models import Case
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def display_new_patient(request):
     ''' Display the new patient page and process submitted new-patient
         forms. '''
@@ -56,6 +58,7 @@ def display_new_patient(request):
                               context_instance=RequestContext(request))
 
 
+@login_required
 def display_patient(request, patient_id):
     ''' Display patient information. '''
 

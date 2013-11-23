@@ -2,7 +2,7 @@ from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from sample.models import Doctor, Worker
 
 
@@ -54,3 +54,8 @@ def process_login(request):
     else:
         # redirect if wrong password
         return HttpResponseRedirect("%s?e=p" % signin_page)
+
+
+def process_logout(request):
+    logout(request)
+    return HttpResponseRedirect("/")
