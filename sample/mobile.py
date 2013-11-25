@@ -226,7 +226,7 @@ def create_new_case_m(request):
 
 
 @csrf_exempt
-def display_case(request):
+def display_case_m(request):
 
     ''' Displays the specified case. '''
 
