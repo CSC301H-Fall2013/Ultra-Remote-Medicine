@@ -7,14 +7,15 @@ class JQueryUIDatepickerWidget(forms.DateInput):
 
     def __init__(self, **kwargs):
         super(forms.DateInput, self).__init__(attrs={"size": 10,
-            "class": "dateinput"}, **kwargs)
+                                                     "class": "dateinput"},
+                                              **kwargs)
 
     class Media:
-        css = {"all": ("http://ajax.googleapis.com/ajax/libs/jqueryui/"\
-            "1.8.6/themes/redmond/jquery-ui.css",)}
-        js = ("http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/"\
-              "jquery.min.js", "http://ajax.googleapis.com/ajax/"\
-              "libs/jqueryui/.8.6/jquery-ui.min.js",)
+        css = {"all": ("http://ajax.googleapis.com/ajax/libs/jqueryui/\
+            1.8.6/themes/redmond/jquery-ui.css",)}
+        js = ("http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/\
+              jquery.min.js", "http://ajax.googleapis.com/ajax/\
+              libs/jqueryui/.8.6/jquery-ui.min.js",)
 
 
 class NewCaseForm(forms.Form):
@@ -23,7 +24,7 @@ class NewCaseForm(forms.Form):
     patient = forms.IntegerField()
     comments = forms.CharField(required=False, widget=forms.Textarea)
     priority = forms.ChoiceField(required=False, choices=((10, 'High'),
-        (20, 'Medium'), (30, 'Low')))
+                                 (20, 'Medium'), (30, 'Low')))
 
     def populate(self, patient_id):
         ''' Populates this form with default information. '''
@@ -36,8 +37,10 @@ class UpdateCasePriorityForm(forms.Form):
     ''' The form used on the case page. '''
 
     priority = forms.ChoiceField(required=False,
-            widget=forms.Select(attrs={"onChange": 'this.form.submit()'}),
-            choices=((10, 'High'), (20, 'Medium'), (30, 'Low')))
+                                 widget=forms.Select(attrs={"onChange":
+                                                     'this.form.submit()'}),
+                                 choices=((10, 'High'), (20, 'Medium'),
+                                          (30, 'Low')))
 
     def populate(self, case):
         ''' Populates this form with default information. '''
@@ -53,12 +56,12 @@ class NewPatientForm(forms.Form):
     gps_coordinates = forms.CharField(max_length=63, required=False)
     address = forms.CharField(max_length=254, required=False)
     date_of_birth = forms.DateField(required=False,
-        widget=JQueryUIDatepickerWidget)
+                                    widget=JQueryUIDatepickerWidget)
     phone_number = forms.CharField(max_length=63, required=False)
     health_id = forms.CharField(max_length=63, required=False)
     photo_link = forms.URLField(required=False)
     sex = forms.ChoiceField(required=False, choices=(('Female', 'Female'),
-        ('Male', 'Male'), ('Other', 'Other')))
+                            ('Male', 'Male'), ('Other', 'Other')))
     email = forms.CharField(max_length=254, required=False)
 
 

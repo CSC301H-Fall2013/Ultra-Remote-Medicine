@@ -223,3 +223,34 @@ def create_new_case_m(request):
         json_response = json.dumps({"success": "false",
                                     "type": "invalidForm"})
         return HttpResponse(json_response, mimetype='application/json')
+
+
+@csrf_exempt
+def display_case(request):
+
+    ''' Displays the specified case. '''
+
+    data = is_worker(request)
+    if not data:
+        json_response = json.dumps({"success": "false",
+                                    "type": "notWorker"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    try:
+        case = Case.objects.filter(id=data['case_id'])[0]
+    except IntegrityError:
+            json_response = json.dumps({"success": "false",
+                                        "type": "IntegrityError"})
+            return HttpResponse(json_response, mimetype='application/json')
+
+    json_response = json.dumps({"success": "true",
+                                "type": "newCase",
+                                'firstName': str(case.patient.first_name),
+                                'lastName': str(case.patient.last_name),
+                                'patient_id': str(case.patient.id),
+                                'gender': str(case.patient.gender),
+                                'date_of_birth':
+                                str(case.patient.date_of_birth),
+                                'health_id': str(case.patient.health_id),
+                                'priority': str(case.priority)})
+    return HttpResponse(json_response, mimetype='application/json')

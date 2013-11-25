@@ -1,13 +1,19 @@
+import os
 from django.conf.urls import patterns, include, url
 from django.conf import settings
-
-# Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)))
+
+urlpatterns += patterns('',
+                        (r'^media/(.*)$',
+                         'django.views.static.serve',
+                         {'document_root':
+                          os.path.join(os.path.abspath(
+                                       os.path.dirname(__file__)), 'media')}))
 
 urlpatterns += patterns('sample.views',
                         url('^$', 'home', name='home'))
@@ -34,9 +40,9 @@ urlpatterns += patterns('sample.profiles',
 
 urlpatterns += patterns('sample.case',
                         url('^case/(?P<case_id>\d+)$', 'display_case',
-                                name='display_case'),
+                            name='display_case'),
                         url('^case/(?P<case_id>\d+)/(?P<mode>\w+)$',
-                                'display_case', name='display_case'),
+                            'display_case', name='display_case'),
                         url('^cases$', 'display_case_list', name='case_list'),
                         url('^newcase/(?P<patient_id>\w+)$',
                             'display_new_case', name='new_case'))
