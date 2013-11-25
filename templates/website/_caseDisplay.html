@@ -1,11 +1,16 @@
 {% load static from staticfiles %}
 <!--  Component for displaying a table of cases. -->
 <!-- http://stackoverflow.com/questions/17732714/datatables-js-sort-columns-containing-html-links-with-integer-text
-	Used this js code for sorting HTML integers -->
+	Used this js code for sorting HTML integers
+
+	Used dataTables sorting plugin for priority from this website:
+	http://datatables.net/plug-ins/sorting
+-->
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="{% static "DataTables-1.9.4/media/js/jquery.dataTables.js"%}"></script>
 <link type="text/css" rel="stylesheet" href="{% static "DataTables-1.9.4/media/css/jquery.dataTables.css"%}"/>
 <script src="dataTables.dataSourcePlugins.js"></script>
+<link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
 <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
 
 <script>
@@ -20,6 +25,27 @@ jQuery.fn.dataTableExt.oSort['numeric-html-desc']  = function(a,b) {
     b = parseInt($(b).text());
     return ((a < b) ? 1 : ((a > b) ?  -1 : 0));
 };
+
+jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+    "enum-pre": function ( a ) {
+        // Add / alter the switch statement below to match your enum list
+        switch( a ) {
+            case "High":   return 1;
+            case "Medium": return 2;
+            case "Low":    return 3;
+            default:       return 4;
+        }
+    },
+
+    "enum-asc": function ( a, b ) {
+        return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+    },
+
+    "enum-desc": function ( a, b ) {
+        return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+    }
+} );
+
 $(document).ready(function() {
 	$('#table_id').dataTable({
 		"sPaginationType": "full_numbers",
@@ -28,7 +54,7 @@ $(document).ready(function() {
             { "sType": "numeric-html" },
             null,
             null,
-            null
+            { "sType": "enum" }
         ]
         });
 } );

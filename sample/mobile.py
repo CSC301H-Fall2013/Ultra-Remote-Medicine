@@ -12,9 +12,11 @@ from django.contrib.auth import get_user
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, load_backend
-from sample.models import Case, Comment, CommentGroup
+from sample.models import Case, Comment, CommentGroup, Scan
 from utilities import create_case_attributes
 from django.utils import timezone
+from base64 import b64decode
+from django.core.files.base import ContentFile
 
 
 @csrf_exempt
@@ -128,7 +130,8 @@ def create_new_patient_m(request):
             return HttpResponse(json_response, mimetype='application/json')
 
         json_response = json.dumps({"success": "true",
-                                    "type": "newPatient"})
+                                    "type": "newPatient", "patient_id":
+                                    str(patient.id)})
         return HttpResponse(json_response, mimetype='application/json')
     else:
         json_response = json.dumps({"success": "false",
@@ -145,15 +148,12 @@ def display_patient_m(request):
                                     "type": "notWorker"})
         return HttpResponse(json_response, mimetype='application/json')
 
-    patient = Patient.objects.filter(id=data['patient_id'])[0]
-
-    case_attributes = create_case_attributes(Case.objects)
-
-    # Define the filter function for patient cases
-    def filter_function(x):
-        return x.patient_ref == patient
-
-    case_attributes = filter(filter_function, case_attributes)
+    try:
+        patient = Patient.objects.filter(id=data['patient_id'])[0]
+    except KeyError:
+        json_response = json.dumps({"success": "false",
+                                    "type": "KeyError"})
+        return HttpResponse(json_response, mimetype='application/json')
 
     date_of_birth = patient.date_of_birth
     if date_of_birth is None:
@@ -238,10 +238,10 @@ def display_case_m(request):
 
     try:
         case = Case.objects.filter(id=data['case_id'])[0]
-    except IntegrityError:
-            json_response = json.dumps({"success": "false",
-                                        "type": "IntegrityError"})
-            return HttpResponse(json_response, mimetype='application/json')
+    except KeyError:
+        json_response = json.dumps({"success": "false",
+                                    "type": "KeyError"})
+        return HttpResponse(json_response, mimetype='application/json')
 
     json_response = json.dumps({"success": "true",
                                 "type": "newCase",
@@ -253,4 +253,46 @@ def display_case_m(request):
                                 str(case.patient.date_of_birth),
                                 'health_id': str(case.patient.health_id),
                                 'priority': str(case.priority)})
+    return HttpResponse(json_response, mimetype='application/json')
+
+
+@csrf_exempt
+def upload_image_m(request):
+
+    data = is_worker(request)
+    if not data:
+        json_response = json.dumps({"success": "false",
+                                    "type": "notWorker"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    try:
+        case = Case.objects.filter(id=data['case_id'])[0]
+    except KeyError:
+        json_response = json.dumps({"success": "false",
+                                    "type": "KeyError"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    try:
+        scan = Scan(
+            patient=case.patient)
+        scan.save()
+    except IntegrityError:
+        scan.delete()
+        json_response = json.dumps({"success": "false",
+                                    "type": "IntegrityError"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    try:
+        image_data = b64decode(data['image_string'])
+        scan.file = ContentFile(image_data)
+        scan.save()
+        case.scan = scan
+        case.save()
+    except IntegrityError:
+        json_response = json.dumps({"success": "false",
+                                    "type": "IntegrityError"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    json_response = json.dumps({"success": "true",
+                                "type": "uploadSuccess"})
     return HttpResponse(json_response, mimetype='application/json')
