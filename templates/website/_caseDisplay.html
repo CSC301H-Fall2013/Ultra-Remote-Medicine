@@ -4,13 +4,8 @@
 	Used this js code for sorting HTML integers -->
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="{% static "DataTables-1.9.4/media/js/jquery.dataTables.js"%}"></script>
-<<<<<<< HEAD
 <link type="text/css" rel="stylesheet" href="{% static "DataTables-1.9.4/media/css/jquery.dataTables.css"%}"/>
-=======
-<script src="dataTables.dataSourcePlugins.js"></script>
-<link type="text/css" rel="stylesheet" href="{% static "Datatables-1.9.4/media/css/jquery.dataTables.css"%}"/>
 <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
->>>>>>> 46ff423f6458e87486ca78adae92c89f92e58864
 <script>
 jQuery.fn.dataTableExt.oSort['numeric-html-asc']  = function(a,b) {
     a = parseInt($(a).text());
@@ -55,13 +50,7 @@ $(document).ready(function() {
 				<tr>
 					<td><a href="{% url 'display_patient' case.patient_ref.id %}" target="_blank">
 						{{case.patient_ref.first_name}}, {{case.patient_ref.last_name}} </a></td>
-<<<<<<< HEAD
-					<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">Case {{case.case_ref.id}}</a></td>
-
-=======
 					<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">{{case.case_ref.id}}</a></td>
-					
->>>>>>> 46ff423f6458e87486ca78adae92c89f92e58864
 					<td>{{case.case_ref.date_opened}}</td>
 						{%if case.case_ref.lock_holder == None%}
 							{%if viewer.doctor%}
