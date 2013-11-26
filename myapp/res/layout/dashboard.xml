@@ -22,32 +22,12 @@
         android:textColor="@color/button_text_color"
         android:textSize="@dimen/logout_btn_text_size" />
 
-    <Button
-        android:id="@+id/search_btn"
-        android:layout_width="85dp"
-        android:layout_height="40dp"
-        android:layout_alignRight="@+id/search_box"
-        android:layout_below="@+id/search_box"
-        android:gravity="center_vertical"
-        android:text="Search"
-        android:textSize="@dimen/btn_text_size" />
-
-    <Button
-        android:id="@+id/add_new_case_btn"
-        android:layout_width="140dp"
-        android:layout_height="50dp"
-        android:layout_above="@+id/search_box"
-        android:layout_alignRight="@+id/logout_btn"
-        android:gravity="center_vertical"
-        android:text="@string/dashboard_add_new_case"
-        android:textSize="@dimen/btn_text_size" />
-
     <EditText
         android:id="@+id/search_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/add_new_patient_btn"
-        android:layout_alignRight="@+id/add_new_case_btn"
+        android:layout_alignRight="@+id/search_btn"
         android:layout_below="@+id/add_new_patient_btn"
         android:layout_marginTop="62dp"
         android:ems="10"
@@ -62,15 +42,37 @@
         android:text="User:" />
 
     <Button
+        android:id="@+id/search_btn"
+        android:layout_width="85dp"
+        android:layout_height="40dp"
+        android:layout_alignRight="@+id/logout_btn"
+        android:layout_below="@+id/search_box"
+        android:layout_marginRight="15dp"
+        android:gravity="center_vertical"
+        android:text="Search"
+        android:textSize="@dimen/btn_text_size" />
+
+    <Button
         android:id="@+id/add_new_patient_btn"
-        android:layout_width="140dp"
+        android:layout_width="135dp"
         android:layout_height="50dp"
         android:layout_below="@+id/logout_btn"
-        android:layout_marginTop="22dp"
-        android:layout_toLeftOf="@+id/add_new_case_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
         android:gravity="center_vertical"
         android:text="@string/dashboard_add_new_patient"
         android:textColor="@color/button_text_color"
+        android:textSize="@dimen/btn_text_size" />
+
+    <Button
+        android:id="@+id/add_new_case_btn"
+        android:layout_width="125dp"
+        android:layout_height="40dp"
+        android:layout_alignRight="@+id/add_new_patient_btn"
+        android:layout_below="@+id/search_btn"
+        android:layout_marginTop="66dp"
+        android:gravity="center_vertical"
+        android:text="@string/dashboard_add_new_case"
         android:textSize="@dimen/btn_text_size" />
 
 </RelativeLayout>

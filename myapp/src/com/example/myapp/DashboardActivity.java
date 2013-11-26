@@ -2,7 +2,6 @@ package com.example.myapp;
 
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class DashboardActivity extends Activity {
+public class DashboardActivity extends ActivityAPI {
 	Context mContext;
 	private EditText mSearchKey;
 	public static JSONObject jsonCheck;
@@ -36,14 +35,6 @@ public class DashboardActivity extends Activity {
             }
         });
         
-        Button newCaseButton = (Button) findViewById(R.id.add_new_case_btn);
-        newCaseButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-        		Intent i = new Intent(mContext, AddNewCaseActivity.class);
-        		startActivity(i);
-            }
-        });
-        
         Button logoutButton = (Button) findViewById(R.id.logout_btn);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -52,6 +43,14 @@ public class DashboardActivity extends Activity {
 				editor.putString("sessionid", null);
 				editor.commit();
         		Intent i = new Intent(mContext, MainActivity.class);
+        		startActivity(i);
+            }
+        });
+        
+        Button newCaseButton = (Button) findViewById(R.id.add_new_case_btn);
+        newCaseButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+        		Intent i = new Intent(mContext, AddNewCaseActivity.class);
         		startActivity(i);
             }
         });
@@ -65,15 +64,16 @@ public class DashboardActivity extends Activity {
 						try {
 							// URL
 							String urlString = "http://ultra-remote-medicine."
-									+ "herokuapp.com/mobile/add_case";
+									+ "herokuapp.com/mobile/view_patient";
+							//String urlString = "http://10.0.2.2:8000/mobile/view_patient";
 							//Json package
 							String jsonString = "{\"session_key\": \""
-									+ MainActivity.jsonSessionId.optString("sessionid")
-									+ "\", \"search_key\": \""
+									+ jsonSessionId.optString("sessionid")
+									+ "\", \"patient_id\": \""
 									+ mSearchKey.getText().toString()
 									+ "\"}";
 							
-							jsonCheck = MainActivity.communicate(urlString, jsonString);
+							jsonCheck = communicate(urlString, jsonString);
 							
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -91,7 +91,7 @@ public class DashboardActivity extends Activity {
 					timer++;
 				}
 				Toast msg = Toast.makeText(getBaseContext(),
-						(timer < 50 ? jsonCheck.optString("type")
+						(timer < 50 ? jsonCheck.optString("firstName")
 								: "Server time out"), Toast.LENGTH_LONG);
 				msg.show();
 				msg = null;

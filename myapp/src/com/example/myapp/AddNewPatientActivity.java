@@ -1,5 +1,6 @@
 package com.example.myapp;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import com.example.myapp.R;
 import android.app.Activity;
@@ -11,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class AddNewPatientActivity extends Activity {
+public class AddNewPatientActivity extends ActivityAPI {
 	Context mContext;
 	private EditText mPatientFirstName;
 	private EditText mPatientLastName;
@@ -22,7 +23,7 @@ public class AddNewPatientActivity extends Activity {
 	private EditText mPatientAddress;
 	private EditText mPatientPhoneNumber;
 	private EditText mPatientEmail;
-	public static JSONObject jsonCheck;
+	
 		
 	/** Called when the activity is first created. */
 	@Override
@@ -40,9 +41,12 @@ public class AddNewPatientActivity extends Activity {
         mPatientPhoneNumber = (EditText) findViewById(R.id.patient_phone_number);
         mPatientEmail = (EditText) findViewById(R.id.patient_email);
 	    
+
+        
 		Button finshButton = (Button) findViewById(R.id.patient_finish);
 		finshButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
+				jsonPatientId = null;
 				Thread thread = new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -50,8 +54,9 @@ public class AddNewPatientActivity extends Activity {
 							// URL
 							String urlString = "http://ultra-remote-medicine."
 									+ "herokuapp.com/mobile/add_patient";
+							//String urlString = "http://10.0.2.2:8000/mobile/add_patient";
 							String jsonString = "{\"session_key\": \""
-									+ MainActivity.jsonSessionId.optString("sessionid")
+									+ MainActivity.jsonSessionId.getString("sessionid")
 									+ "\", \"first_name\": \""
 									+ mPatientFirstName.getText().toString()
 									+ "\", \"last_name\": \""
@@ -74,7 +79,7 @@ public class AddNewPatientActivity extends Activity {
 									+ mPatientEmail.getText().toString()
 									+ "\"}";
 							
-							jsonCheck = MainActivity.communicate(urlString, jsonString);
+							jsonPatientId = communicate(urlString, jsonString);
 							
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -83,7 +88,7 @@ public class AddNewPatientActivity extends Activity {
 				});
 				thread.start();
 				int timer = 0;
-				while (jsonCheck == null && timer < 50) {
+				while (jsonPatientId == null && timer < 50) {
 					try {
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
@@ -92,15 +97,14 @@ public class AddNewPatientActivity extends Activity {
 					timer++;
 				}
 				Toast msg = Toast.makeText(getBaseContext(),
-						(timer < 50 ? jsonCheck.optString("type")
+						(timer < 50 ? jsonPatientId.optString("success")
 								: "Server time out"), Toast.LENGTH_LONG);
 				msg.show();
 				msg = null;
-				if (jsonCheck != null) {
-					Intent i = new Intent(mContext, DashboardActivity.class);
+				if (jsonPatientId != null) {
+					Intent i = new Intent(mContext, PatientPageActivity.class);
 					startActivity(i);
 				}
-				jsonCheck = null;
 			}
 		});
 	}

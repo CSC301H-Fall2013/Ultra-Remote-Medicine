@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class SearchResultActivity extends Activity {
+public class SearchResultActivity extends ActivityAPI {
 	Context mContext;
 
 	

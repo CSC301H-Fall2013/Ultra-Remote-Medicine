@@ -17,9 +17,10 @@
 			    android:layout_height="@dimen/thumbnail_height"
 				android:layout_gravity="center"
 				android:layout_marginBottom="4dp"
+				android:src="@drawable/ideal_image"
 				android:contentDescription="@string/metadata_image_preview_label" />
 	    </TableRow>
-	        
+	    
 	    <TableRow>
 	        <TextView
 	            android:text="@string/metadata_patient_id_label"
@@ -31,6 +32,7 @@
 		        android:id="@+id/patient_id"
 	            android:inputType="text"
 	            android:padding="3dip"
+	            android:text="1"
 	    		android:layout_width="@dimen/metadata_textview_length" />
 	    </TableRow>
 	    
@@ -65,7 +67,7 @@
 	    
 	    <TableRow>
 		    <Button
-		        android:id="@+id/case_finish"
+		        android:id="@+id/add_case_finish"
 		        android:layout_column="1"
 		        android:layout_gravity="right"
 		        android:text="@string/finish"
