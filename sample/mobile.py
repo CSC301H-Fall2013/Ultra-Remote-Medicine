@@ -1,4 +1,6 @@
 import json
+import base64
+import re
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
