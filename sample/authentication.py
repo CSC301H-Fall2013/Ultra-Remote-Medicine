@@ -11,7 +11,7 @@ def process_login(request):
     Authenticates the user (this assumes https is being used such that the
     password does not need to be encrypted by javascript)
     """
-
+	
     # Get username and password
     try:
         username = request.POST['username']
@@ -28,7 +28,8 @@ def process_login(request):
     try:
         User.objects.get(username=username)
     except ObjectDoesNotExist:
-        return HttpResponseRedirect("%s?e=u" % signin_page)
+        print 
+        return HttpResponseRedirect("/login/f" % signin_page)
 
     # authenticate the user and then log the user in
     user = authenticate(username=username, password=password)
@@ -47,13 +48,13 @@ def process_login(request):
                                                                  worker_page))
                 except ObjectDoesNotExist:  # if niether worker or doctor
                     # must be admin, but we don't allow admins login from here
-                    return HttpResponseRedirect("%s?e=a" % signin_page)
+                    return HttpResponseRedirect("/login/f" % signin_page)
         else:
             # redirect if account is not active
-            return HttpResponseRedirect("%s?e=a" % signin_page)
+            return HttpResponseRedirect("/login/f" % signin_page)
     else:
         # redirect if wrong password
-        return HttpResponseRedirect("%s?e=p" % signin_page)
+        return HttpResponseRedirect("/login/f" % signin_page)
 
 
 def process_logout(request):
