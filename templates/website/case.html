@@ -12,6 +12,18 @@
   <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
   <script src="http://code.jquery.com/jquery.js"></script>
   <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
+  <style>
+	label,input{
+    display: inline-block;
+    vertical-align: baseline;
+    width: 140px;
+	text-align: left;
+	}
+	label {
+		color: #2D2D2D;
+		font-size: 15px;
+	}
+   </style>
 </head>
 
 <body>
@@ -26,12 +38,12 @@
 				<tr>
 					<td style="height: 250 px; margin: 0; text-align: left;">
 						<form action="{% url 'display_case' case_id 'p' %}" method="post"> {% csrf_token %}
-							<br>Patient: <a href="{% url 'display_patient' patient_id %}">  {{lastName}}, {{firstName}}</a>
-							<br>U.R.M Patient ID: {{patient_id}}
-							<br>Gender: {{gender}}
-							<br>Regional Health ID: {{health_id}}
-							<br>Case ID: {{case_id}}
-							<br>Priority: {{priority_form.priority}}
+							<br><label>Patient:</label> <a href="{% url 'display_patient' patient_id %}">  {{lastName}}, {{firstName}}</a>
+							<br><label>U.R.M Patient ID:</label> {{patient_id}}
+							<br><label>Gender:</label> {{gender}}
+							<br><label>Regional Health ID:</label> {{health_id}}
+							<br><label>Case ID:</label> {{case_id}}
+							<br><label>Priority:</label> {{priority_form.priority}}
 							<br>
 						</form>
 					</td>
