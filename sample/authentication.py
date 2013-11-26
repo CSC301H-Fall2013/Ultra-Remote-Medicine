@@ -11,7 +11,7 @@ def process_login(request):
     Authenticates the user (this assumes https is being used such that the
     password does not need to be encrypted by javascript)
     """
-	
+
     # Get username and password
     try:
         username = request.POST['username']
@@ -28,7 +28,6 @@ def process_login(request):
     try:
         User.objects.get(username=username)
     except ObjectDoesNotExist:
-        print 
         return HttpResponseRedirect("/login/f" % signin_page)
 
     # authenticate the user and then log the user in

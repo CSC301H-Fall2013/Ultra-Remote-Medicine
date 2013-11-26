@@ -185,9 +185,8 @@ def create_new_case_m(request):
         return HttpResponse(json_response, mimetype='application/json')
 
     form = NewCaseForm(data)
-    print(data)
     worker = data['worker']
-    print(worker)
+
     if form.is_valid():
         patient_id = form.cleaned_data['patient']
         comments = form.cleaned_data['comments']
