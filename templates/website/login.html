@@ -16,6 +16,30 @@
     height: 100%;
 	}
   </style>
+  
+  <style>
+  #p1 {color:red;}
+
+  </style>
+  <style>
+  .inputbox {
+  position: absolute;
+  left: 50%;
+  top: 70%;
+
+ 
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+
+  /*
+  Not even necessary really. 
+  e.g. Height could be left out!
+  */
+  width: 40%;
+  height: 50%;
+}
+  </style>
 </head>
   <div class = "center">
     <br>
@@ -38,7 +62,7 @@
 		
 	</div>
 	
-  <div class="container">
+  <div class="container" id="inputbox">
 	<div class="row">
 		<div class="col-md-5"></div>
 			<div class="col-md-4">
@@ -60,6 +84,10 @@
 					</div>
 					<button type="submit" class="btn btn-primary">Log in</button>
 						</form>
+					{%if status = 'f'%}
+						<br>
+						<p id="p1">Invalid username or password</p>
+					{%endif%}
 			</div>
 				</form>
 		</div>
@@ -98,4 +126,5 @@
 //         alert("User does not exists");
 //     }
 // });</script>
+
 </html>
