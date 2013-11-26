@@ -62,7 +62,7 @@ def process_login(request):
 
 def is_worker(request):
 
-    json_data = json.loads(request.raw_post_data)
+    json_data = json.loads(request.raw_post_data, strict=False)
 
     engine = import_module(settings.SESSION_ENGINE)
     try:
@@ -278,6 +278,7 @@ def upload_image_m(request):
         scan = Scan(
             patient=case.patient)
         scan.save()
+
     except IntegrityError:
         scan.delete()
         json_response = json.dumps({"success": "false",
@@ -286,7 +287,7 @@ def upload_image_m(request):
 
     try:
         image_data = b64decode(data['image_string'])
-        scan.file = ContentFile(image_data)
+        scan.file = ContentFile(image_data, "test.png")
         scan.save()
         case.scan = scan
         case.save()
