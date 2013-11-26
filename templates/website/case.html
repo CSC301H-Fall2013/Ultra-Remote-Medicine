@@ -14,8 +14,6 @@
   <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
 </head>
 
-{% include "_commentDisplayScript.html" %}
-
 <body>
 
 	{% include "_topBar.html" %}
@@ -28,7 +26,7 @@
 				<tr>
 					<td style="height: 250 px; margin: 0; text-align: left;">
 						<form action="{% url 'display_case' case_id 'p' %}" method="post"> {% csrf_token %}
-							<br>Patient Name: {{lastName}}, {{firstName}}
+							<br>Patient: <a href="{% url 'display_patient' patient_id %}">  {{lastName}}, {{firstName}}</a>
 							<br>U.R.M Patient ID: {{patient_id}}
 							<br>Gender: {{gender}}
 							<br>Regional Health ID: {{health_id}}
@@ -49,6 +47,7 @@
 						{% include "_commentDisplay.html" %}
 					{%endwith%}
 				{%endfor%}
+				<br>
 				
 				<!-- Reviewer comments -->
 				{%for comment_group in reviewer_comments%}
@@ -62,9 +61,17 @@
 					{%endfor%}
 				{%endfor%}
 				
+				<br>
+				<br>
+				<div id="defaultcommentlocation">
+				
+				</div>
+				
 				
 		</div>
 	</div>
 
 </body>
 </html>
+
+{% include "_commentDisplayScript.html" %}

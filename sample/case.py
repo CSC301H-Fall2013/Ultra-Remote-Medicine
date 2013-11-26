@@ -103,13 +103,48 @@ def display_case(request, case_id, mode='v'):
 
                 comments = comment_form.cleaned_data['comments']
 
-                parent_comment = Comment.objects.filter(id=comment_id)[0]
-
                 comment = Comment(author=user, text=comments,
                                   time_posted=timezone.now())
                 comment.save()
 
-                parent_comment.children.add(comment)
+                print "commentID", comment_id
+                if comment_id == -1:
+
+                    # Search for a group with the user id.
+                    matching_group = None
+
+                    # Check submitter comments for a match
+                    if (hasattr(user, "worker") and
+                            case.submitter == user.worker):
+                        case.submitter_comments.comments.add(comment)
+                    else:
+
+                        # Check reviewer comments for a match
+                        groups = CommentGroup.objects.all().filter(
+                        reviewed_case_set=case)[:]
+
+                        print groups
+
+                        for group in groups:
+                            comments = group.comments.all()
+
+                            if len(comments) > 0:
+                                author = comments[0].author
+                                if author == user:
+                                    matching_group = group
+                                    break
+
+                        if matching_group == None:
+                            matching_group = CommentGroup()
+                            matching_group.save()
+
+                        matching_group.comments.add(comment)
+
+                        case.reviewer_comments.add(matching_group)
+
+                else:
+                    parent_comment = Comment.objects.filter(id=comment_id)[0]
+                    parent_comment.children.add(comment)
 
                 try:
                     case.save()
@@ -121,6 +156,9 @@ def display_case(request, case_id, mode='v'):
             else:
 
                 print "Invalid PostCommentForm."
+
+            # In any case, clear the comment form.
+            comment_form.fields["comments"].initial = ""
 
         elif mode == 'p':
 
@@ -138,19 +176,20 @@ def display_case(request, case_id, mode='v'):
                     print "hard fail"
                     return HttpResponseServerError()
 
+            else:
+
+                print "Invalid UpdateCasePriorityForm."
+
         else:
 
             return HttpResponseServerError("Invalid POST mode.")
 
-    else:
+    # Whether or not data has been posted, reset the forms to their default
+    # states.
+    priority_form = UpdateCasePriorityForm()
+    priority_form.populate(case)
 
-        # The page has just been entered and so the form hasn't
-        # been submitted yet.
-
-        priority_form = UpdateCasePriorityForm()
-        priority_form.populate(case)
-
-        comment_form = PostCommentForm()
+    comment_form = PostCommentForm()
 
     current_index = BoxedInteger(0)
     submitter_comments = create_comment_group_entries(
