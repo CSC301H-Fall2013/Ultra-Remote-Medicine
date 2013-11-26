@@ -13,7 +13,6 @@ from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, load_backend
 from sample.models import Case, Comment, CommentGroup, Scan
-from utilities import create_case_attributes
 from django.utils import timezone
 from base64 import b64decode
 from django.core.files.base import ContentFile
@@ -84,6 +83,7 @@ def is_worker(request):
     if user.is_authenticated():
         try:
             if user.worker:
+                json_data['worker'] = user.worker
                 return json_data
         except:
             return False
@@ -185,7 +185,10 @@ def create_new_case_m(request):
         return HttpResponse(json_response, mimetype='application/json')
 
     form = NewCaseForm(data)
-    worker = request.user.worker
+    print(data)
+    print(request.user.worker)
+    worker = data['worker']
+    print(worker)
     if form.is_valid():
         patient_id = form.cleaned_data['patient']
         comments = form.cleaned_data['comments']
