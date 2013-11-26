@@ -186,7 +186,6 @@ def create_new_case_m(request):
 
     form = NewCaseForm(data)
     print(data)
-    print(request.user.worker)
     worker = data['worker']
     print(worker)
     if form.is_valid():
