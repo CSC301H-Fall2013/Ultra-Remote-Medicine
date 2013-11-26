@@ -217,7 +217,8 @@ def create_new_case_m(request):
             return HttpResponse(json_response, mimetype='application/json')
 
         json_response = json.dumps({"success": "true",
-                                    "type": "newCase"})
+                                    "type": "newCase",
+                                    "case_id": str(case.id)})
         return HttpResponse(json_response, mimetype='application/json')
     else:
         json_response = json.dumps({"success": "false",
@@ -296,3 +297,46 @@ def upload_image_m(request):
     json_response = json.dumps({"success": "true",
                                 "type": "uploadSuccess"})
     return HttpResponse(json_response, mimetype='application/json')
+
+
+@csrf_exempt
+def display_patient_cases_m(request):
+
+    ''' Displays all cases related to a patient. '''
+
+    data = is_worker(request)
+    if not data:
+        json_response = json.dumps({"success": "false",
+                                    "type": "notWorker"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    try:
+        patient = Patient.objects.filter(id=data['patient_id'])[0]
+        cases = Case.objects.filter(patient=patient)
+    except KeyError:
+        json_response = json.dumps({"success": "false",
+                                    "type": "KeyError"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    json_response = json.dumps({"success": "true",
+                                "type": "patientCases",
+                                "cases": create_cases_json(cases)})
+    return HttpResponse(json_response, mimetype='application/json')
+
+
+def create_cases_json(case_objects):
+
+    case = {}
+    cases = []
+    for case_object in case_objects:
+        case['firstName'] = str(case_object.patient.first_name)
+        case['lastName'] = str(case_object.patient.last_name)
+        case['patient_id'] = str(case_object.patient.id)
+        case['gender'] = str(case_object.patient.gender)
+        case['date_of_birth'] = str(case_object.patient.date_of_birth)
+        case['health_id'] = str(case_object.patient.health_id)
+        case['priority'] = str(case_object.priority)
+        cases.append(case)
+        case = {}
+
+    return cases
