@@ -54,7 +54,8 @@ $(document).ready(function() {
             { "sType": "numeric-html" },
             null,
             null,
-            { "sType": "enum" }
+            { "sType": "enum" },
+            null
         ]
         });
 } );
@@ -92,7 +93,7 @@ $(document).ready(function() {
 									{{case.case_ref.lock_holder}} </a></td>
 						{%endif%}
 						<td>{{case.priority_text}}</td>
-						<!--<td>{{case.status_text}}</td>-->
+						<td>{{case.status_text}}</td>
 							<!--
 								<td><select>
 										<option value="High" selected="selected">High</option>
