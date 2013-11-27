@@ -24,6 +24,11 @@ class CaseAttribute():
             self.priority_text = "Medium"
         elif case_reference.priority == 30:
             self.priority_text = "Low"
+            
+        if case_reference.status == 1:
+            self.status_text = "Open"
+        elif case_reference.status == 2:
+            self.status_text = "Closed"
 
         # TODO: Make this value correspond to the actual age.
         self.age = 30

@@ -71,6 +71,7 @@ $(document).ready(function() {
 					<th>Date</th>
 					<th>Reviewer</th>
 					<th>Priority</th>
+					<th>Status</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -82,15 +83,16 @@ $(document).ready(function() {
 					<td>{{case.case_ref.date_opened}}</td>
 						{%if case.case_ref.lock_holder == None%}
 							{%if viewer.doctor%}
-								<td>Adopt this Case</td>
+								<td>{{case.case_ref.lock_holder}}</td>
 							{%else%}
-								<td>None</td>
+								<td>{{case.case_ref.lock_holder}}</td>
 							{%endif%}
 						{%else%}
 							<td><a href="{% url 'display_profile' case.case_ref.lock_holder.id %}" target="_blank">
 									{{case.case_ref.lock_holder}} </a></td>
 						{%endif%}
 						<td>{{case.priority_text}}</td>
+						<!--<td>{{case.status_text}}</td>-->
 							<!--
 								<td><select>
 										<option value="High" selected="selected">High</option>

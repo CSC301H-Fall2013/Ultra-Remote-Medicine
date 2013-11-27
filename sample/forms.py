@@ -25,6 +25,8 @@ class NewCaseForm(forms.Form):
     comments = forms.CharField(required=False, widget=forms.Textarea)
     priority = forms.ChoiceField(required=False, choices=((10, 'High'),
                                  (20, 'Medium'), (30, 'Low')))
+    status = forms.ChoiceField(required=False, choices=((1, 'Open'),
+                                 (2, 'Closed')))
 
     def populate(self, patient_id):
         ''' Populates this form with default information. '''
@@ -46,6 +48,33 @@ class UpdateCasePriorityForm(forms.Form):
         ''' Populates this form with default information. '''
 
         self.fields["priority"].initial = case.priority
+        
+class UpdateCaseStatusForm(forms.Form):
+    ''' The form used on the case page. '''
+
+    status = forms.ChoiceField(required=False,
+                                 widget=forms.Select(attrs={"onChange":
+                                                     'this.form.submit()'}),
+                                 choices=((1, 'Open'), (2, 'Closed')))
+
+    def populate(self, case):
+        ''' Populates this form with default information. '''
+
+        self.fields["status"].initial = case.status
+
+
+class UpdateCaseLockHolderForm(forms.Form):
+    ''' The form used on the case page. '''
+ 
+    toggle_field = forms.ChoiceField(required=False,
+                                 widget=forms.Select(attrs={"onChange":
+                                                     'this.form.submit()'}),
+                                 choices=[(1, 'Abort'), (2,'Adopt')])
+ 
+    def populate(self):
+        ''' Populates this form with default information. '''
+  
+        self.fields["toggle_field"].initial = self.fields["toggle_field"].choices[1][0]
 
 
 class NewPatientForm(forms.Form):

@@ -12,6 +12,11 @@
   <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
   <script src="http://code.jquery.com/jquery.js"></script>
   <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
+  <!--<script>
+  		$( "#Adopttoggle" ).click(function() {
+			$( "#ay" ).toggle();
+		});
+  </script>-->
 </head>
 
 {% include "_commentDisplayScript.html" %}
@@ -34,7 +39,37 @@
 							<br>Regional Health ID: {{health_id}}
 							<br>Case ID: {{case_id}}
 							<br>Priority: {{priority_form.priority}}
+							<!--{%if case.case_ref.lock_holder == None%}
+								{%if viewer.doctor%}
+									<button id="Adopttoggle">Adopt this case</button>
+										<p id="ay">{{viewer.doctor}}</p>
+										<p id="ay" style="display: none">None</p>
+								{%else%}
+									{{case.case_ref.lock_holder}}
+								{%endif%}
+							{%else%}
+								{{case.case_ref.lock_holder}}
+							{%endif%}-->
 							<br>
+						</form>
+						<form action="{% url 'display_case' case_id 'a' %}" method="post"> {% csrf_token %}
+							<br>Case holder: {{case.lock_holder.user.first_name}}
+							{{case.case_ref.lock_holder.id}}
+							<br>
+							{%if viewer.doctor%}
+								{{adopt_form.toggle_field}}
+							{%else%}
+								{{case.lock_holder.first_name}}
+							{%endif%}
+						</form>
+						<form action="{% url 'display_case' case_id 's' %}" method="post"> {% csrf_token %}
+							<br>Case Status: {{case.case_ref.status}}
+							<br>
+							{%if viewer.doctor%}
+								{{status_form.status}}
+							{%else%}
+								{{case.case_ref.status}}
+							{%endif%}
 						</form>
 					</td>
 				</tr>
