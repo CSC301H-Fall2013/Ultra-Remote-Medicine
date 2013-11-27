@@ -26,9 +26,9 @@ class Doctor(models.Model):
     schedule = models.ManyToManyField('TimeSlot', blank=True, null=True)
     comments = models.TextField(blank=True)
 
-    def profile_pic_path(self, instance, filename):
+    def profile_pic_path(instance, filename):
         name, extension = os.path.splitext(filename)
-        return "profile_pictures/%d/pic%s" % (self.id, extension)
+        return "profile_pictures/%d/pic%s" % (instance.id, extension)
 
     profile_pic = models.ImageField(upload_to=profile_pic_path, blank=True)
 
@@ -63,9 +63,9 @@ class Worker(models.Model):
     registration_time = models.DateTimeField()
     comments = models.TextField(blank=True)
 
-    def profile_pic_path(self, instance, filename):
+    def profile_pic_path(instance, filename):
         name, extension = os.path.splitext(filename)
-        return "profile_pictures/%d/pic%s" % (self.id, extension)
+        return "profile_pictures/%d/pic%s" % (instance.id, extension)
 
     profile_pic = models.ImageField(upload_to=profile_pic_path, blank=True)
 
@@ -104,9 +104,9 @@ class Patient(models.Model):
     gender = models.CharField(max_length=63, blank=True)
     email = models.CharField(max_length=254, blank=True)
 
-    def patient_pic_path(self, instance, filename):
+    def patient_pic_path(instance, filename):
         name, extension = os.path.splitext(filename)
-        return "patient/%d/pic%s" % (self.id, extension)
+        return "patient/%d/pic%s" % (instance.id, extension)
 
     patient_pic = models.ImageField(upload_to=patient_pic_path, blank=True)
 
@@ -194,9 +194,9 @@ class Scan(models.Model):
     picture_linkage = models.URLField()
     comments = models.TextField(blank=True)
 
-    def scan_path(self, instance, filename):
+    def scan_path(instance, filename):
         name, extension = os.path.splitext(filename)
-        return "scan/%d/pic%s" % (self.id, extension)
+        return "scan/%d/pic%s" % (instance.id, extension)
 
     file = models.ImageField(upload_to=scan_path, blank=True)
     slug = models.SlugField(max_length=50, blank=True)

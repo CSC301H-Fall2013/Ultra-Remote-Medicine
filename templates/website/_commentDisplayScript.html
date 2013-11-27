@@ -1,7 +1,7 @@
 <!-- Script used by _commentDisplay. -->
 
 <body>
-	<div class="media" id="Country" style="display:none">
+	<div class="media" id="commentdiv">
 		<div class="media-object pull-left" id="avatarcontainer"
 		style="display: inline-block; height: auto; min-height: 80px; width: auto; min-width: 80px;">
 
@@ -24,7 +24,7 @@
 							<b>Post Your Comment</b>
 						</td>
 						<td style="text-align: right">
-							<a id="cancel" href="javascript:;" onclick="cancel();">Cancel</a>
+							<a id="cancel" href="javascript:;" style="display: none;" onclick="cancel();">Cancel</a>
 						</td>
 					</tr>
 					<tr>
@@ -48,15 +48,26 @@
 
 <script>
 
-	<!-- Correct the display script. -->
 	{{comment_form.comments.auto_id}}.style.resize = 'none';
 	{{comment_form.comments.auto_id}}.rows = '3';
 	{{comment_form.comments.auto_id}}.style.width = '100%';
 	{{comment_form.comments.auto_id}}.style.height = '100px';
 	
 	{{comment_form.comment_id.auto_id}}.style.display = 'none';
+	
+	
+	// A collection of Useful variables
+	
+	var comment_box = document.getElementById("commentdiv");
+	var defaultCommentLocation = document.getElementById("defaultcommentlocation");
+	var cancelButton = document.getElementById("cancel");
+	
+	var identifierElementID = "{{comment_form.comment_id.auto_id}}";
+	var identifierElement = document.getElementById(identifierElementID);
+	
+	defaultCommentLocation.appendChild(comment_box);
 
-
+	
 	var current_comment_id = -1;
 
 	function replyTo(comment_id) {
@@ -65,12 +76,10 @@
 		
 		var parent_div_id = "a" + comment_id;
 		var parent_div = document.getElementById(parent_div_id);
-		var comment_box = document.getElementById("Country");
 		parent_div.appendChild(comment_box);
 		comment_box.style.display = 'block';
+		cancelButton.style.display = 'block';
 		
-		var identifierElementID = "{{comment_form.comment_id.auto_id}}";
-		var identifierElement = document.getElementById(identifierElementID);
 		identifierElement.value = comment_id;
 		
 		// Hide all reply buttons.
@@ -79,15 +88,20 @@
 			var reply_button = document.getElementById(reply_button_id);
 			reply_button.style.display = 'none';
 		}
+		
+		{{comment_form.comments.auto_id}}.value = '';
 	}
 	
 	function cancel() {
 		
 		var parent_div_id = "a" + current_comment_id;
 		var parent_div = document.getElementById(parent_div_id);
-		var comment_box = document.getElementById("Country");
-		// parent_div.appendChild(comment_box);
-		comment_box.style.display = 'none';
+		
+		current_comment_id = -1;
+		identifierElement.value = current_comment_id;
+		
+		defaultCommentLocation.appendChild(comment_box);
+		cancelButton.style.display = 'none';
 		
 		// Show all reply buttons.
 		for (i = 0; i < {{comment_count}}; i++) {
@@ -97,5 +111,6 @@
 		}
 		
 		{{comment_form.comments.auto_id}}.value = '';
+		
 	}
 </script>

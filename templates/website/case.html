@@ -17,9 +17,19 @@
 			$( "#ay" ).toggle();
 		});
   </script>-->
+  <style>
+	label,input{
+    display: inline-block;
+    vertical-align: baseline;
+    width: 140px;
+	text-align: left;
+	}
+	label {
+		color: #2D2D2D;
+		font-size: 15px;
+	}
+   </style>
 </head>
-
-{% include "_commentDisplayScript.html" %}
 
 <body>
 
@@ -50,6 +60,12 @@
 							{%else%}
 								{{case.case_ref.lock_holder}}
 							{%endif%}-->
+							<!--<br><label>Patient:</label> <a href="{% url 'display_patient' patient_id %}">  {{lastName}}, {{firstName}}</a>
+							<br><label>U.R.M Patient ID:</label> {{patient_id}}
+							<br><label>Gender:</label> {{gender}}
+							<br><label>Regional Health ID:</label> {{health_id}}
+							<br><label>Case ID:</label> {{case_id}}
+							<br><label>Priority:</label> {{priority_form.priority}}-->
 							<br>
 						</form>
 						<form action="{% url 'display_case' case_id 'a' %}" method="post"> {% csrf_token %}
@@ -84,6 +100,7 @@
 						{% include "_commentDisplay.html" %}
 					{%endwith%}
 				{%endfor%}
+				<br>
 				
 				<!-- Reviewer comments -->
 				{%for comment_group in reviewer_comments%}
@@ -97,9 +114,17 @@
 					{%endfor%}
 				{%endfor%}
 				
+				<br>
+				<br>
+				<div id="defaultcommentlocation">
+				
+				</div>
+				
 				
 		</div>
 	</div>
 
 </body>
 </html>
+
+{% include "_commentDisplayScript.html" %}

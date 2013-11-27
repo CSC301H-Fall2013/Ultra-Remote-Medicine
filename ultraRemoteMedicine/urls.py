@@ -16,7 +16,8 @@ urlpatterns += patterns('',
                                        os.path.dirname(__file__)), 'media')}))
 
 urlpatterns += patterns('sample.views',
-                        url('^$', 'home', name='home'))
+                        url('^$', 'home', name='home'),
+                        url('^login/(?P<status>\w+)$', 'home', name='home'))
 
 urlpatterns += patterns('sample.authentication',
                         url('^login$', 'process_login', name='login'),
@@ -52,8 +53,10 @@ urlpatterns += patterns('sample.mobile',
                         url('^mobile/add_patient$', 'create_new_patient_m'),
                         url('^mobile/view_patient$', 'display_patient_m'),
                         url('^mobile/add_case$', 'create_new_case_m'),
-                        url('^mobile/view_case', 'display_case_m'),
-                        url('^mobile/upload', 'upload_image_m'))
+                        url('^mobile/view_case$', 'display_case_m'),
+                        url('^mobile/upload$', 'upload_image_m'),
+                        url('^mobile/display_patient_cases$',
+                            'display_patient_cases_m'))
 
 if settings.DEBUG:
     urlpatterns += patterns('django.contrib.staticfiles.views',

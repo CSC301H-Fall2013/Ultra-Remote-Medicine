@@ -14,6 +14,31 @@
   <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
   <script src="http://code.jquery.com/jquery.js"></script>
   <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
+  
+  <style>
+  label,input{
+    display: inline-block;
+    vertical-align: baseline;
+    width: 140px;
+	
+}
+
+label {
+    color: #2D2D2D;
+    font-size: 15px;
+}
+
+form, input {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+
+}
+
+form {
+    width: 300px;
+}
+</style>
 </head>
 
 <body>
@@ -25,18 +50,18 @@
 		<div class="profilecontainer">
 
 			<h1><b>Register New Patient</b></h1>
-
 			<form action="new_patient" method="post"> {% csrf_token %}
-				First Name: {{form.first_name}} <br>
-				Last Name: {{form.last_name}} <br>
-				Sex: {{form.sex}} <br>
-				Date of Birth: {{form.date_of_birth}} <br>
-				Regional Health ID: {{form.health_id}} <br>
-				GPS Coordinates: {{form.gps_coordinates}} <br>
-				Address: {{form.address}} <br>
-				Phone Number: {{form.phone_number}} <br>
-				Email: {{form.email}} <br>
-				Photo Link: {{form.photo_link}} <br>
+			    
+				<label for="firstname">First Name: </label> {{form.first_name}} <br>
+				<label for="lastname">Last Name: </label> {{form.last_name}} <br>
+				<label for="sex">Sex: </label> {{form.sex}} <br>
+				<label for="dateofbirth">Date of Birth: </label> {{form.date_of_birth}} <br>
+				<label for="regionalhealthid">Regional Health ID: </label> {{form.health_id}} <br>
+				<label for="gps">GPS Coordinates:</label> {{form.gps_coordinates}} <br>
+				<label for="address">Address: </label> {{form.address}} <br>
+				<label for="phonenumber">Phone Number:</label> {{form.phone_number}} <br>
+				<label for="email">E-Mail: </label> {{form.email}} <br>
+				<label for="photo">Photo Link: </label> {{form.photo_link}} <br>
 				<input type="submit" value="Submit" />
 			</form>
 

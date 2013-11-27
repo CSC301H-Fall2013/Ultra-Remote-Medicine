@@ -1,4 +1,6 @@
 import json
+import base64
+import re
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
@@ -13,7 +15,6 @@ from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, load_backend
 from sample.models import Case, Comment, CommentGroup, Scan
-from utilities import create_case_attributes
 from django.utils import timezone
 from base64 import b64decode
 from django.core.files.base import ContentFile
@@ -63,7 +64,7 @@ def process_login(request):
 
 def is_worker(request):
 
-    json_data = json.loads(request.raw_post_data)
+    json_data = json.loads(request.raw_post_data, strict=False)
 
     engine = import_module(settings.SESSION_ENGINE)
     try:
@@ -84,6 +85,7 @@ def is_worker(request):
     if user.is_authenticated():
         try:
             if user.worker:
+                json_data['worker'] = user.worker
                 return json_data
         except:
             return False
@@ -185,7 +187,8 @@ def create_new_case_m(request):
         return HttpResponse(json_response, mimetype='application/json')
 
     form = NewCaseForm(data)
-    worker = request.user.worker
+    worker = data['worker']
+
     if form.is_valid():
         patient_id = form.cleaned_data['patient']
         comments = form.cleaned_data['comments']
@@ -217,7 +220,8 @@ def create_new_case_m(request):
             return HttpResponse(json_response, mimetype='application/json')
 
         json_response = json.dumps({"success": "true",
-                                    "type": "newCase"})
+                                    "type": "newCase",
+                                    "case_id": str(case.id)})
         return HttpResponse(json_response, mimetype='application/json')
     else:
         json_response = json.dumps({"success": "false",
@@ -276,6 +280,7 @@ def upload_image_m(request):
         scan = Scan(
             patient=case.patient)
         scan.save()
+
     except IntegrityError:
         scan.delete()
         json_response = json.dumps({"success": "false",
@@ -284,7 +289,7 @@ def upload_image_m(request):
 
     try:
         image_data = b64decode(data['image_string'])
-        scan.file = ContentFile(image_data)
+        scan.file = ContentFile(image_data, "test.png")
         scan.save()
         case.scan = scan
         case.save()
@@ -296,3 +301,46 @@ def upload_image_m(request):
     json_response = json.dumps({"success": "true",
                                 "type": "uploadSuccess"})
     return HttpResponse(json_response, mimetype='application/json')
+
+
+@csrf_exempt
+def display_patient_cases_m(request):
+
+    ''' Displays all cases related to a patient. '''
+
+    data = is_worker(request)
+    if not data:
+        json_response = json.dumps({"success": "false",
+                                    "type": "notWorker"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    try:
+        patient = Patient.objects.filter(id=data['patient_id'])[0]
+        cases = Case.objects.filter(patient=patient)
+    except KeyError:
+        json_response = json.dumps({"success": "false",
+                                    "type": "KeyError"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    json_response = json.dumps({"success": "true",
+                                "type": "patientCases",
+                                "cases": create_cases_json(cases)})
+    return HttpResponse(json_response, mimetype='application/json')
+
+
+def create_cases_json(case_objects):
+
+    case = {}
+    cases = []
+    for case_object in case_objects:
+        case['firstName'] = str(case_object.patient.first_name)
+        case['lastName'] = str(case_object.patient.last_name)
+        case['patient_id'] = str(case_object.patient.id)
+        case['gender'] = str(case_object.patient.gender)
+        case['date_of_birth'] = str(case_object.patient.date_of_birth)
+        case['health_id'] = str(case_object.patient.health_id)
+        case['priority'] = str(case_object.priority)
+        cases.append(case)
+        case = {}
+
+    return cases
