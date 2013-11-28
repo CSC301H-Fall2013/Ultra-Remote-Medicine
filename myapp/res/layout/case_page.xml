@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000" >
+
+    <TableRow
+        android:id="@+id/casepage_tableRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF" >
+
+        <TextView
+            android:id="@+id/casepage_caseid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="Case:"
+            android:textSize="@dimen/btn_text_size" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/casepage_tableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/casepage_case_picture"
+                android:layout_width="170dp"
+                android:layout_height="110dp"
+                android:layout_marginBottom="4dp"
+                android:contentDescription="@string/metadata_image_preview_label" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TableRow
+                    android:id="@+id/casepage_tableRow3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/casepage_patient_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:singleLine="true"
+                        android:text="Name:" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/casepage_tableRow4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/casepage_patient_urmid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:singleLine="true"
+                        android:text="URM Id: Male" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/casepage_tableRow5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/casepage_patient_dob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:singleLine="true"
+                        android:text="DOB: 12/12/12" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/casepage_tableRow6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/casepage_patient_health_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:singleLine="true"
+                        android:text="Health ID: 12345678" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/casepage_tableRow7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/casepage_patient_sex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:singleLine="true"
+                        android:text="Sex:" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/casepage_tableRow8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/casepage_case_priority"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:singleLine="true"
+                        android:text="Priority:" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/casepage_tableRowA1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:background="#FFFFFF" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/casepage_tableRowB1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:background="#FFFFFF" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/casepage_tableRowC1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:background="#FFFFFF" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/casepage_tableRowD1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:background="#FFFFFF" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </TableRow>
+
+</TableLayout>

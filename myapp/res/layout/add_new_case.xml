@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top|right" >
+
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" >
+
+        <TableRow>
+
+            <ImageView
+                android:id="@+id/add_new_case_pic"
+                android:layout_width="@dimen/thumbnail_width"
+                android:layout_height="@dimen/thumbnail_height"
+                android:layout_column="1"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp"
+                android:contentDescription="@string/metadata_image_preview_label"
+                android:src="@drawable/ideal_image" />
+
+            <Button
+                android:id="@+id/add_new_case_add"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/add"
+                android:textColor="@color/button_text_color"
+                android:textSize="@dimen/btn_text_size" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_marginBottom="4dp"
+                android:gravity="right"
+                android:padding="3dip"
+                android:text="@string/metadata_patient_id_label"
+                android:textColor="@color/label_color" />
+
+            <EditText
+                android:id="@+id/patient_id"
+                android:layout_width="@dimen/metadata_textview_length"
+                android:inputType="text"
+                android:padding="3dip" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_marginBottom="4dp"
+                android:gravity="right"
+                android:padding="3dip"
+                android:text="@string/metadata_patient_priority_label"
+                android:textColor="@color/label_color" />
+
+            <Spinner
+                android:id="@+id/patient_priority"
+                android:layout_height="40dp"
+                android:layout_width="@dimen/metadata_textview_length"
+                android:entries="@array/add_new_case_priority_spinner"
+                android:padding="3dip" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_marginBottom="4dp"
+                android:gravity="right"
+                android:padding="3dip"
+                android:text="@string/metadata_comments_label"
+                android:textColor="@color/label_color" />
+
+            <EditText
+                android:id="@+id/patient_comments"
+                android:layout_width="@dimen/metadata_textview_length"
+                android:inputType="textMultiLine"
+                android:minLines="7"
+                android:padding="3dip" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/add_case_finish"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_column="1"
+                android:layout_gravity="right"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/finish"
+                android:textColor="@color/button_text_color"
+                android:textSize="@dimen/btn_text_size" />
+        </TableRow>
+    </TableLayout>
+
+</RelativeLayout>
