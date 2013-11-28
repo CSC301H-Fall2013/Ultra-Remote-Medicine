@@ -388,9 +388,9 @@ public class PatientPageActivity extends ActivityAPI {
 				pCaseSpecialtyA4.setText("Spe: "
 						+ list.optJSONObject(currentGroup * 4).optString(
 								"specialty"));
-				pCaseReviewerA5.setText("Reviewer: "
+				pCaseReviewerA5.setText("Submitter: "
 						+ list.optJSONObject(currentGroup * 4).optString(
-								"reviewer"));
+								"submitter"));
 				pCasePriorityA6.setText("Priority: "
 						+ list.optJSONObject(currentGroup * 4).optString(
 								"priority"));
@@ -409,9 +409,9 @@ public class PatientPageActivity extends ActivityAPI {
 					pCaseSpecialtyB4.setText("Spe: "
 							+ list.optJSONObject(currentGroup * 4 + 1)
 									.optString("specialty"));
-					pCaseReviewerB5.setText("Reviewer: "
-							+ list.optJSONObject(currentGroup * 4).optString(
-									"reviewer"));
+					pCaseReviewerB5.setText("Submitter: "
+							+ list.optJSONObject(currentGroup * 4 + 1).optString(
+									"submitter"));
 					pCasePriorityB6.setText("Priority: "
 							+ list.optJSONObject(currentGroup * 4 + 1)
 									.optString("priority"));
@@ -431,9 +431,9 @@ public class PatientPageActivity extends ActivityAPI {
 					pCaseSpecialtyC4.setText("Spe: "
 							+ list.optJSONObject(currentGroup * 4 + 2)
 									.optString("specialty"));
-					pCaseReviewerC5.setText("Reviewer: "
-							+ list.optJSONObject(currentGroup * 4).optString(
-									"reviewer"));
+					pCaseReviewerC5.setText("Submitter: "
+							+ list.optJSONObject(currentGroup * 4 + 2).optString(
+									"submitter"));
 					pCasePriorityC6.setText("Priority: "
 							+ list.optJSONObject(currentGroup * 4 + 2)
 									.optString("priority"));
@@ -451,9 +451,9 @@ public class PatientPageActivity extends ActivityAPI {
 					pCaseSpecialtyD4.setText("Spe: "
 							+ list.optJSONObject(currentGroup * 4 + 3)
 									.optString("specialty"));
-					pCaseReviewerD5.setText("Reviewer: "
-							+ list.optJSONObject(currentGroup * 4).optString(
-									"reviewer"));
+					pCaseReviewerD5.setText("Submitter: "
+							+ list.optJSONObject(currentGroup * 4 + 3).optString(
+									"submitter"));
 					pCasePriorityD6.setText("Priority: "
 							+ list.optJSONObject(currentGroup * 4 + 3)
 									.optString("priority"));

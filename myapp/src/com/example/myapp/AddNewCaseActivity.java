@@ -119,7 +119,7 @@ public class AddNewCaseActivity extends ActivityAPI {
 					upLoadPic();
 				} else {
 					Toast msg = Toast.makeText(getBaseContext(),
-							(timer < 50 ? jsonCurCaseId.optString("success")
+							(timer < 50 ? jsonCurCaseId.optString("type")
 									: "Server time out"), Toast.LENGTH_LONG);
 					msg.show();
 					msg = null;
