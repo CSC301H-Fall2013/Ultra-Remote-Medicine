@@ -25,8 +25,6 @@ class NewCaseForm(forms.Form):
     comments = forms.CharField(required=False, widget=forms.Textarea)
     priority = forms.ChoiceField(required=False, choices=((10, 'High'),
                                  (20, 'Medium'), (30, 'Low')))
-    status = forms.ChoiceField(required=False, choices=((1, 'Open'),
-                                 (2, 'Closed')))
 
     def populate(self, patient_id):
         ''' Populates this form with default information. '''

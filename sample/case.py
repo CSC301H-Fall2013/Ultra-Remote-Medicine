@@ -29,7 +29,6 @@ def display_new_case(request, patient_id):
             patient_id = form.cleaned_data['patient']
             comments = form.cleaned_data['comments']
             priority = form.cleaned_data['priority']
-            status = form.cleaned_data['status']
 
             try:
                 patient = Patient.objects.filter(id=patient_id)[0]
@@ -48,7 +47,7 @@ def display_new_case(request, patient_id):
                     patient=patient,
                     submitter_comments=comment_group,
                     priority=priority,
-                    status=status,
+                    status=1,
                     submitter=worker,
                     date_opened=timezone.now())
                 case.save()
