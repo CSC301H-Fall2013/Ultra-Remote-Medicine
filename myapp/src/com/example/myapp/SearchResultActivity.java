@@ -2,17 +2,13 @@ package com.example.myapp;
 
 import org.json.JSONArray;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SearchResultActivity extends ActivityAPI {
 	Context mContext;
@@ -154,10 +150,13 @@ public class SearchResultActivity extends ActivityAPI {
 		// Button Click event for "RowA" button
 		stableRowA1Btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
+				jsonCurPatientId = null;
+				jsonCurCaseList = null;
 				jsonCurCaseId = null;
-				JSONArray list = jsonCurCaseList.optJSONArray("cases");
-				jsonCurCase = list.optJSONObject(currentGroup * 7);
-				Intent i = new Intent(mContext, CasePageActivity.class);
+				jsonCurCase = null;
+				JSONArray list = jsonCurSearchList.optJSONArray("result");
+				jsonCurPatient = list.optJSONObject(currentGroup * 7);
+				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
 		});
@@ -165,10 +164,13 @@ public class SearchResultActivity extends ActivityAPI {
 		// Button Click event for "RowB" button
 		stableRowB1Btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
+				jsonCurPatientId = null;
+				jsonCurCaseList = null;
 				jsonCurCaseId = null;
-				JSONArray list = jsonCurCaseList.optJSONArray("cases");
-				jsonCurCase = list.optJSONObject(currentGroup * 7 + 1);
-				Intent i = new Intent(mContext, CasePageActivity.class);
+				jsonCurCase = null;
+				JSONArray list = jsonCurSearchList.optJSONArray("result");
+				jsonCurPatient = list.optJSONObject(currentGroup * 7 + 1);
+				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
 		});
@@ -176,10 +178,13 @@ public class SearchResultActivity extends ActivityAPI {
 		// Button Click event for "RowC" button
 		stableRowC1Btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
+				jsonCurPatientId = null;
+				jsonCurCaseList = null;
 				jsonCurCaseId = null;
-				JSONArray list = jsonCurCaseList.optJSONArray("cases");
-				jsonCurCase = list.optJSONObject(currentGroup * 7 + 2);
-				Intent i = new Intent(mContext, CasePageActivity.class);
+				jsonCurCase = null;
+				JSONArray list = jsonCurSearchList.optJSONArray("result");
+				jsonCurPatient = list.optJSONObject(currentGroup * 7 + 2);
+				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
 		});
@@ -187,10 +192,13 @@ public class SearchResultActivity extends ActivityAPI {
 		// Button Click event for "RowD" button
 		stableRowD1Btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
+				jsonCurPatientId = null;
+				jsonCurCaseList = null;
 				jsonCurCaseId = null;
-				JSONArray list = jsonCurCaseList.optJSONArray("cases");
-				jsonCurCase = list.optJSONObject(currentGroup * 7 + 3);
-				Intent i = new Intent(mContext, CasePageActivity.class);
+				jsonCurCase = null;
+				JSONArray list = jsonCurSearchList.optJSONArray("result");
+				jsonCurPatient = list.optJSONObject(currentGroup * 7 + 3);
+				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
 		});
@@ -198,32 +206,41 @@ public class SearchResultActivity extends ActivityAPI {
 		// Button Click event for "RowE" button
 		stableRowE1Btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
+				jsonCurPatientId = null;
+				jsonCurCaseList = null;
 				jsonCurCaseId = null;
-				JSONArray list = jsonCurCaseList.optJSONArray("cases");
-				jsonCurCase = list.optJSONObject(currentGroup * 7 + 4);
-				Intent i = new Intent(mContext, CasePageActivity.class);
+				jsonCurCase = null;
+				JSONArray list = jsonCurSearchList.optJSONArray("result");
+				jsonCurPatient = list.optJSONObject(currentGroup * 7 + 4);
+				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
 		});
 		
-		// Button Click event for "RowE" button
+		// Button Click event for "RowF" button
 		stableRowF1Btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
+				jsonCurPatientId = null;
+				jsonCurCaseList = null;
 				jsonCurCaseId = null;
-				JSONArray list = jsonCurCaseList.optJSONArray("cases");
-				jsonCurCase = list.optJSONObject(currentGroup * 7 + 5);
-				Intent i = new Intent(mContext, CasePageActivity.class);
+				jsonCurCase = null;
+				JSONArray list = jsonCurSearchList.optJSONArray("result");
+				jsonCurPatient = list.optJSONObject(currentGroup * 7 + 5);
+				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
 		});
 		
-		// Button Click event for "RowE" button
+		// Button Click event for "RowG" button
 		stableRowG1Btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
+				jsonCurPatientId = null;
+				jsonCurCaseList = null;
 				jsonCurCaseId = null;
-				JSONArray list = jsonCurCaseList.optJSONArray("cases");
-				jsonCurCase = list.optJSONObject(currentGroup * 7 + 6);
-				Intent i = new Intent(mContext, CasePageActivity.class);
+				jsonCurCase = null;
+				JSONArray list = jsonCurSearchList.optJSONArray("result");
+				jsonCurPatient = list.optJSONObject(currentGroup * 7 + 6);
+				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
 		});
@@ -307,42 +324,42 @@ public class SearchResultActivity extends ActivityAPI {
 				}
 
 				// display case on first block
-				sCaseIdA2.setText("Case#: "
+				sCaseIdA2.setText("Patient ID: "
 						+ list.optJSONObject(currentGroup * 7).optString(
-								"xxx"));
-				sCaseDateA3.setText("Date: "
+								"patient_id"));
+				sCaseDateA3.setText("DOB: "
 						+ list.optJSONObject(currentGroup * 7).optString(
-								"xxxx"));
-				sCaseSpecialtyA4.setText("Spe: "
+								"date_of_birth"));
+				sCaseSpecialtyA4.setText("Sex: "
 						+ list.optJSONObject(currentGroup * 7).optString(
-								"xxxxx"));
-				sCaseReviewerA5.setText("Submitter: "
+								"gender"));
+				sCaseReviewerA5.setText("Name: "
 						+ list.optJSONObject(currentGroup * 7).optString(
-								"xxxxxx"));
-				sCasePriorityA6.setText("Priority: "
+								"lastName"));
+				sCasePriorityA6.setText("Addr: "
 						+ list.optJSONObject(currentGroup * 7).optString(
-								"xxxxxx"));
+								"address"));
 
 				stableRowA1Btn.setEnabled(true);
 
 				// display case on second block
 				if (currentGroup != maxGroup || list.length() % 7 == 0
 						|| list.length() % 7 > 1) {
-					sCaseIdB2.setText("Case#: "
+					sCaseIdB2.setText("Patient ID: "
 							+ list.optJSONObject(currentGroup * 7 + 1)
-									.optString("case_id"));
-					sCaseDateB3.setText("Date: "
+									.optString("patient_id"));
+					sCaseDateB3.setText("DOB: "
 							+ list.optJSONObject(currentGroup * 7 + 1)
-									.optString("creation_date"));
-					sCaseSpecialtyB4.setText("Spe: "
+									.optString("date_of_birth"));
+					sCaseSpecialtyB4.setText("Sex: "
 							+ list.optJSONObject(currentGroup * 7 + 1)
-									.optString("specialty"));
-					sCaseReviewerB5.setText("Submitter: "
+									.optString("gender"));
+					sCaseReviewerB5.setText("Name: "
 							+ list.optJSONObject(currentGroup * 7 + 1).optString(
-									"submitter"));
-					sCasePriorityB6.setText("Priority: "
+									"lastName"));
+					sCasePriorityB6.setText("Addr: "
 							+ list.optJSONObject(currentGroup * 7 + 1)
-									.optString("priority"));
+									.optString("address"));
 
 					stableRowB1Btn.setEnabled(true);
 				}
@@ -350,104 +367,104 @@ public class SearchResultActivity extends ActivityAPI {
 				// display case on third block
 				if (currentGroup != maxGroup || list.length() % 7 == 0
 						|| list.length() % 7 > 2) {
-					sCaseIdC2.setText("Case#: "
+					sCaseIdC2.setText("Patient ID: "
 							+ list.optJSONObject(currentGroup * 7 + 2)
-									.optString("case_id"));
-					sCaseDateC3.setText("Date: "
+									.optString("patient_id"));
+					sCaseDateC3.setText("DOB: "
 							+ list.optJSONObject(currentGroup * 7 + 2)
-									.optString("creation_date"));
-					sCaseSpecialtyC4.setText("Spe: "
+									.optString("date_of_birth"));
+					sCaseSpecialtyC4.setText("Sex: "
 							+ list.optJSONObject(currentGroup * 7 + 2)
-									.optString("specialty"));
-					sCaseReviewerC5.setText("Submitter: "
+									.optString("gender"));
+					sCaseReviewerC5.setText("Name: "
 							+ list.optJSONObject(currentGroup * 7 + 2).optString(
-									"submitter"));
-					sCasePriorityC6.setText("Priority: "
+									"lastName"));
+					sCasePriorityC6.setText("Addr: "
 							+ list.optJSONObject(currentGroup * 7 + 2)
-									.optString("priority"));
+									.optString("address"));
 					stableRowC1Btn.setEnabled(true);
 				}
 
 				// display case on fourth block
 				if (currentGroup != maxGroup || list.length() % 7 == 0
 						|| list.length() % 7 > 3) {
-					sCaseIdD2.setText("Case#: "
+					sCaseIdD2.setText("Patient ID: "
 							+ list.optJSONObject(currentGroup * 7 + 3)
-									.optString("case_id"));
-					sCaseDateD3.setText("Date: "
+									.optString("patient_id"));
+					sCaseDateD3.setText("DOB: "
 							+ list.optJSONObject(currentGroup * 7 + 3)
-									.optString("creation_date"));
-					sCaseSpecialtyD4.setText("Spe: "
+									.optString("date_of_birth"));
+					sCaseSpecialtyD4.setText("Sex: "
 							+ list.optJSONObject(currentGroup * 7 + 3)
-									.optString("specialty"));
-					sCaseReviewerD5.setText("Submitter: "
+									.optString("gender"));
+					sCaseReviewerD5.setText("Name: "
 							+ list.optJSONObject(currentGroup * 7 + 3).optString(
-									"submitter"));
-					sCasePriorityD6.setText("Priority: "
+									"lastName"));
+					sCasePriorityD6.setText("Addr: "
 							+ list.optJSONObject(currentGroup * 7 + 3)
-									.optString("priority"));
+									.optString("address"));
 					stableRowD1Btn.setEnabled(true);
 				}
 				
 				// display case on fourth block
 				if (currentGroup != maxGroup || list.length() % 7 == 0
 						|| list.length() % 7 > 4) {
-					sCaseIdE2.setText("Case#: "
+					sCaseIdE2.setText("Patient ID: "
 							+ list.optJSONObject(currentGroup * 7 + 4)
-									.optString("case_id"));
-					sCaseDateE3.setText("Date: "
+									.optString("patient_id"));
+					sCaseDateE3.setText("DOB: "
 							+ list.optJSONObject(currentGroup * 7 + 4)
-									.optString("creation_date"));
-					sCaseSpecialtyE4.setText("Spe: "
+									.optString("date_of_birth"));
+					sCaseSpecialtyE4.setText("Sex: "
 							+ list.optJSONObject(currentGroup * 7 + 4)
-									.optString("specialty"));
-					sCaseReviewerE5.setText("Submitter: "
+									.optString("gender"));
+					sCaseReviewerE5.setText("Name: "
 							+ list.optJSONObject(currentGroup * 7 + 4).optString(
-									"submitter"));
-					sCasePriorityE6.setText("Priority: "
+									"lastName"));
+					sCasePriorityE6.setText("Addr: "
 							+ list.optJSONObject(currentGroup * 7 + 4)
-									.optString("priority"));
+									.optString("address"));
 					stableRowE1Btn.setEnabled(true);
 				}
 				
 				// display case on fourth block
 				if (currentGroup != maxGroup || list.length() % 7 == 0
 						|| list.length() % 7 > 5) {
-					sCaseIdF2.setText("Case#: "
+					sCaseIdF2.setText("Patient ID: "
 							+ list.optJSONObject(currentGroup * 7 + 5)
-									.optString("case_id"));
-					sCaseDateF3.setText("Date: "
+									.optString("patient_id"));
+					sCaseDateF3.setText("DOB: "
 							+ list.optJSONObject(currentGroup * 7 + 5)
-									.optString("creation_date"));
-					sCaseSpecialtyF4.setText("Spe: "
+									.optString("date_of_birth"));
+					sCaseSpecialtyF4.setText("Sex: "
 							+ list.optJSONObject(currentGroup * 7 + 5)
-									.optString("specialty"));
-					sCaseReviewerF5.setText("Submitter: "
+									.optString("gender"));
+					sCaseReviewerF5.setText("Name: "
 							+ list.optJSONObject(currentGroup * 7 + 5).optString(
-									"submitter"));
-					sCasePriorityF6.setText("Priority: "
+									"lastName"));
+					sCasePriorityF6.setText("Addr: "
 							+ list.optJSONObject(currentGroup * 7 + 5)
-									.optString("priority"));
+									.optString("address"));
 					stableRowF1Btn.setEnabled(true);
 				}
 				
 				// display case on fourth block
 				if (currentGroup != maxGroup || list.length() % 7 == 0) {
-					sCaseIdG2.setText("Case#: "
+					sCaseIdG2.setText("Patient ID: "
 							+ list.optJSONObject(currentGroup * 7 + 6)
-									.optString("case_id"));
-					sCaseDateG3.setText("Date: "
+									.optString("patient_id"));
+					sCaseDateG3.setText("DOB: "
 							+ list.optJSONObject(currentGroup * 7 + 6)
-									.optString("creation_date"));
-					sCaseSpecialtyG4.setText("Spe: "
+									.optString("date_of_birth"));
+					sCaseSpecialtyG4.setText("Sex: "
 							+ list.optJSONObject(currentGroup * 7 + 6)
-									.optString("specialty"));
-					sCaseReviewerG5.setText("Submitter: "
+									.optString("gender"));
+					sCaseReviewerG5.setText("Name: "
 							+ list.optJSONObject(currentGroup * 7 + 6).optString(
-									"submitter"));
-					sCasePriorityG6.setText("Priority: "
+									"lastName"));
+					sCasePriorityG6.setText("Addr: "
 							+ list.optJSONObject(currentGroup * 7 + 6)
-									.optString("priority"));
+									.optString("address"));
 					stableRowG1Btn.setEnabled(true);
 				}
 

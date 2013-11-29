@@ -195,8 +195,8 @@ public final class R {
         public static final int searchpage_case_specialty_E4=0x7f0900aa;
         public static final int searchpage_case_specialty_F4=0x7f0900b5;
         public static final int searchpage_case_specialty_G4=0x7f0900c0;
-        public static final int searchpage_next_btn=0x7f0900c7;
-        public static final int searchpage_pre_btn=0x7f0900c6;
+        public static final int searchpage_next_btn=0x7f0900c6;
+        public static final int searchpage_pre_btn=0x7f0900c7;
         public static final int searchpage_tableRow11=0x7f0900c5;
         public static final int searchpage_tableRowA1=0x7f090078;
         public static final int searchpage_tableRowA2=0x7f090079;

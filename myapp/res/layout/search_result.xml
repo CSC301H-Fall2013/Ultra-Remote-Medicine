@@ -427,7 +427,8 @@
             </TableLayout>
         </LinearLayout>
     </TableRow>
-<TableRow
+
+    <TableRow
         android:id="@+id/searchpage_tableRowE1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -532,8 +533,8 @@
             </TableLayout>
         </LinearLayout>
     </TableRow>
-    
-<TableRow
+
+    <TableRow
         android:id="@+id/searchpage_tableRowF1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -638,8 +639,8 @@
             </TableLayout>
         </LinearLayout>
     </TableRow>
-    
-<TableRow
+
+    <TableRow
         android:id="@+id/searchpage_tableRowG1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -750,33 +751,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#FFFFFF" >
+
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0" >
-            
-        <Button
-            android:id="@+id/searchpage_pre_btn"
-            android:layout_width="65dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="24dp"
-            android:gravity="center_vertical"
-            android:text="&lt;&lt;pre" />
-</RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1" >
+            android:layout_height="wrap_content" >
+
+            <TableLayout
+                android:id="@+id/tableLayout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            </TableLayout>
 
             <Button
                 android:id="@+id/searchpage_next_btn"
                 android:layout_width="65dp"
                 android:layout_height="40dp"
+                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
+                android:layout_marginRight="49dp"
                 android:gravity="center_vertical"
                 android:text="next>>" />
+
+            <Button
+                android:id="@+id/searchpage_pre_btn"
+                android:layout_width="65dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/searchpage_next_btn"
+                android:gravity="center_vertical"
+                android:text="&lt;&lt;pre" />
+
         </RelativeLayout>
+
     </TableRow>
+
 
     <TableRow
         android:layout_width="wrap_content"

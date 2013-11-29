@@ -32,6 +32,13 @@ public class DashboardActivity extends ActivityAPI {
 		newPatientButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 
+				jsonCurSearchList = null;
+				jsonCurPatientId = null;
+				jsonCurPatient = null;
+				jsonCurCaseList = null;
+				jsonCurCaseId = null;
+				jsonCurCase = null;
+				
 				// navigate to add new patient page
 				Intent i = new Intent(mContext, AddNewPatientActivity.class);
 				startActivity(i);
@@ -51,6 +58,7 @@ public class DashboardActivity extends ActivityAPI {
 				editor.commit();
 
 				jsonCurSessionId = null;
+				jsonCurSearchList = null;
 				jsonCurPatientId = null;
 				jsonCurPatient = null;
 				jsonCurCaseList = null;
@@ -63,28 +71,12 @@ public class DashboardActivity extends ActivityAPI {
 			}
 		});
 
-		// Add_new_case event
-		Button newCaseButton = (Button) findViewById(R.id.add_new_case_btn);
-		newCaseButton.setOnClickListener(new View.OnClickListener() {
+		// new_case button click event
+		Button searchIdButton = (Button) findViewById(R.id.add_new_case_btn);
+		searchIdButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 
-				jsonCurPatientId = null;
-				jsonCurPatient = null;
-				jsonCurCaseList = null;
-				jsonCurCaseId = null;
-				jsonCurCase = null;
-
-				// navigate to add new case page
-				Intent i = new Intent(mContext, AddNewCaseActivity.class);
-				startActivity(i);
-			}
-		});
-
-		// Search button click event
-		Button searchButton = (Button) findViewById(R.id.search_btn);
-		searchButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-
+				jsonCurSearchList = null;
 				jsonCurPatientId = null;
 				jsonCurPatient = null;
 				jsonCurCaseList = null;
@@ -137,6 +129,69 @@ public class DashboardActivity extends ActivityAPI {
 					startActivity(i);
 				} else {
 					jsonCurPatient = null;
+				}
+
+			}
+		});
+		
+		
+		// Search button click event
+		Button searchButton = (Button) findViewById(R.id.search_btn);
+		searchButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+
+				jsonCurSearchList = null;
+				jsonCurPatientId = null;
+				jsonCurPatient = null;
+				jsonCurCaseList = null;
+				jsonCurCaseId = null;
+				jsonCurCase = null;
+
+				// create a new thread to upload data
+				Thread thread = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							// URL
+							String urlString = "search";
+							// Json package
+							String jsonString = "{\"session_key\": \""
+									+ jsonCurSessionId.optString("sessionid")
+									+ "\", \"q\": \""
+									+ mSearchKey.getText().toString() + "\"}";
+
+							jsonCurSearchList = communicate(urlString, jsonString);
+
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				thread.start();
+
+				// wait for the server respond
+				int timer = 0;
+				while (jsonCurSearchList == null && timer < 50) {
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					timer++;
+				}
+				Toast msg = Toast.makeText(getBaseContext(),
+						(timer < 50 ? jsonCurSearchList.optString("success")
+								: "Server time out"), Toast.LENGTH_LONG);
+				msg.show();
+				msg = null;
+				if (jsonCurSearchList != null
+						&& !jsonCurSearchList.optString("success").equals("false")) {
+					// If server find the key, then navigate to search result
+					// page
+					Intent i = new Intent(mContext, SearchResultActivity.class);
+					startActivity(i);
+				} else {
+					jsonCurSearchList = null;
 				}
 
 			}
