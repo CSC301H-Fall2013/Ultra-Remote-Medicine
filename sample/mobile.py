@@ -1,5 +1,4 @@
 import json
-import base64
 import re
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
@@ -18,6 +17,8 @@ from sample.models import Case, Comment, CommentGroup, Scan
 from django.utils import timezone
 from base64 import b64decode
 from django.core.files.base import ContentFile
+from django.db.models import Q
+import pdb
 
 
 @csrf_exempt
@@ -344,3 +345,88 @@ def create_cases_json(case_objects):
         case = {}
 
     return cases
+
+
+# Thanks to http://julienphalip.com/post/2825034077/adding-search-to-a-django-site-in-a-snap
+def normalize_query(query_string,
+                    findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
+                    normspace=re.compile(r'\s{2,}').sub):
+    ''' Splits the query string in invidual keywords, getting rid of unecessary
+        spaces and grouping quoted words together.
+        Example:
+
+        >>> normalize_query('  some random  words "with   quotes  " and
+                            spaces')
+        ['some', 'random', 'words', 'with quotes', 'and', 'spaces']
+    '''
+    return [normspace(' ', (t[0] or t[1]).strip()) for t in
+            findterms(query_string)]
+
+
+def get_query(query_string, search_fields):
+    ''' Returns a query, that is a combination of Q objects. That combination
+        aims to search keywords within a model by testing the given search
+        fields.
+    '''
+
+    query = None  # Query to search for every search term
+    terms = normalize_query(query_string)
+    for term in terms:
+        or_query = None  # Query to search for a given term in each field
+        for field_name in search_fields:
+            q = Q(**{"%s__icontains" % field_name: term})
+            if or_query is None:
+                or_query = q
+            else:
+                or_query = or_query | q
+        if query is None:
+            query = or_query
+        else:
+            query = query & or_query
+    return query
+
+@csrf_exempt
+def search_patients(request):
+    pdb.set_trace()
+    query_string = ''
+    found_entries = None
+
+    data = is_worker(request)
+    if not data:
+        json_response = json.dumps({"success": "false",
+                                    "type": "notWorker"})
+        return HttpResponse(json_response, mimetype='application/json')
+
+    if ('q' in data) and data['q'].strip():
+        query_string = data['q']
+
+        entry_query = get_query(query_string, ['first_name', 'last_name',
+                                                'health_id',])
+
+        found_entries = Patient.objects.filter(entry_query)
+
+    json_response = json.dumps({"success": "true",
+                                "type": "search",
+                                "result": create_patients_json(found_entries)})
+    return HttpResponse(json_response, mimetype='application/json')
+
+
+def create_patients_json(patient_objects):
+
+    patient = {}
+    patients = []
+    for patient_object in patient_objects:
+        patient['firstName'] = str(patient_object.first_name)
+        patient['lastName'] = str(patient_object.last_name)
+        patient['patient_id'] = str(patient_object.id)
+        patient['gender'] = str(patient_object.gender)
+        patient['date_of_birth'] = str(patient_object.date_of_birth)
+        patient['health_id'] = str(patient_object.health_id)
+        patient['email'] = str(patient_object.email)
+        patient['gps'] = str(patient_object.gps_coordinates)
+        patient['address'] = str(patient_object.address)
+        patient['phone'] = str(patient_object.phone)
+        patients.append(patient)
+        patient = {}
+
+    return patients

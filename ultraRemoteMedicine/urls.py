@@ -56,7 +56,8 @@ urlpatterns += patterns('sample.mobile',
                         url('^mobile/view_case$', 'display_case_m'),
                         url('^mobile/upload$', 'upload_image_m'),
                         url('^mobile/display_patient_cases$',
-                            'display_patient_cases_m'))
+                            'display_patient_cases_m'),
+                        url('^mobile/search$', 'search_patients'))
 
 if settings.DEBUG:
     urlpatterns += patterns('django.contrib.staticfiles.views',
