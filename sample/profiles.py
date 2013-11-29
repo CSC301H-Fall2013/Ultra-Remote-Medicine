@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseServerError
 from django.contrib.auth.decorators import login_required
+import pdb
 
 
 class TimeSlotDisplay:
@@ -32,6 +33,7 @@ def display_profile(request, user_id):
 
 @login_required
 def _display_worker(request, user, worker):
+    pdb.set_trace()
     '''Called by display_profile when it is determined that the user is a
     worker. Displays the profile of the specified worker.
 
@@ -39,7 +41,7 @@ def _display_worker(request, user, worker):
 
     if request.method == 'POST' and user == request.user:
 
-        form = UpdateFieldWorkerForm(request.POST)
+        form = UpdateFieldWorkerForm(request.POST, request.FILES)
         if form.is_valid():
 
             try:
@@ -50,6 +52,7 @@ def _display_worker(request, user, worker):
                 worker.phone = form.cleaned_data['phone_number']
                 worker.address = form.cleaned_data['address']
                 worker.comments = form.cleaned_data['comments']
+                worker.profile_pic = form.cleaned_data['profile_pic']
                 worker.save()
 
             except IntegrityError:
@@ -67,7 +70,8 @@ def _display_worker(request, user, worker):
         'address': worker.address,
         'registration_time': worker.registration_time,
         'comments': worker.comments,
-        'id': worker.id
+        'id': worker.id,
+        'profilepic': worker.profile_pic
     }, context_instance=RequestContext(request))
 
 
@@ -79,8 +83,7 @@ def _display_doctor(request, user, doctor):
     Precondition: user should correspond to doctor. '''
 
     if request.method == 'POST' and user == request.user:
-
-        form = UpdateDoctorForm(request.POST)
+        form = UpdateDoctorForm(request.POST, request.FILES)
         if form.is_valid():
 
             try:
@@ -91,6 +94,7 @@ def _display_doctor(request, user, doctor):
                 doctor.phone = form.cleaned_data['phone_number']
                 doctor.address = form.cleaned_data['address']
                 doctor.comments = form.cleaned_data['comments']
+                doctor.profile_pic = form.cleaned_data['profile_pic']
                 doctor.save()
 
             except IntegrityError:
@@ -120,5 +124,6 @@ def _display_doctor(request, user, doctor):
         'specialties': doctor.specialties.all(),
         'schedule': time_slots,
         'comments': doctor.comments,
-        'id': doctor.id
+        'id': doctor.id,
+        'profilepic': doctor.profile_pic
     }, context_instance=RequestContext(request))

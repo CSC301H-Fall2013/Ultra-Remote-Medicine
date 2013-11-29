@@ -25,15 +25,16 @@
 
 			<!-- The following is not visible by default-->
 			<div id='profileinfo'">
-				<form id='profileinfoform' method='post' action="">
+				<form id='profileinfoform' method='post' action="" enctype="multipart/form-data">
 					{% csrf_token %}
 					<table border="0" cellpadding="5" style="margin: 0 auto; text-align: left">
 						<tr style="height: 200px">
 							<td style="width: 400px; vertical-align: top">
-								First Name: {{form.first_name}} <br> 
+								First Name: {{form.first_name}} <br>
 								Last Name: {{form.last_name}} <br>
-								Phone Number: {{form.phone_number}} <br> 
+								Phone Number: {{form.phone_number}} <br>
 								Address: {{form.address}}
+								Profile picture: {{form.profile_pic}}
 							</td>
 							<td style="width: 300px; vertical-align: top">
 								{{form.comments}}</td>
@@ -47,7 +48,10 @@
 						</tr>
 					</table>
 				</form>
+
 			</div>
+
+
 
 
 			<div id="profilestatic" style="display: inline-block; width: auto;"">
@@ -55,18 +59,21 @@
 					style="margin: 0 auto; text-align: left">
 					<tr style="height: 200px">
 						<td style="width: 400px; vertical-align: top; margin: 0;">
+							<img src="/media/{{profilepic}}">
+						</td>
+						<td style="width: 600px; vertical-align: top; margin: 0;">
 							First Name: {{user.first_name}} <br>
 							Last Name: {{user.last_name}} <br>
 							Phone Number: {{phone_number}} <br>
 							Address: {{address}} <br>
 							Registration Time: {{registration_time}} <br>
-							Specialties: 
-							{% for specialty in specialties %} 
+							Specialties:
+							{% for specialty in specialties %}
 							{{specialty.name}}
 							 {% endfor %}
 							 <br>
-							 Schedule: 
-							{% for s in schedule %} 
+							 Schedule:
+							{% for s in schedule %}
 							{{s.time_string}}
 							 {% endfor %}
 						</td>

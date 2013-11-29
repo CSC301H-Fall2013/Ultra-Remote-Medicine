@@ -46,14 +46,16 @@ class UpdateCasePriorityForm(forms.Form):
         ''' Populates this form with default information. '''
 
         self.fields["priority"].initial = case.priority
-        
+
+
 class UpdateCaseStatusForm(forms.Form):
     ''' The form used on the case page. '''
 
     status = forms.ChoiceField(required=False,
-                                 widget=forms.Select(attrs={"onChange":
-                                                     'this.form.submit()'}),
-                                 choices=((1, 'Open'), (2, 'Closed')))
+                               widget=forms.Select(attrs={"onChange":
+                                                          'this.form.submit()'
+                                                          }),
+                               choices=((1, 'Open'), (2, 'Closed')))
 
     def populate(self, case):
         ''' Populates this form with default information. '''
@@ -63,20 +65,22 @@ class UpdateCaseStatusForm(forms.Form):
 
 class UpdateCaseLockHolderForm(forms.Form):
     ''' The form used on the case page. '''
- 
+
     toggle_field = forms.ChoiceField(required=False,
-                                 widget=forms.Select(attrs={"onChange":
-                                                     'this.form.submit()'}),
-                                 choices=[(1, 'Locked (me)'), (2,'Unlocked')])
- 
+                                     widget=forms.Select(attrs={"onChange":
+                                                         'this.form.submit()'
+                                                                }),
+                                     choices=[(1, 'Locked (me)'),
+                                              (2, 'Unlocked')])
+
     def populate(self, case, doctor):
         ''' Populates this form with default information. '''
-  
+
         if case.lock_holder == doctor:
             initial_value = 1
         else:
             initial_value = 2
-  
+
         self.fields["toggle_field"].initial = initial_value
 
 
@@ -95,6 +99,7 @@ class NewPatientForm(forms.Form):
     sex = forms.ChoiceField(required=False, choices=(('Female', 'Female'),
                             ('Male', 'Male'), ('Other', 'Other')))
     email = forms.CharField(max_length=254, required=False)
+    patient_pic = forms.ImageField()
 
 
 class UpdateFieldWorkerForm(forms.Form):
@@ -105,6 +110,7 @@ class UpdateFieldWorkerForm(forms.Form):
     phone_number = forms.CharField(max_length=63)
     address = forms.CharField(max_length=254)
     comments = forms.CharField(required=False, widget=forms.Textarea)
+    profile_pic = forms.ImageField()
 
     def populate(self, worker):
 
@@ -113,6 +119,7 @@ class UpdateFieldWorkerForm(forms.Form):
         self.fields["phone_number"].initial = worker.phone
         self.fields["address"].initial = worker.address
         self.fields["comments"].initial = worker.comments
+        self.fields["profile_pic"].initial = worker.profile_pic
 
 
 class UpdateDoctorForm(forms.Form):
@@ -123,6 +130,7 @@ class UpdateDoctorForm(forms.Form):
     phone_number = forms.CharField(max_length=63)
     address = forms.CharField(max_length=254)
     comments = forms.CharField(required=False, widget=forms.Textarea)
+    profile_pic = forms.ImageField()
 
     def populate(self, doctor):
 
@@ -131,6 +139,7 @@ class UpdateDoctorForm(forms.Form):
         self.fields["phone_number"].initial = doctor.phone
         self.fields["address"].initial = doctor.address
         self.fields["comments"].initial = doctor.comments
+        self.fields["profile_pic"].initial = doctor.profile_pic
 
 
 class PostCommentForm(forms.Form):

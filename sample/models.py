@@ -105,7 +105,7 @@ class Patient(models.Model):
 
     def patient_pic_path(instance, filename):
         name, extension = os.path.splitext(filename)
-        return "patient/%d/pic%s" % (instance.id, extension)
+        return "patient/%s%s" % (name, extension)
 
     patient_pic = models.ImageField(upload_to=patient_pic_path, blank=True)
 
@@ -238,7 +238,7 @@ class Case(models.Model):
     scans = models.ManyToManyField(Scan, blank=True, null=True)
     priority = models.IntegerField(choices=((10, 'High'), (20, 'Medium'),
                                             (30, 'Low')))
-    
+
     status = models.IntegerField(choices=((1, 'Open'), (2, 'Closed')))
 
     submitter_comments = models.ForeignKey("CommentGroup",

@@ -11,9 +11,7 @@ urlpatterns = patterns('',
 urlpatterns += patterns('',
                         (r'^media/(.*)$',
                          'django.views.static.serve',
-                         {'document_root':
-                          os.path.join(os.path.abspath(
-                                       os.path.dirname(__file__)), 'media')}))
+                         {'document_root': settings.MEDIA_ROOT}))
 
 urlpatterns += patterns('sample.views',
                         url('^$', 'home', name='home'),
@@ -38,6 +36,7 @@ urlpatterns += patterns('sample.patient',
 urlpatterns += patterns('sample.profiles',
                         url('^profile/(?P<user_id>\d+)$',
                             'display_profile', name='display_profile'))
+
 
 urlpatterns += patterns('sample.case',
                         url('^case/(?P<case_id>\d+)$', 'display_case',

@@ -25,7 +25,7 @@
 			<table border="0" cellpadding="5" style="display: inline-block; margin: 0 auto; text-align: left">
 				<tr>
 					<td style="width: 250px; height: 250 px; margin: 0; text-align: center;">
-						<img id="patientPic" src="{{photo_link}}" style="display: inline-block; max-width:200px; max-height:200px; width: auto; height: auto;" />
+						<img id="patientPic" src="/media/{{patient_pic}}" style="display: inline-block; max-width:200px; max-height:200px; width: auto; height: auto;" />
 					</td>
 					<td style="height: 250 px; margin: 0; text-align: left;">
 						<form action="">
@@ -37,26 +37,26 @@
 							<br> GPS Coordinates: {{gps_coordinates}}
 							<br> Address: {{address}}
 							<br> Phone: {{phone}}
-							<br> Email: {{email}} 
+							<br> Email: {{email}}
 							<br>
 						</form>
 					</td>
 				</tr>
 			</table>
-	
+
 			<h1><b>Cases</b></h1>
-	
+
 			{% include "_caseDisplay.html" %}
-			
+
 			<br>
-			
+
 			{% if user.worker %}
 			<form id="new_case" action="{% url 'new_case' patient_id %}" method='get'>
 				<button class = "btn btn-default" type="submit">Add New Case</button>
 				<br>
 			</form>
 			{% endif %}
-			
+
 		</div>
 
 	</div>

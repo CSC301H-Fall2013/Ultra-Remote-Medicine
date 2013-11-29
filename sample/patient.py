@@ -7,6 +7,7 @@ from django.template import RequestContext
 from utilities import create_case_attributes
 from sample.models import Case
 from django.contrib.auth.decorators import login_required
+import pdb
 
 
 @login_required
@@ -15,8 +16,8 @@ def display_new_patient(request):
         forms. '''
 
     if request.method == 'POST':
-
-        form = NewPatientForm(request.POST)
+        pdb.set_trace()
+        form = NewPatientForm(request.POST, request.FILES)
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
@@ -25,9 +26,9 @@ def display_new_patient(request):
             date_of_birth = form.cleaned_data['date_of_birth']
             phone_number = form.cleaned_data['phone_number']
             health_id = form.cleaned_data['health_id']
-            photo_link = form.cleaned_data['photo_link']
             sex = form.cleaned_data['sex']
             email = form.cleaned_data['email']
+            patient_pic = form.cleaned_data['patient_pic']
 
             try:
                 patient = Patient(
@@ -40,7 +41,7 @@ def display_new_patient(request):
                     health_id=health_id,
                     gender=sex,
                     email=email,
-                    photo_link=photo_link)
+                    patient_pic=patient_pic)
                 patient.save()
             except IntegrityError:
                 return HttpResponseServerError()
@@ -93,4 +94,5 @@ def display_patient(request, patient_id):
         'phone': patient.phone,
         'email': patient.email,
         'cases': case_attributes,
+        'patient_pic': patient.patient_pic
     }, context_instance=RequestContext(request))

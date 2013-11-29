@@ -14,13 +14,13 @@
   <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
   <script src="http://code.jquery.com/jquery.js"></script>
   <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
-  
+
   <style>
   label,input{
     display: inline-block;
     vertical-align: baseline;
     width: 140px;
-	
+
 }
 
 label {
@@ -50,8 +50,8 @@ form {
 		<div class="profilecontainer">
 
 			<h1><b>Register New Patient</b></h1>
-			<form action="new_patient" method="post"> {% csrf_token %}
-			    
+			<form action="new_patient" method="post" enctype="multipart/form-data"> {% csrf_token %}
+
 				<label for="firstname">First Name: </label> {{form.first_name}} <br>
 				<label for="lastname">Last Name: </label> {{form.last_name}} <br>
 				<label for="sex">Sex: </label> {{form.sex}} <br>
@@ -61,7 +61,8 @@ form {
 				<label for="address">Address: </label> {{form.address}} <br>
 				<label for="phonenumber">Phone Number:</label> {{form.phone_number}} <br>
 				<label for="email">E-Mail: </label> {{form.email}} <br>
-				<label for="photo">Photo Link: </label> {{form.photo_link}} <br>
+				<label for="photo">Patient picture: </label> {{form.patient_pic}} <br>
+
 				<input type="submit" value="Submit" />
 			</form>
 
