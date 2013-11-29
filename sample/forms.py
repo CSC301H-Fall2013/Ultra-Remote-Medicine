@@ -67,12 +67,17 @@ class UpdateCaseLockHolderForm(forms.Form):
     toggle_field = forms.ChoiceField(required=False,
                                  widget=forms.Select(attrs={"onChange":
                                                      'this.form.submit()'}),
-                                 choices=[(1, 'Abort'), (2,'Adopt')])
+                                 choices=[(1, 'Locked (me)'), (2,'Unlocked')])
  
-    def populate(self):
+    def populate(self, case, doctor):
         ''' Populates this form with default information. '''
   
-        self.fields["toggle_field"].initial = self.fields["toggle_field"].choices[1][0]
+        if case.lock_holder == doctor:
+            initial_value = 1
+        else:
+            initial_value = 2
+  
+        self.fields["toggle_field"].initial = initial_value
 
 
 class NewPatientForm(forms.Form):

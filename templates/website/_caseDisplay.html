@@ -89,7 +89,7 @@ $(document).ready(function() {
 								<td>{{case.case_ref.lock_holder}}</td>
 							{%endif%}
 						{%else%}
-							<td><a href="{% url 'display_profile' case.case_ref.lock_holder.id %}" target="_blank">
+							<td><a href="{% url 'display_profile' case.case_ref.lock_holder.user.id %}" target="_blank">
 									{{case.case_ref.lock_holder}} </a></td>
 						{%endif%}
 						<td>{{case.priority_text}}</td>

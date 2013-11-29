@@ -187,17 +187,27 @@ def display_case(request, case_id, mode='v'):
             adopt_form = UpdateCaseLockHolderForm(request.POST)
             comment_form = PostCommentForm()
             if adopt_form.is_valid():
-                toggle_field = adopt_form.cleaned_data['toggle_field']
+                toggle_field = int(adopt_form.cleaned_data['toggle_field'])
                 
-                if toggle_field == 2:
+                if toggle_field == 1:
                     try:
-                        print user.doctor.user_first_name()
                         case.lock_holder = user.doctor
                         case.save()
                     except IntegrityError, e:
                         print str(e)
                         print "hard fail"
                         return HttpResponseServerError()
+                elif toggle_field == 2:
+                    try:
+                        case.lock_holder = None
+                        case.save()
+                    except IntegrityError, e:
+                        print str(e)
+                        print "hard fail"
+                        return HttpResponseServerError()
+                    
+            else:
+                print "Invalid UpdateCaseLockHolderForm."
                     
         elif mode == 's':
             priority_form = UpdateCasePriorityForm()
@@ -207,7 +217,8 @@ def display_case(request, case_id, mode='v'):
             if status_form.is_valid():
                 status = status_form.cleaned_data['status']
                 try:
-                    case.status = status
+                    case.status = int(status)
+                    print "The status is: ", status
                     case.save()
                 except IntegrityError, e:
                     print str(e)
@@ -229,7 +240,8 @@ def display_case(request, case_id, mode='v'):
     status_form.populate(case)
     
     adopt_form = UpdateCaseLockHolderForm()
-    adopt_form.populate()
+    if (hasattr(user, "doctor")):
+        adopt_form.populate(case, user.doctor)
 
     comment_form = PostCommentForm()
 

@@ -48,8 +48,7 @@ class Doctor(models.Model):
     get_some_value.short_description = 'Specialties'
 
     def __unicode__(self):
-        return (str(self.id) + ". " + self.user.first_name + " " +
-                self.user.last_name)
+        return (self.user.first_name + " " + self.user.last_name)
 
 
 class Worker(models.Model):
