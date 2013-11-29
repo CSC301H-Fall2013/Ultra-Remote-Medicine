@@ -18,7 +18,7 @@ from django.utils import timezone
 from base64 import b64decode
 from django.core.files.base import ContentFile
 from django.db.models import Q
-import pdb
+
 
 
 @csrf_exempt
@@ -387,7 +387,7 @@ def get_query(query_string, search_fields):
 
 @csrf_exempt
 def search_patients(request):
-    pdb.set_trace()
+
     query_string = ''
     found_entries = None
 
@@ -405,10 +405,17 @@ def search_patients(request):
 
         found_entries = Patient.objects.filter(entry_query)
 
-    json_response = json.dumps({"success": "true",
+    if (len(found_entries) > 0):
+        json_response = json.dumps({"success": "true",
                                 "type": "search",
                                 "result": create_patients_json(found_entries)})
-    return HttpResponse(json_response, mimetype='application/json')
+        return HttpResponse(json_response, mimetype='application/json')
+    else:
+        json_response = json.dumps({"success": "false",
+                                "type": "search",
+                                "result": "No result found"})
+        return HttpResponse(json_response, mimetype='application/json')
+
 
 
 def create_patients_json(patient_objects):
