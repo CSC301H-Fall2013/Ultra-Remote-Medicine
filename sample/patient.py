@@ -7,7 +7,7 @@ from django.template import RequestContext
 from utilities import create_case_attributes
 from sample.models import Case
 from django.contrib.auth.decorators import login_required
-import pdb
+
 
 
 @login_required
@@ -16,7 +16,7 @@ def display_new_patient(request):
         forms. '''
 
     if request.method == 'POST':
-        pdb.set_trace()
+
         form = NewPatientForm(request.POST, request.FILES)
         if form.is_valid():
             first_name = form.cleaned_data['first_name']

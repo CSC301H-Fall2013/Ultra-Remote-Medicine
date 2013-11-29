@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseServerError
 from django.contrib.auth.decorators import login_required
-import pdb
+
 
 
 class TimeSlotDisplay:
@@ -33,7 +33,7 @@ def display_profile(request, user_id):
 
 @login_required
 def _display_worker(request, user, worker):
-    pdb.set_trace()
+
     '''Called by display_profile when it is determined that the user is a
     worker. Displays the profile of the specified worker.
 
