@@ -43,7 +43,7 @@
 
     <Button
         android:id="@+id/search_btn"
-        android:layout_width="85dp"
+        android:layout_width="90dp"
         android:layout_height="40dp"
         android:layout_alignRight="@+id/logout_btn"
         android:layout_below="@+id/search_box"

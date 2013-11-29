@@ -16,6 +16,7 @@ import android.app.Activity;
 
 public class ActivityAPI extends Activity {
 	public static JSONObject jsonCurSessionId;
+	public static JSONObject jsonCurSearchList;
 	public static JSONObject jsonCurPatientId;
 	public static JSONObject jsonCurPatient;
 	public static JSONObject jsonCurCaseList;
@@ -27,8 +28,8 @@ public class ActivityAPI extends Activity {
 		try {
 			byte[] data = jsonString.getBytes();
 			
-			//urlString = "http://ultra-remote-medicine.herokuapp.com/mobile/" + urlString;
-			urlString = "http://10.0.2.2:8000/mobile/" + urlString;
+			urlString = "http://ultra-remote-medicine.herokuapp.com/mobile/" + urlString;
+			//urlString = "http://10.0.2.2:8000/mobile/" + urlString;
 			
 			// build connection
 			URL url = new URL(urlString);

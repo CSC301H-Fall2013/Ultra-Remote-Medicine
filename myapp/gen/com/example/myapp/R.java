@@ -38,8 +38,9 @@ public final class R {
         public static final int video_width=0x7f050005;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int ideal_image=0x7f020001;
+        public static final int emptyfile=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int ideal_image=0x7f020002;
     }
     public static final class id {
         public static final int Comments=0x7f090016;
@@ -165,38 +166,38 @@ public final class R {
         public static final int searchpage_case_date_D3=0x7f09009d;
         public static final int searchpage_case_date_E3=0x7f0900a8;
         public static final int searchpage_case_date_F3=0x7f0900b3;
-        public static final int searchpage_case_date_G3=0x7f0900bd;
+        public static final int searchpage_case_date_G3=0x7f0900be;
+        public static final int searchpage_case_num_A2=0x7f09007a;
         public static final int searchpage_case_num_B2=0x7f090085;
         public static final int searchpage_case_num_C2=0x7f090090;
         public static final int searchpage_case_num_D2=0x7f09009b;
         public static final int searchpage_case_num_E2=0x7f0900a6;
         public static final int searchpage_case_num_F2=0x7f0900b1;
-        public static final int searchpage_case_num_G2=0x7f0900bb;
-        public static final int searchpage_case_num_H2=0x7f09007a;
+        public static final int searchpage_case_num_G2=0x7f0900bc;
         public static final int searchpage_case_priority_A6=0x7f090082;
         public static final int searchpage_case_priority_B6=0x7f09008d;
         public static final int searchpage_case_priority_C6=0x7f090098;
         public static final int searchpage_case_priority_D6=0x7f0900a3;
         public static final int searchpage_case_priority_E6=0x7f0900ae;
         public static final int searchpage_case_priority_F6=0x7f0900b9;
-        public static final int searchpage_case_priority_G6=0x7f0900c3;
+        public static final int searchpage_case_priority_G6=0x7f0900c4;
         public static final int searchpage_case_reviewer_A5=0x7f090080;
         public static final int searchpage_case_reviewer_B5=0x7f09008b;
         public static final int searchpage_case_reviewer_C5=0x7f090096;
         public static final int searchpage_case_reviewer_D5=0x7f0900a1;
         public static final int searchpage_case_reviewer_E5=0x7f0900ac;
         public static final int searchpage_case_reviewer_F5=0x7f0900b7;
-        public static final int searchpage_case_reviewer_G5=0x7f0900c1;
+        public static final int searchpage_case_reviewer_G5=0x7f0900c2;
         public static final int searchpage_case_specialty_A4=0x7f09007e;
         public static final int searchpage_case_specialty_B4=0x7f090089;
         public static final int searchpage_case_specialty_C4=0x7f090094;
         public static final int searchpage_case_specialty_D4=0x7f09009f;
         public static final int searchpage_case_specialty_E4=0x7f0900aa;
         public static final int searchpage_case_specialty_F4=0x7f0900b5;
-        public static final int searchpage_case_specialty_G4=0x7f0900bf;
-        public static final int searchpage_next_btn=0x7f0900c6;
-        public static final int searchpage_pre_btn=0x7f0900c5;
-        public static final int searchpage_tableRow11=0x7f0900c4;
+        public static final int searchpage_case_specialty_G4=0x7f0900c0;
+        public static final int searchpage_next_btn=0x7f0900c7;
+        public static final int searchpage_pre_btn=0x7f0900c6;
+        public static final int searchpage_tableRow11=0x7f0900c5;
         public static final int searchpage_tableRowA1=0x7f090078;
         public static final int searchpage_tableRowA2=0x7f090079;
         public static final int searchpage_tableRowA3=0x7f09007b;
@@ -233,11 +234,12 @@ public final class R {
         public static final int searchpage_tableRowF4=0x7f0900b4;
         public static final int searchpage_tableRowF5=0x7f0900b6;
         public static final int searchpage_tableRowF6=0x7f0900b8;
-        public static final int searchpage_tableRowG2=0x7f0900ba;
-        public static final int searchpage_tableRowG3=0x7f0900bc;
-        public static final int searchpage_tableRowG4=0x7f0900be;
-        public static final int searchpage_tableRowG5=0x7f0900c0;
-        public static final int searchpage_tableRowG6=0x7f0900c2;
+        public static final int searchpage_tableRowG1=0x7f0900ba;
+        public static final int searchpage_tableRowG2=0x7f0900bb;
+        public static final int searchpage_tableRowG3=0x7f0900bd;
+        public static final int searchpage_tableRowG4=0x7f0900bf;
+        public static final int searchpage_tableRowG5=0x7f0900c1;
+        public static final int searchpage_tableRowG6=0x7f0900c3;
         public static final int tableLayout1=0x7f090003;
         public static final int ultrasound_thumbnail=0x7f09000a;
         public static final int username_lb=0x7f090032;
