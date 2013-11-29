@@ -1,4 +1,5 @@
-from sample.forms import NewCaseForm, UpdateCasePriorityForm, PostCommentForm
+from sample.forms import NewCaseForm, UpdateCasePriorityForm, PostCommentForm, \
+    UpdateCaseLockHolderForm, UpdateCaseStatusForm
 from sample.models import Patient, Comment, Case, CommentGroup
 from django.utils import timezone
 from django.db import IntegrityError
@@ -46,6 +47,7 @@ def display_new_case(request, patient_id):
                     patient=patient,
                     submitter_comments=comment_group,
                     priority=priority,
+                    status=1,
                     submitter=worker,
                     date_opened=timezone.now())
                 case.save()
@@ -95,6 +97,8 @@ def display_case(request, case_id, mode='v'):
         if mode == 'c':
 
             priority_form = UpdateCasePriorityForm()
+            status_form = UpdateCaseStatusForm()
+            adopt_form = UpdateCaseLockHolderForm()
             comment_form = PostCommentForm(request.POST)
             if comment_form.is_valid():
 
@@ -161,8 +165,9 @@ def display_case(request, case_id, mode='v'):
             comment_form.fields["comments"].initial = ""
 
         elif mode == 'p':
-
             priority_form = UpdateCasePriorityForm(request.POST)
+            status_form = UpdateCaseStatusForm()
+            adopt_form = UpdateCaseLockHolderForm()
             comment_form = PostCommentForm()
             if priority_form.is_valid():
 
@@ -170,6 +175,50 @@ def display_case(request, case_id, mode='v'):
 
                 try:
                     case.priority = priority
+                    case.save()
+                except IntegrityError, e:
+                    print str(e)
+                    print "hard fail"
+                    return HttpResponseServerError()
+        
+        elif mode == 'a':
+            priority_form = UpdateCasePriorityForm()
+            status_form = UpdateCaseStatusForm()
+            adopt_form = UpdateCaseLockHolderForm(request.POST)
+            comment_form = PostCommentForm()
+            if adopt_form.is_valid():
+                toggle_field = int(adopt_form.cleaned_data['toggle_field'])
+                
+                if toggle_field == 1:
+                    try:
+                        case.lock_holder = user.doctor
+                        case.save()
+                    except IntegrityError, e:
+                        print str(e)
+                        print "hard fail"
+                        return HttpResponseServerError()
+                elif toggle_field == 2:
+                    try:
+                        case.lock_holder = None
+                        case.save()
+                    except IntegrityError, e:
+                        print str(e)
+                        print "hard fail"
+                        return HttpResponseServerError()
+                    
+            else:
+                print "Invalid UpdateCaseLockHolderForm."
+                    
+        elif mode == 's':
+            priority_form = UpdateCasePriorityForm()
+            status_form = UpdateCaseStatusForm(request.POST)
+            adopt_form = UpdateCaseLockHolderForm()
+            comment_form = PostCommentForm()
+            if status_form.is_valid():
+                status = status_form.cleaned_data['status']
+                try:
+                    case.status = int(status)
+                    print "The status is: ", status
                     case.save()
                 except IntegrityError, e:
                     print str(e)
@@ -184,10 +233,15 @@ def display_case(request, case_id, mode='v'):
 
             return HttpResponseServerError("Invalid POST mode.")
 
-    # Whether or not data has been posted, reset the forms to their default
-    # states.
     priority_form = UpdateCasePriorityForm()
     priority_form.populate(case)
+        
+    status_form = UpdateCaseStatusForm()
+    status_form.populate(case)
+    
+    adopt_form = UpdateCaseLockHolderForm()
+    if (hasattr(user, "doctor")):
+        adopt_form.populate(case, user.doctor)
 
     comment_form = PostCommentForm()
 
@@ -200,6 +254,7 @@ def display_case(request, case_id, mode='v'):
     return render_to_response('case.html', {
         'viewer': user,
         'user': user,
+        'case': case,
         'firstName': case.patient.first_name,
         'lastName': case.patient.last_name,
         'patient_id': case.patient.id,
@@ -208,10 +263,14 @@ def display_case(request, case_id, mode='v'):
         'health_id': case.patient.health_id,
         'case_id': case_id,
         'priority': case.priority,
+        'status': case.status,
+        'lock_holder': case.lock_holder,
         'submitter_comments': submitter_comments,
         'reviewer_comments': reviewer_comments,
         'comment_count': current_index.value,
         'priority_form': priority_form,
+        'status_form': status_form,
         'comment_form': comment_form,
+        'adopt_form': adopt_form,
         'comment_post_action': reverse('display_case', args=[case_id, 'c'])
     }, context_instance=RequestContext(request))

@@ -212,6 +212,7 @@ def create_new_case_m(request):
                 patient=patient,
                 submitter_comments=comment_group,
                 priority=priority,
+                status=1,
                 submitter=worker,
                 date_opened=timezone.now())
             case.save()
@@ -340,7 +341,15 @@ def create_cases_json(case_objects):
         case['gender'] = str(case_object.patient.gender)
         case['date_of_birth'] = str(case_object.patient.date_of_birth)
         case['health_id'] = str(case_object.patient.health_id)
-        case['priority'] = str(case_object.priority)
+        if str(case_object.priority) == "10":
+            case['priority'] = "High"
+        elif str(case_object.priority) == "20":
+            case['priority'] = "Medium"
+        elif str(case_object.priority) == "30":
+            case['priority'] = "Low"
+        case['case_id'] = str(case_object.id)
+        case['submitter'] = str(case_object.submitter)
+        case['creation_date'] = str(case_object.date_opened)
         cases.append(case)
         case = {}
 

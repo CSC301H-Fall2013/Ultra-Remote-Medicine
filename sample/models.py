@@ -48,8 +48,7 @@ class Doctor(models.Model):
     get_some_value.short_description = 'Specialties'
 
     def __unicode__(self):
-        return (str(self.id) + ". " + self.user.first_name + " " +
-                self.user.last_name)
+        return (self.user.first_name + " " + self.user.last_name)
 
 
 class Worker(models.Model):
@@ -239,6 +238,8 @@ class Case(models.Model):
     scans = models.ManyToManyField(Scan, blank=True, null=True)
     priority = models.IntegerField(choices=((10, 'High'), (20, 'Medium'),
                                             (30, 'Low')))
+    
+    status = models.IntegerField(choices=((1, 'Open'), (2, 'Closed')))
 
     submitter_comments = models.ForeignKey("CommentGroup",
                                            related_name="submitted_case_set")
