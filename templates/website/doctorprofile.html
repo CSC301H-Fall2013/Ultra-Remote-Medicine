@@ -12,6 +12,27 @@
   <link type="text/css" rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css"%}"/>
   <script src="http://code.jquery.com/jquery.js"></script>
   <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
+  <style>
+	label,input{
+    display: inline-block;
+    vertical-align: baseline;
+    width: 140px;
+	}
+	label {
+		color: #2D2D2D;
+		font-size: 15px;
+	}
+
+	form, input {
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+	}
+
+	form {
+		width: 300px;
+	}
+  </style>
 </head>
 
 <body>
@@ -27,14 +48,12 @@
 			<div id='profileinfo'">
 				<form id='profileinfoform' method='post' action="" enctype="multipart/form-data">
 					{% csrf_token %}
-					<table border="0" cellpadding="5" style="margin: 0 auto; text-align: left">
-						<tr style="height: 200px">
-							<td style="width: 400px; vertical-align: top">
-								First Name: {{form.first_name}} <br>
-								Last Name: {{form.last_name}} <br>
-								Phone Number: {{form.phone_number}} <br>
-								Address: {{form.address}}
-								Profile picture: {{form.profile_pic}}
+					
+								<label>First Name:</label> {{form.first_name}} <br>
+								<label>Last Name:</label> {{form.last_name}} <br>
+								<label>Phone Number:</label> {{form.phone_number}} <br>
+								<label>Address:</label> {{form.address}}
+								<b>Profile picture:</b> {{form.profile_pic}}
 							</td>
 							<td style="width: 300px; vertical-align: top">
 								{{form.comments}}</td>
