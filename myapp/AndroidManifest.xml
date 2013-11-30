@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myapp"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0" android:installLocation="auto">
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -29,22 +29,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DashboardActivity">
+            android:name=".DashboardActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".AddNewPatientActivity">
+            android:name=".AddNewPatientActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".AddNewCaseActivity">
+            android:name=".AddNewCaseActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".SearchResultActivity">
+            android:name=".SearchResultActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".PatientPageActivity">
+            android:name=".PatientPageActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".CasePageActivity">
+            android:name=".CasePageActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
