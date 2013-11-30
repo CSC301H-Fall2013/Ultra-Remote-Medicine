@@ -99,7 +99,7 @@ class NewPatientForm(forms.Form):
     sex = forms.ChoiceField(required=False, choices=(('Female', 'Female'),
                             ('Male', 'Male'), ('Other', 'Other')))
     email = forms.CharField(max_length=254, required=False)
-    patient_pic = forms.ImageField()
+    patient_pic = forms.ImageField(required=False)
 
 
 class UpdateFieldWorkerForm(forms.Form):
@@ -110,7 +110,7 @@ class UpdateFieldWorkerForm(forms.Form):
     phone_number = forms.CharField(max_length=63)
     address = forms.CharField(max_length=254)
     comments = forms.CharField(required=False, widget=forms.Textarea)
-    profile_pic = forms.ImageField()
+    profile_pic = forms.ImageField(required=False)
 
     def populate(self, worker):
 
@@ -130,7 +130,7 @@ class UpdateDoctorForm(forms.Form):
     phone_number = forms.CharField(max_length=63)
     address = forms.CharField(max_length=254)
     comments = forms.CharField(required=False, widget=forms.Textarea)
-    profile_pic = forms.ImageField()
+    profile_pic = forms.ImageField(required=False)
 
     def populate(self, doctor):
 

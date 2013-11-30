@@ -19,15 +19,27 @@
   
   <style>
   #p1 {color:red;}
-
   </style>
+  
+  <style>
+  IMG.displayed {
+    display: block;
+    margin-left: auto;
+    margin-right: auto 
+}
+inputbox.displayed {
+    display: block;
+    margin-left: auto;
+    margin-right: auto 
+}
+}
+  </style>
+  
   <style>
   .inputbox {
   position: absolute;
   left: 50%;
   top: 70%;
-
- 
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
@@ -50,17 +62,22 @@
     <br>
     <br>
     
-    </div>
+    </div> 
      
     <body>
-    <div class="col-md-4"></div>
+
      
-	        <div class="container">
-				<div style="width: 100%;
-    height: 100%;"><img src="{% static "bootstrap/image/logo.jpg"%}" alt="header"  class="img-responsive container"/></div>
-			</div>
+	        <!-- <div class="row text-center">
+				<img src="{% static "bootstrap/image/logo.jpg"%}" alt="header"  class="img-responsive"/>
+				<
+			</div> -->
+			
+    <div ">
+      <img src="{% static "bootstrap/image/logo.jpg"%}" alt="header"  class="img-responsive displayed"/>
+    </div>
+ 
 		
-	</div>
+	
 	
   <div class="container" id="inputbox">
 	<div class="row">
