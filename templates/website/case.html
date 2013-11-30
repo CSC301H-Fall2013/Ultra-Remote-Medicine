@@ -52,42 +52,42 @@
 							<!--<br>Case ID: {{case_id}}-->
 							{%if status == 1%}
 								<form action="{% url 'display_case' case_id 'p' %}" method="post"> {% csrf_token %}
-									Priority: {{priority_form.priority}}
+									<label>Priority:</label> {{priority_form.priority}}
 								</form>
 							{%else%}
 								{%if case.priority == 10%}
-									<br>Priority: High
+									<label>Priority:</label> High
 								{%elif case.priority == 20%}
-									<br>Priority: Medium
+									<label>Priority:</label> Medium
 								{%else%}
-									<br>Priority: Low
+									<label>Priority:</label> Low
 								{%endif%}
 							{%endif%}
 						<form action="{% url 'display_case' case_id 'a' %}" method="post"> {% csrf_token %}
 							{%if case.lock_holder == None%}
-								Case Holder: None<br>
+								<label>Case Holder:</label> None<br>
 								{%if viewer.doctor%}
 									Lock/Unlock this case: {{adopt_form.toggle_field}}
 								{%endif%}
 							{%else%}
 								{%if viewer.doctor%}
-									Case Holder: {{case.lock_holder.user.first_name}} {{case.lock_holder.user.last_name}}
+									<label>Case Holder:</label> {{case.lock_holder.user.first_name}} {{case.lock_holder.user.last_name}}
 									{%if viewer.doctor.user.first_name == case.lock_holder.user.first_name and case.status == 1%}
-										<br>Lock/Unlock this case: {{adopt_form.toggle_field}}
+										Lock/Unlock this case: {{adopt_form.toggle_field}}
 									{%endif%}
 								{%else%}
-									Case Holder: {{case.lock_holder.user.first_name}} {{case.lock_holder.user.last_name}}
+									<br><label>Case Holder:</label> {{case.lock_holder.user.first_name}} {{case.lock_holder.user.last_name}}
 								{%endif%}
 							{%endif%}
 						</form>
 						<form action="{% url 'display_case' case_id 's' %}" method="post"> {% csrf_token %}
 							{%if viewer.doctor and viewer.doctor.user.first_name == case.lock_holder.user.first_name%}
-								Case Status: {{status_form.status}}
+								<label>Case Status:</label> {{status_form.status}}
 							{%else%}
 								{%if case.status == 1%}
-									Case Status: Open
+									<label>Case Status:</label> Open
 								{%else%}
-									Case Status: Closed
+									<label>Case Status:</label> Closed
 								{%endif%}
 							{%endif%}
 						</form>
