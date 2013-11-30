@@ -72,7 +72,7 @@
 							{%else%}
 								{%if viewer.doctor%}
 									Case Holder: {{case.lock_holder.user.first_name}} {{case.lock_holder.user.last_name}}
-									{%if viewer.doctor.user.first_name == case.lock_holder.user.first_name%}
+									{%if viewer.doctor.user.first_name == case.lock_holder.user.first_name and case.status == 1%}
 										<br>Lock/Unlock this case: {{adopt_form.toggle_field}}
 									{%endif%}
 								{%else%}
@@ -81,13 +81,13 @@
 							{%endif%}
 						</form>
 						<form action="{% url 'display_case' case_id 's' %}" method="post"> {% csrf_token %}
-							{%if viewer.doctor%}
+							{%if viewer.doctor and viewer.doctor.user.first_name == case.lock_holder.user.first_name%}
 								Case Status: {{status_form.status}}
 							{%else%}
 								{%if case.status == 1%}
-									<br>Case Status: Open
+									Case Status: Open
 								{%else%}
-									<br>Case Status: Closed
+									Case Status: Closed
 								{%endif%}
 							{%endif%}
 						</form>
