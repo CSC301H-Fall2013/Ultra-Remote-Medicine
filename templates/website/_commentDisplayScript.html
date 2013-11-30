@@ -5,11 +5,13 @@
 		<div class="media-object pull-left" id="avatarcontainer"
 		style="display: inline-block; height: auto; min-height: 80px; width: auto; min-width: 80px;">
 
-		<img src="http://upload.wikimedia.org/wikipedia/commons/3/32/Eduard_Khil.jpg"
-			style="display: inline-block; max-width: 64px; max-height: px; width: auto; height: auto;">
-		{%if viewer.doctor %}
+		{%if viewer.doctor%}
+			<img src="/media/{{viewer.doctor.profile_pic}}"
+					style="display: inline-block; max-width: 64px; max-height: px; width: auto; height: auto;">
 			<br>Doctor
 		{%else%}
+		<img src="/media/{{viewer.worker.profile_pic}}"
+					style="display: inline-block; max-width: 64px; max-height: px; width: auto; height: auto;">
 			<br>Worker
 		{%endif%}
 		</div>

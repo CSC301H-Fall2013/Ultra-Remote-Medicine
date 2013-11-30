@@ -3,11 +3,14 @@
 	<div class="media-object pull-left" id="avatarcontainer"
 		style="display: inline-block; height: auto; min-height: 80px; width: auto; min-width: 80px;">
 
-		<img src="http://upload.wikimedia.org/wikipedia/commons/3/32/Eduard_Khil.jpg"
-			style="display: inline-block; max-width: 64px; max-height: px; width: auto; height: auto;">
+		<!--  Show profile picture -->
 		{%if comments.comment_reference.author.doctor%}
+			<img src="/media/{{comments.comment_reference.author.doctor.profile_pic}}"
+					style="display: inline-block; max-width: 64px; max-height: px; width: auto; height: auto;">
 			<br>Doctor
 		{%else%}
+		<img src="/media/{{comments.comment_reference.author.worker.profile_pic}}"
+					style="display: inline-block; max-width: 64px; max-height: px; width: auto; height: auto;">
 			<br>Worker
 		{%endif%}
 	</div>
