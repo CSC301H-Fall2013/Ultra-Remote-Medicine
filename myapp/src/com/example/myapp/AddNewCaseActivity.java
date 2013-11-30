@@ -19,11 +19,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddNewCaseActivity extends ActivityAPI {
 	Context mContext;
-	private EditText mPatientID;
+	private TextView mPatientID;
 	private Spinner mPatientPriority;
 	private String mPatientPriorityInt;
 	private EditText mPatientComments;
@@ -38,18 +39,17 @@ public class AddNewCaseActivity extends ActivityAPI {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_new_case);
 		mContext = this;
-		mPatientID = (EditText) findViewById(R.id.patient_id);
+		mPatientID = (TextView) findViewById(R.id.patient_id);
 		mPatientPriority = (Spinner) findViewById(R.id.patient_priority);
 		mPatientComments = (EditText) findViewById(R.id.patient_comments);
 		mImage = (ImageView) findViewById(R.id.add_new_case_pic);
 
-		if (jsonCurPatientId != null){
-			mPatientID.setText(jsonCurPatientId.optString("patient_id"));
+		if (jsonCurPatientId != null) {
+			mPatientID.setText(":" + jsonCurPatientId.optString("patient_id"));
 		}
-			
+
 		// Click event for the adding a picture for phone's picture gallery
-		Button picButton = (Button) findViewById(R.id.add_new_case_add);
-		picButton.setOnClickListener(new View.OnClickListener() {
+		mImage.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				Intent i = new Intent(
 						Intent.ACTION_PICK,
@@ -87,7 +87,7 @@ public class AddNewCaseActivity extends ActivityAPI {
 							String jsonString = "{\"session_key\": \""
 									+ jsonCurSessionId.optString("sessionid")
 									+ "\", \"patient\": \""
-									+ mPatientID.getText().toString()
+									+ jsonCurPatientId.optString("patient_id")
 									+ "\", \"comments\": \""
 									+ mPatientComments.getText().toString()
 									+ "\", \"priority\": \""
@@ -104,7 +104,7 @@ public class AddNewCaseActivity extends ActivityAPI {
 
 				// wait for the server respond
 				int timer = 0;
-				while (jsonCurCaseId == null && timer < 50) {
+				while (jsonCurCaseId == null && timer < 300) {
 					try {
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
@@ -118,9 +118,10 @@ public class AddNewCaseActivity extends ActivityAPI {
 					// picture
 					upLoadPic();
 				} else {
-					Toast msg = Toast.makeText(getBaseContext(),
-							(timer < 50 ? jsonCurCaseId.optString("type")
-									: "Server time out"), Toast.LENGTH_LONG);
+					String msgString = (timer < 300 ? "Fail to created case"
+							: "Server time out");
+					Toast msg = Toast.makeText(getBaseContext(), msgString,
+							Toast.LENGTH_LONG);
 					msg.show();
 					msg = null;
 					jsonCurCaseId = null;
@@ -180,9 +181,10 @@ public class AddNewCaseActivity extends ActivityAPI {
 			Intent i = new Intent(mContext, CasePageActivity.class);
 			startActivity(i);
 		} else {
-			Toast msg = Toast.makeText(getBaseContext(),
-					(timer < 50 ? jsonCheck.optString("success")
-							: "Server time out"), Toast.LENGTH_LONG);
+			String msgString = (timer < 300 ? "Fail to upload photo"
+					: "Server time out");
+			Toast msg = Toast.makeText(getBaseContext(), msgString,
+					Toast.LENGTH_LONG);
 			msg.show();
 			msg = null;
 			jsonCheck = null;

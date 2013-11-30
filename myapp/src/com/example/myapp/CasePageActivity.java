@@ -70,7 +70,7 @@ public class CasePageActivity extends ActivityAPI {
 
 				// wait for the server respond
 				int timer = 0;
-				while (jsonCurCase == null && timer < 50) {
+				while (jsonCurCase == null && timer < 300) {
 					try {
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
@@ -78,11 +78,15 @@ public class CasePageActivity extends ActivityAPI {
 					}
 					timer++;
 				}
-				Toast msg = Toast.makeText(getBaseContext(),
-						(timer < 50 ? jsonCurCase.optString("firstName")
-								: "Server time out"), Toast.LENGTH_LONG);
-				msg.show();
-				msg = null;
+				if (timer >= 300
+						|| (jsonCurCase.optString("success").equals("false"))) {
+					String msgString = (timer < 300 ? "Fail to load case"
+							: "Server time out");
+					Toast msg = Toast.makeText(getBaseContext(), msgString,
+							Toast.LENGTH_LONG);
+					msg.show();
+					msg = null;
+				}
 				if (jsonCurCase == null
 						|| jsonCurCase.optString("success").equals("false")) {
 					// If server can not find the key, then navigate to dash
@@ -97,14 +101,19 @@ public class CasePageActivity extends ActivityAPI {
 				startActivity(i);
 			}
 		}
-		if (jsonCurCase != null){
+		if (jsonCurCase != null) {
 			cCaseId.setText("Case: " + jsonCurCase.optString("case_id"));
-			cPatientName.setText("Name: " + jsonCurCase.optString("lastName") + ", " + jsonCurCase.optString("firstName"));
-			cPatientUrmId.setText("URM ID: " + jsonCurCase.optString("patient_id"));
-			cPatientDob.setText("DOB: " + jsonCurCase.optString("date_of_birth"));
-			cPatientHealthId.setText("Health ID: " + jsonCurCase.optString("health_id"));
+			cPatientName.setText("Name: " + jsonCurCase.optString("lastName")
+					+ ", " + jsonCurCase.optString("firstName"));
+			cPatientUrmId.setText("URM ID: "
+					+ jsonCurCase.optString("patient_id"));
+			cPatientDob.setText("DOB: "
+					+ jsonCurCase.optString("date_of_birth"));
+			cPatientHealthId.setText("Health ID: "
+					+ jsonCurCase.optString("health_id"));
 			cPatientSex.setText("Sex: " + jsonCurCase.optString("gender"));
-			cCasePriority.setText("Priority: " + jsonCurCase.optString("priority"));
+			cCasePriority.setText("Priority: "
+					+ jsonCurCase.optString("priority"));
 		}
 	}
 }

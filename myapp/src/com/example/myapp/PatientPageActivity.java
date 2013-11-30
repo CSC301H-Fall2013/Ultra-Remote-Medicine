@@ -221,7 +221,7 @@ public class PatientPageActivity extends ActivityAPI {
 
 				// wait for the server respond
 				int timer = 0;
-				while (jsonCurPatient == null && timer < 50) {
+				while (jsonCurPatient == null && timer < 300) {
 					try {
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
@@ -229,11 +229,16 @@ public class PatientPageActivity extends ActivityAPI {
 					}
 					timer++;
 				}
-				Toast msg = Toast.makeText(getBaseContext(),
-						(timer < 50 ? jsonCurPatient.optString("firstName")
-								: "Server time out"), Toast.LENGTH_LONG);
-				msg.show();
-				msg = null;
+				if (timer >= 300
+						|| jsonCurPatient.optString("success")
+								.equals("false")) {
+					String msgString = (timer < 300 ? "Fail to load Patient info"
+							: "Server time out");
+					Toast msg = Toast.makeText(getBaseContext(), msgString,
+							Toast.LENGTH_LONG);
+					msg.show();
+					msg = null;
+				}
 				if (jsonCurPatient == null
 						|| jsonCurPatient.optString("success").equals("false")) {
 					// If server can not find the key, then navigate to dash
@@ -293,7 +298,7 @@ public class PatientPageActivity extends ActivityAPI {
 
 				// wait for the server respond
 				int timer = 0;
-				while (jsonCurCaseList == null && timer < 50) {
+				while (jsonCurCaseList == null && timer < 300) {
 					try {
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
@@ -301,11 +306,17 @@ public class PatientPageActivity extends ActivityAPI {
 					}
 					timer++;
 				}
-				Toast msg = Toast.makeText(getBaseContext(),
-						(timer < 50 ? jsonCurCaseList.optString("type")
-								: "Server time out"), Toast.LENGTH_LONG);
-				msg.show();
-				msg = null;
+				if (timer >= 300
+						|| jsonCurCaseList.optString("success")
+								.equals("false")) {
+					String msgString = (timer < 300 ? "Fail to load Cases"
+							: "Server time out");
+					Toast msg = Toast.makeText(getBaseContext(), msgString,
+							Toast.LENGTH_LONG);
+					msg.show();
+					msg = null;
+				}
+				
 				if (jsonCurCaseList == null
 						|| jsonCurCaseList.optString("success").equals("false")) {
 					// If server can not find the key, then navigate to dash

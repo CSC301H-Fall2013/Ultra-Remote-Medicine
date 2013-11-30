@@ -25,8 +25,8 @@ public class MainActivity extends ActivityAPI {
 		mContext = this;
 		mPatientUserName = (EditText) findViewById(R.id.login_username);
 		mPatientPassword = (EditText) findViewById(R.id.login_password);
-		
-		//read session id from local data storage
+
+		// read session id from local data storage
 		try {
 			SharedPreferences session_id = getSharedPreferences(SESSIONID, 0);
 			String session_string = session_id.getString("sessionid", null);
@@ -43,14 +43,14 @@ public class MainActivity extends ActivityAPI {
 			Intent i = new Intent(mContext, DashboardActivity.class);
 			startActivity(i);
 		}
-		
-		//Login Button Click event to login to the server
+
+		// Login Button Click event to login to the server
 		Button nextButton = (Button) findViewById(R.id.login_submit);
 		nextButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 
 				jsonCurSessionId = null;
-				
+
 				// create a new thread to login the to server
 				Thread thread = new Thread(new Runnable() {
 					@Override
@@ -58,20 +58,21 @@ public class MainActivity extends ActivityAPI {
 						try {
 							// URL
 							String urlString = "login";
-							//Json package string
+							// Json package string
 							String jsonString = "{\"username\": \""
 									+ mPatientUserName.getText().toString()
 									+ "\", \"password\": \""
 									+ mPatientPassword.getText().toString()
 									+ "\"}";
-							jsonCurSessionId = communicate(urlString, jsonString);
+							jsonCurSessionId = communicate(urlString,
+									jsonString);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 					}
 				});
 				thread.start();
-				
+
 				// wait for the server respond
 				int timer = 0;
 				while (jsonCurSessionId == null && timer < 300) {
@@ -82,15 +83,21 @@ public class MainActivity extends ActivityAPI {
 					}
 					timer++;
 				}
-				Toast msg = Toast.makeText(getBaseContext(),
-						(timer < 300 ? jsonCurSessionId.optString("sessionid")
-								: "Server time out"), Toast.LENGTH_LONG);
-				msg.show();
-				msg = null;
+				if (timer >= 300
+						|| jsonCurSessionId.optString("success")
+								.equals("false")) {
+					String msgString = (timer < 300 ? "Fail to login"
+							: "Server time out");
+					Toast msg = Toast.makeText(getBaseContext(), msgString,
+							Toast.LENGTH_LONG);
+					msg.show();
+					msg = null;
+				}
 				if (jsonCurSessionId != null
 						&& jsonCurSessionId.optString("success").equals("true")) {
-					
-					//if login successfully, stores the session id to local storage
+
+					// if login successfully, stores the session id to local
+					// storage
 					SharedPreferences session_id = getSharedPreferences(
 							SESSIONID, 0);
 					SharedPreferences.Editor editor = session_id.edit();
@@ -102,8 +109,8 @@ public class MainActivity extends ActivityAPI {
 					}
 					editor.putString("sessionid", jsonCurSessionId.toString());
 					editor.commit();
-					
-					//navigate to dash board
+
+					// navigate to dash board
 					Intent i = new Intent(mContext, DashboardActivity.class);
 					startActivity(i);
 				} else {

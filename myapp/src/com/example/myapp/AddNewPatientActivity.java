@@ -38,7 +38,7 @@ public class AddNewPatientActivity extends ActivityAPI {
 		mPatientPhoneNumber = (EditText) findViewById(R.id.patient_phone_number);
 		mPatientEmail = (EditText) findViewById(R.id.patient_email);
 
-		//Send Button Click event to upload data to the server
+		// Send Button Click event to upload data to the server
 		Button finshButton = (Button) findViewById(R.id.patient_finish);
 		finshButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
@@ -89,7 +89,7 @@ public class AddNewPatientActivity extends ActivityAPI {
 
 				// wait for the server respond
 				int timer = 0;
-				while (jsonCurPatientId == null && timer < 50) {
+				while (jsonCurPatientId == null && timer < 300) {
 					try {
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
@@ -97,14 +97,19 @@ public class AddNewPatientActivity extends ActivityAPI {
 					}
 					timer++;
 				}
-				Toast msg = Toast.makeText(getBaseContext(),
-						(timer < 50 ? jsonCurPatientId.optString("success")
-								: "Server time out"), Toast.LENGTH_LONG);
-				msg.show();
-				msg = null;
+				if (timer >= 300
+						|| (jsonCurPatientId.optString("success")
+								.equals("false"))) {
+					String msgString = (timer < 300 ? "Fail to create patient"
+							: "Server time out");
+					Toast msg = Toast.makeText(getBaseContext(), msgString,
+							Toast.LENGTH_LONG);
+					msg.show();
+					msg = null;
+				}
 				if (jsonCurPatientId != null
 						&& jsonCurPatientId.optString("success").equals("true")) {
-					//If the patient created, then navigate to Patient Page
+					// If the patient created, then navigate to Patient Page
 					Intent i = new Intent(mContext, PatientPageActivity.class);
 					startActivity(i);
 				} else {

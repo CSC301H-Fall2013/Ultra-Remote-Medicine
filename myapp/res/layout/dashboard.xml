@@ -64,14 +64,5 @@
         android:textColor="@color/button_text_color"
         android:textSize="@dimen/btn_text_size" />
 
-    <Button
-        android:id="@+id/add_new_case_btn"
-        android:layout_width="125dp"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/search_box"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_vertical"
-        android:text="@string/dashboard_add_new_case"
-        android:textSize="@dimen/btn_text_size" />
 
 </RelativeLayout>

@@ -156,6 +156,7 @@ public class SearchResultActivity extends ActivityAPI {
 				jsonCurCase = null;
 				JSONArray list = jsonCurSearchList.optJSONArray("result");
 				jsonCurPatient = list.optJSONObject(currentGroup * 7);
+				jsonCurPatientId = jsonCurPatient;
 				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
@@ -170,6 +171,7 @@ public class SearchResultActivity extends ActivityAPI {
 				jsonCurCase = null;
 				JSONArray list = jsonCurSearchList.optJSONArray("result");
 				jsonCurPatient = list.optJSONObject(currentGroup * 7 + 1);
+				jsonCurPatientId = jsonCurPatient;
 				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
@@ -184,6 +186,7 @@ public class SearchResultActivity extends ActivityAPI {
 				jsonCurCase = null;
 				JSONArray list = jsonCurSearchList.optJSONArray("result");
 				jsonCurPatient = list.optJSONObject(currentGroup * 7 + 2);
+				jsonCurPatientId = jsonCurPatient;
 				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
@@ -198,6 +201,7 @@ public class SearchResultActivity extends ActivityAPI {
 				jsonCurCase = null;
 				JSONArray list = jsonCurSearchList.optJSONArray("result");
 				jsonCurPatient = list.optJSONObject(currentGroup * 7 + 3);
+				jsonCurPatientId = jsonCurPatient;
 				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
@@ -212,6 +216,7 @@ public class SearchResultActivity extends ActivityAPI {
 				jsonCurCase = null;
 				JSONArray list = jsonCurSearchList.optJSONArray("result");
 				jsonCurPatient = list.optJSONObject(currentGroup * 7 + 4);
+				jsonCurPatientId = jsonCurPatient;
 				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
@@ -226,6 +231,7 @@ public class SearchResultActivity extends ActivityAPI {
 				jsonCurCase = null;
 				JSONArray list = jsonCurSearchList.optJSONArray("result");
 				jsonCurPatient = list.optJSONObject(currentGroup * 7 + 5);
+				jsonCurPatientId = jsonCurPatient;
 				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
@@ -240,6 +246,7 @@ public class SearchResultActivity extends ActivityAPI {
 				jsonCurCase = null;
 				JSONArray list = jsonCurSearchList.optJSONArray("result");
 				jsonCurPatient = list.optJSONObject(currentGroup * 7 + 6);
+				jsonCurPatientId = jsonCurPatient;
 				Intent i = new Intent(mContext, PatientPageActivity.class);
 				startActivity(i);
 			}
