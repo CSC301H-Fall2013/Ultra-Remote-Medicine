@@ -50,10 +50,11 @@ form {
 
 			<h1><b>Open new case</b></h1>
 
-			<form action="{% url 'new_case' 'X' %}" method="post"> {% csrf_token %}
+			<form action="{% url 'new_case' 'X' %}" method="post" enctype="multipart/form-data"> {% csrf_token %}
 				Patient: {{form.patient}} <br>
 				Priority: {{form.priority}} <br>
 				Comments: {{form.comments}} <br>
+				Patient Scan: {{form.scan_image}} <br>
 				<input type="submit" value="Submit" />
 			</form>
 

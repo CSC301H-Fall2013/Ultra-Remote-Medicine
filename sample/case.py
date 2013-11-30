@@ -23,12 +23,13 @@ def display_new_case(request, patient_id):
 
     if request.method == 'POST':
 
-        form = NewCaseForm(request.POST)
+        form = NewCaseForm(request.POST, request.FILES)
         if form.is_valid():
 
             patient_id = form.cleaned_data['patient']
             comments = form.cleaned_data['comments']
             priority = form.cleaned_data['priority']
+            scan_image = form.cleaned_data['scan_image']
 
             try:
                 patient = Patient.objects.filter(id=patient_id)[0]
@@ -51,6 +52,17 @@ def display_new_case(request, patient_id):
                     submitter=worker,
                     date_opened=timezone.now())
                 case.save()
+
+                if scan_image != None:
+                    scan = Scan(patient=patient)
+                    scan.save()
+
+                    scan.file = scan_image
+                    scan.save()
+
+                    comment.scans.add(scan)
+                    case.scans.add(scan)
+
             except IntegrityError, e:
                 print str(e)
                 print "hard fail"
@@ -159,7 +171,8 @@ def display_case(request, case_id, mode='v'):
                             case.reviewer_comments.add(matching_group)
 
                     else:
-                        parent_comment = Comment.objects.filter(id=comment_id)[0]
+                        parent_comment = Comment.objects.filter(
+                                id=comment_id)[0]
                         parent_comment.children.add(comment)
 
                     case.save()
@@ -191,7 +204,7 @@ def display_case(request, case_id, mode='v'):
                     print str(e)
                     print "hard fail"
                     return HttpResponseServerError()
-        
+
         elif mode == 'a':
             priority_form = UpdateCasePriorityForm()
             status_form = UpdateCaseStatusForm()
@@ -246,10 +259,10 @@ def display_case(request, case_id, mode='v'):
 
     priority_form = UpdateCasePriorityForm()
     priority_form.populate(case)
-        
+
     status_form = UpdateCaseStatusForm()
     status_form.populate(case)
-    
+
     adopt_form = UpdateCaseLockHolderForm()
     if (hasattr(user, "doctor")):
         adopt_form.populate(case, user.doctor)

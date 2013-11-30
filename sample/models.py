@@ -271,7 +271,7 @@ class CommentGroup(models.Model):
     ''' Represents a group of comments made on something. '''
 
     comments = models.ManyToManyField(Comment)
-    
+
     def __unicode__(self):
         return unicode(self.id) + ". CommentGroup."
 
