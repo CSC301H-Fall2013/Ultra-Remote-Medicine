@@ -1,6 +1,6 @@
 from sample.forms import NewCaseForm, UpdateCasePriorityForm, PostCommentForm, \
     UpdateCaseLockHolderForm, UpdateCaseStatusForm
-from sample.models import Patient, Comment, Case, CommentGroup
+from sample.models import Patient, Comment, Case, CommentGroup, Scan
 from django.utils import timezone
 from django.db import IntegrityError
 from django.shortcuts import render_to_response
@@ -99,58 +99,69 @@ def display_case(request, case_id, mode='v'):
             priority_form = UpdateCasePriorityForm()
             status_form = UpdateCaseStatusForm()
             adopt_form = UpdateCaseLockHolderForm()
-            comment_form = PostCommentForm(request.POST)
+            print "POST:" + str(request.POST)
+            comment_form = PostCommentForm(request.POST, request.FILES)
             if comment_form.is_valid():
 
-                # Id of the parent, actually
-                comment_id = comment_form.cleaned_data['comment_id']
-
-                comments = comment_form.cleaned_data['comments']
-
-                comment = Comment(author=user, text=comments,
-                                  time_posted=timezone.now())
-                comment.save()
-
-                print "commentID", comment_id
-                if comment_id == -1:
-
-                    # Search for a group with the user id.
-                    matching_group = None
-
-                    # Check submitter comments for a match
-                    if (hasattr(user, "worker") and
-                            case.submitter == user.worker):
-                        case.submitter_comments.comments.add(comment)
-                    else:
-
-                        # Check reviewer comments for a match
-                        groups = CommentGroup.objects.all().filter(
-                        reviewed_case_set=case)[:]
-
-                        print groups
-
-                        for group in groups:
-                            comments = group.comments.all()
-
-                            if len(comments) > 0:
-                                author = comments[0].author
-                                if author == user:
-                                    matching_group = group
-                                    break
-
-                        if matching_group == None:
-                            matching_group = CommentGroup()
-                            matching_group.save()
-
-                        matching_group.comments.add(comment)
-
-                        case.reviewer_comments.add(matching_group)
-
-                else:
-                    parent_comment = Comment.objects.filter(id=comment_id)[0]
-                    parent_comment.children.add(comment)
-
                 try:
+
+                    # Id of the parent, actually
+                    comment_id = comment_form.cleaned_data['comment_id']
+
+                    comments = comment_form.cleaned_data['comments']
+
+                    scan_image = comment_form.cleaned_data['scan_image']
+
+                    comment = Comment(author=user, text=comments,
+                                      time_posted=timezone.now())
+                    comment.save()
+
+                    if scan_image != None:
+
+                        scan = Scan(patient=case.patient, comments="")
+                        scan.save()
+                        scan.file = scan_image
+                        scan.save()
+                        case.scans.add(scan)
+
+                        comment.scans.add(scan)
+
+                    if comment_id == -1:
+
+                        # Search for a group with the user id.
+                        matching_group = None
+
+                        # Check submitter comments for a match
+                        if (hasattr(user, "worker") and
+                                case.submitter == user.worker):
+                            case.submitter_comments.comments.add(comment)
+                        else:
+
+                            # Check reviewer comments for a match
+                            groups = CommentGroup.objects.all().filter(
+                            reviewed_case_set=case)[:]
+
+                            for group in groups:
+                                comments = group.comments.all()
+
+                                if len(comments) > 0:
+                                    author = comments[0].author
+                                    if author == user:
+                                        matching_group = group
+                                        break
+
+                            if matching_group == None:
+                                matching_group = CommentGroup()
+                                matching_group.save()
+
+                            matching_group.comments.add(comment)
+
+                            case.reviewer_comments.add(matching_group)
+
+                    else:
+                        parent_comment = Comment.objects.filter(id=comment_id)[0]
+                        parent_comment.children.add(comment)
+
                     case.save()
                 except IntegrityError, e:
                     print str(e)
@@ -188,7 +199,7 @@ def display_case(request, case_id, mode='v'):
             comment_form = PostCommentForm()
             if adopt_form.is_valid():
                 toggle_field = int(adopt_form.cleaned_data['toggle_field'])
-                
+
                 if toggle_field == 1:
                     try:
                         case.lock_holder = user.doctor
@@ -205,10 +216,10 @@ def display_case(request, case_id, mode='v'):
                         print str(e)
                         print "hard fail"
                         return HttpResponseServerError()
-                    
+
             else:
                 print "Invalid UpdateCaseLockHolderForm."
-                    
+
         elif mode == 's':
             priority_form = UpdateCasePriorityForm()
             status_form = UpdateCaseStatusForm(request.POST)
@@ -255,6 +266,7 @@ def display_case(request, case_id, mode='v'):
         'viewer': user,
         'user': user,
         'case': case,
+        'scans': case.scans.all(),
         'firstName': case.patient.first_name,
         'lastName': case.patient.last_name,
         'patient_id': case.patient.id,

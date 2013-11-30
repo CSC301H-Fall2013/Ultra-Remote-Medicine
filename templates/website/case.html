@@ -19,10 +19,18 @@
     width: 140px;
 	text-align: left;
 	}
+	
 	label {
 		color: #2D2D2D;
 		font-size: 15px;
 	}
+	
+	#myModal .modal-body {
+		width: 900px; /* SET THE WIDTH OF THE MODAL */
+		margin: -250px 0 0 -450px; /* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+	}
+	
+	#myModalContainer .modal fade
    </style>
 </head>
 
@@ -86,6 +94,14 @@
 					</td>
 				</tr>
 			</table>
+				<h1>Scans</h1>
+				
+				{%for scan in scans %}
+				
+					{% include "_scanDisplay.html" %}
+
+				{%endfor%}
+			
 				<h1>Comments</h1>
 			
 				<br>

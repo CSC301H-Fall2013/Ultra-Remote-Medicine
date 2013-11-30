@@ -29,6 +29,8 @@ def display_new_patient(request):
             sex = form.cleaned_data['sex']
             email = form.cleaned_data['email']
             patient_pic = form.cleaned_data['patient_pic']
+            
+            print "PATIENT PIC: ", patient_pic
 
             try:
                 patient = Patient(

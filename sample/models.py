@@ -30,7 +30,7 @@ class Doctor(models.Model):
         name, extension = os.path.splitext(filename)
         return "profile_pictures/%d/pic%s" % (instance.id, extension)
 
-    profile_pic = models.ImageField(upload_to=profile_pic_path, blank=True)
+    profile_pic = models.ImageField(upload_to=profile_pic_path, blank=True, editable=False)
 
     def user_first_name(self):
         return self.user.first_name
@@ -66,7 +66,7 @@ class Worker(models.Model):
         name, extension = os.path.splitext(filename)
         return "profile_pictures/%d/pic%s" % (instance.id, extension)
 
-    profile_pic = models.ImageField(upload_to=profile_pic_path, blank=True)
+    profile_pic = models.ImageField(upload_to=profile_pic_path, blank=True, editable=False)
 
     def user_first_name(self):
         return self.user.first_name
@@ -190,7 +190,7 @@ class TimeSlot(models.Model):
 class Scan(models.Model):
     ''' Represents an original picture or scan of a Patient in the database.'''
     patient = models.ForeignKey(Patient)
-    picture_linkage = models.URLField()
+
     comments = models.TextField(blank=True)
 
     def scan_path(instance, filename):
@@ -198,7 +198,7 @@ class Scan(models.Model):
         return "scan/%d/pic%s" % (instance.id, extension)
 
     file = models.ImageField(upload_to=scan_path, blank=True)
-    slug = models.SlugField(max_length=50, blank=True)
+    # slug = models.SlugField(max_length=50, blank=True)
 
     def __unicode__(self):
         return "Scan " + str(self.id) + " - " + str(self.file.name)
@@ -261,6 +261,7 @@ class Comment(models.Model):
     children = models.ManyToManyField("Comment", blank=True, null=True)
     text = models.TextField(blank=True)
     time_posted = models.DateTimeField()
+    scans = models.ManyToManyField(Scan, blank=True, null=True)
 
     def __unicode__(self):
         return unicode(self.id) + ". " + self.text

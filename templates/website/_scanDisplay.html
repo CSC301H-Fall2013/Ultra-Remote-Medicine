@@ -1,0 +1,26 @@
+
+<img src="/media/{{scan.file}}" data-target="#{{scan.id}}"
+	data-toggle="modal" width="50" height="50">
+
+<div class="modal fade" id="{{scan.id}}" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" style="max-width: 400 px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<img src="/media/{{scan.file}}"
+					style="display: block; max-width: 500px; max-height: 500px; width: auto; height: auto;" />
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

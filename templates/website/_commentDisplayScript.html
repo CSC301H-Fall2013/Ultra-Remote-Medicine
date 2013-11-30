@@ -14,7 +14,7 @@
 		{%endif%}
 		</div>
 		<div class="media-body">
-			<form id='commentform' method='post' action="{{comment_post_action}}">
+			<form id='commentform' method='post' action="{{comment_post_action}}" enctype="multipart/form-data">
 				{% csrf_token %}
 				<table width="100%" border = "0">
 				    <col />
@@ -40,6 +40,8 @@
 					</tr>
 				</table>
 				
+				<b>Add a scan:</b> {{comment_form.scan_image}}
+				<br>
 				<input id="submitChanges" type="submit" name="submitChanges" value="Submit Changes" />
 			</form>
 		</div>

@@ -148,3 +148,4 @@ class PostCommentForm(forms.Form):
     comments = forms.CharField(required=False, widget=forms.Textarea)
     comment_id = forms.IntegerField(required=False, widget=forms.Textarea,
                                     initial=-1)
+    scan_image = forms.ImageField(required=False)

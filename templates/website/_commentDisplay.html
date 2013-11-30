@@ -27,6 +27,14 @@
 					<td>
 						<div style="min-height: 55px; height: auto;">
 							{{comments.comment_reference.text}}
+							{%if comments.comment_reference.scans.all|length > 0%}
+								<br>
+								{%for scan in comments.comment_reference.scans.all %}
+									
+									{% include "_scanDisplay.html" %}
+	
+								{%endfor%}
+							{%endif%}
 						</div>
 					</td>
 					<td style="text-align: right; vertical-align: top;">
