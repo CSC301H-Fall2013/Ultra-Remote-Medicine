@@ -1,16 +1,24 @@
 package com.example.myapp;
 
 import com.example.myapp.R;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
+import android.location.LocationListener;
+import android.widget.TextView;
 
-public class AddNewPatientActivity extends ActivityAPI {
+
+public class AddNewPatientActivity extends ActivityAPI implements LocationListener {
 	Context mContext;
 	private EditText mPatientFirstName;
 	private EditText mPatientLastName;
@@ -21,11 +29,20 @@ public class AddNewPatientActivity extends ActivityAPI {
 	private EditText mPatientAddress;
 	private EditText mPatientPhoneNumber;
 	private EditText mPatientEmail;
-
+	private LocationManager mLocationManager;
+	
+	public void onLocationChanged(Location location){}
+	public void onStatusChanged(String provider, int status, Bundle extras){}
+	public void onProviderDisabled(String provider){}
+	public void onProviderEnabled(String provider){}
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+
+		
 		setContentView(R.layout.add_new_patient);
 		mContext = this;
 		mPatientFirstName = (EditText) findViewById(R.id.patient_first_name);
@@ -37,7 +54,51 @@ public class AddNewPatientActivity extends ActivityAPI {
 		mPatientAddress = (EditText) findViewById(R.id.patient_address);
 		mPatientPhoneNumber = (EditText) findViewById(R.id.patient_phone_number);
 		mPatientEmail = (EditText) findViewById(R.id.patient_email);
-
+		
+		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		
+		
+		
+		Criteria criteria = new Criteria();
+		criteria.setAccuracy(Criteria.ACCURACY_FINE);
+		criteria.setPowerRequirement(Criteria.POWER_LOW);
+		String locationprovider = mLocationManager.getBestProvider(criteria,true);
+		
+		Location mLocation = mLocationManager.getLastKnownLocation(locationprovider);
+		
+		if(mLocation != null)
+		{
+			mPatientGPSCoordinates.setText(mLocation.getLatitude() +" "+ mLocation.getLongitude(), TextView.BufferType.EDITABLE);
+		}
+		else
+		{
+			boolean GPSEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+			boolean NetworkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+			
+			if(GPSEnabled) {
+				mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
+				if(mLocationManager != null) {
+					mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+					if(mLocation != null) {
+						mPatientGPSCoordinates.setText(mLocation.getLatitude() +" "+ mLocation.getLongitude(), TextView.BufferType.EDITABLE);
+					}
+				}
+			}
+			
+			if(NetworkEnabled) {
+				mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
+				if(mLocationManager != null) {
+					mLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+					if(mLocation != null) {
+						mPatientGPSCoordinates.setText(mLocation.getLatitude() +" "+ mLocation.getLongitude(), TextView.BufferType.EDITABLE);
+					}
+				}
+			}
+		}
+		
+		
+		
+		
 		// Send Button Click event to upload data to the server
 		Button finshButton = (Button) findViewById(R.id.patient_finish);
 		finshButton.setOnClickListener(new View.OnClickListener() {
