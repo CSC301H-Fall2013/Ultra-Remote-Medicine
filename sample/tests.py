@@ -1,6 +1,5 @@
 from django.test import TestCase
-from sample.models import (Doctor, Worker, Patient, Measurement,
-        MeasurementType, SpecialtyType, TimeSlot, Case, Scan, Annotation,
+from sample.models import (Doctor, Worker, Patient, SpecialtyType, TimeSlot, Case, Scan,
         Comment, CommentGroup)
 from django.contrib.auth.models import User
 from psycopg2 import IntegrityError
@@ -12,7 +11,9 @@ from django.test.client import Client
 import unittest
 from django.http import HttpResponseServerError
 import datetime
+from django.test.utils import setup_test_environment
 
+setup_test_environment()
 
 def createUser(username, emailaddress, docpassword):
     try:
@@ -96,6 +97,7 @@ def populate_default_test_data():
                 patient=sample_patient,
                 submitter=worker,
                 lock_holder=None,
+                status=1,
                 priority=10,
                 submitter_comments=comment_group,
                 date_opened="2012-12-12"
@@ -126,7 +128,8 @@ class NewCaseTests(TestCase):
         response = self.client.post(url,
             {'patient': patient.id,
              'comments': 'Trololololol.',
-             'priority': 10})
+             'priority': 10,
+             'scan_image': None})
 
         self.assertEqual(response.status_code, 302, "Bad status code")
 
