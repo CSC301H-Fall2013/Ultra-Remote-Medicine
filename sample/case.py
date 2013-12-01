@@ -242,7 +242,6 @@ def display_case(request, case_id, mode='v'):
                 status = status_form.cleaned_data['status']
                 try:
                     case.status = int(status)
-                    print "The status is: ", status
                     case.save()
                 except IntegrityError, e:
                     print str(e)
