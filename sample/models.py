@@ -3,15 +3,6 @@ from django import forms
 from django.contrib.auth.models import User
 import os
 
-'''
-TODO:
-- Review patient address representation.
-- Review image linkage format.
-- Decide whether or not some foreign/m2m keys should be put in both related
-    tables (if even possible)
-'''
-
-
 class Doctor(models.Model):
     ''' Represents a doctor, the job of whom primarily is to annotate and
     review cases and scans submitted by workers, and issue instructions to
@@ -112,31 +103,6 @@ class Patient(models.Model):
     def __unicode__(self):
 
         return str(self.id) + ". " + self.last_name + ", " + self.first_name
-
-
-class MeasurementType(models.Model):
-    ''' MeasurementType entries record the different types of measurements that
-        can be taken. All Measurement instances are of a particular
-        MeasurementType.'''
-    name = models.CharField(max_length=63)
-    units = models.CharField(max_length=63)
-
-    def __unicode__(self):
-        return str(self.id) + ". " + self.name
-
-
-class Measurement(models.Model):
-    ''' A Measurement taken at a particular time of a patient. Each Measurement
-        is of a particular MeasurementType.'''
-    worker = models.ForeignKey(Worker)
-    patient = models.ForeignKey(Patient)
-    time_taken = models.DateTimeField()
-    measurement_type = models.ForeignKey(MeasurementType)
-    value = models.DecimalField(decimal_places=3, max_digits=15)
-
-    def __unicode__(self):
-        return "Measurement " + str(self.id)
-
 
 class SpecialtyType(models.Model):
     ''' SpecaialtyType entries record the different types of specialties that
@@ -274,16 +240,3 @@ class CommentGroup(models.Model):
 
     def __unicode__(self):
         return unicode(self.id) + ". CommentGroup."
-
-
-class Annotation(models.Model):
-    ''' Represents an annotation made to a picture or scan of a Patient. Both
-        workers and doctors can create annotations. '''
-
-    picture = models.ForeignKey(Scan)
-    author = models.ForeignKey(User)
-    annotation_picture_linkage = models.URLField()
-    comments = models.ForeignKey("Comment")
-
-    def __unicode__(self):
-        return "Annotation " + str(self.id)

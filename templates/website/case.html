@@ -49,12 +49,12 @@
 							<br><label>U.R.M Patient ID:</label> {{patient_id}}
 							<br><label>Gender:</label> {{gender}}
 							<br><label>Regional Health ID:</label> {{health_id}}
-							<!--<br>Case ID: {{case_id}}-->
 							{%if status == 1%}
 								<form action="{% url 'display_case' case_id 'p' %}" method="post"> {% csrf_token %}
 									<label>Priority:</label> {{priority_form.priority}}
 								</form>
 							{%else%}
+							<br>
 								{%if case.priority == 10%}
 									<label>Priority:</label> High
 								{%elif case.priority == 20%}
@@ -73,7 +73,7 @@
 								{%if viewer.doctor%}
 									<label>Case Holder:</label> {{case.lock_holder.user.first_name}} {{case.lock_holder.user.last_name}}
 									{%if viewer.doctor.user.first_name == case.lock_holder.user.first_name and case.status == 1%}
-										Lock/Unlock this case: {{adopt_form.toggle_field}}
+										<br>Lock/Unlock this case: {{adopt_form.toggle_field}}
 									{%endif%}
 								{%else%}
 									<br><label>Case Holder:</label> {{case.lock_holder.user.first_name}} {{case.lock_holder.user.last_name}}

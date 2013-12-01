@@ -47,11 +47,6 @@
 					</td>
 				</tr>
 			</table>
-			<!--<span class="media-heading"><b>{{comments.comment_reference.author.first_name}} {{comments.comment_reference.author.last_name}}:</b></span>
-			<span style="float: right"> {{comments.comment_reference.time_posted.date}} at {{comments.comment_reference.time_posted.time}} GMT</span>
-			<br>
-			{{comments.comment_reference.text}}
-		</div>  -->
 		<div id="a{{comments.comment_reference.id}}"> </div>
 		{%if comments.children|length > 0 %}
 			{%for child in comments.children %}
