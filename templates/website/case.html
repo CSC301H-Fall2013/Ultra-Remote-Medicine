@@ -62,7 +62,7 @@
 							{%if case.lock_holder == None%}
 								<label>Case Holder:</label> None<br>
 								{%if viewer.doctor%}
-									Lock/Unlock this case: {{adopt_form.toggle_field}}
+									<label>Lock/Unlock this case:</label> {{adopt_form.toggle_field}}
 								{%endif%}
 							{%else%}
 								{%if viewer.doctor%}
@@ -91,11 +91,17 @@
 			</table>
 				<h1>Scans</h1>
 				
-				{%for scan in scans %}
+				{%if scans|length > 0%}
 				
-					{% include "_scanDisplay.html" %}
-
-				{%endfor%}
+					{%for scan in scans %}
+					
+						{% include "_scanDisplay.html" %}
+	
+					{%endfor%}
+					
+				{%else%}
+					No scans for this case.
+				{%endif%}
 			
 				<h1>Comments</h1>
 			
