@@ -32,7 +32,11 @@ def display_new_case(request, patient_id):
             scan_image = form.cleaned_data['scan_image']
 
             try:
-                patient = Patient.objects.filter(id=patient_id)[0]
+                matching_patients = Patient.objects.filter(id=patient_id)
+                if len(matching_patients) == 0:
+                    return HttpResponseServerError()
+
+                patient = matching_patients[0]
 
                 comment = Comment(
                     author=user,

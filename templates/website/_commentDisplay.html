@@ -29,7 +29,15 @@
 				<tr>
 					<td>
 						<div style="min-height: 55px; height: auto;">
-							{{comments.comment_reference.text}}
+							{%if comments.comment_reference.author.doctor%}
+								<span style="color: #000080">
+									{{comments.comment_reference.text}}
+								</span>
+							{%else%}
+								<span style="color: #005000">
+									{{comments.comment_reference.text}}
+								</span>
+							{%endif%}
 							{%if comments.comment_reference.scans.all|length > 0%}
 								<br>
 								{%for scan in comments.comment_reference.scans.all %}

@@ -117,7 +117,7 @@ class NewCaseTests(TestCase):
     '''
 
     def test_add_regular_case(self):
-        '''  '''
+
         defaults = populate_default_test_data()
         patient = defaults[4]
 
@@ -146,15 +146,46 @@ class NewCaseTests(TestCase):
         self.assertEqual(response.context['patient_id'], patient.id)
         self.assertEqual(response.context['gender'], patient.gender)
         self.assertEqual(response.context['date_of_birth'],
-                datetime.date(1999, 06,10))
-        #self.assertEqual(response.context['submitter_comments'],
-        #        case.submitter_comments.comments[0], 'Trololololol.')
+                datetime.date(1999, 06, 10))
+
         self.assertEqual(response.context['priority'], case.priority)
+
+    def test_add_bad_cases(self):
+        ''' Ensure that an invalid POST won't be accepted by the server.'''
+
+        defaults = populate_default_test_data()
+        patient = defaults[4]
+
+        self.client = Client()
+        self.client.login(username="theworker", password="password")
+
+        good = [patient.id, 10]
+        bad = [30, 'High']
+
+        for i in range(0, len(good)):
+            entries = good[:]
+            entries[i] = bad[i]
+
+            url = reverse('new_case', args=['X'])
+
+            try:
+                response = self.client.post(url,
+                    {'patient': entries[0],
+                     'comments': 'Trololololol.',
+                     'priority': entries[1],
+                     'scan_image': None})
+            except Exception:
+
+                # Failure is good
+                pass
+
+            self.assertNotEqual(response.status_code, 302,
+                                "Sub-Test %d should not redirect." % i)
 
 
 class SetInfoTests(TestCase):
     """
-    Test cases to see whether information on doctor's, worker's and patient's 
+    Test cases to see whether information on doctor's, worker's and patient's
     profile page is set up correctly. Also checks whether the information is
     updated correctly when changed.
     """
@@ -171,7 +202,7 @@ class SetInfoTests(TestCase):
         except IntegrityError:
             return HttpResponseServerError()
 
-        self.assertEqual(doctor1.user.first_name,'F')
+        self.assertEqual(doctor1.user.first_name, 'F')
         self.client = Client()
         self.client.login(username="doctor1", password='doctor')
         url = reverse('display_profile', args=[user.id])
