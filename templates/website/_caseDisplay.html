@@ -78,7 +78,7 @@ $(document).ready(function() {
 				{% for case in cases %}
 				<tr>
 					<td><a href="{% url 'display_patient' case.patient_ref.id %}" target="_blank">
-						{{case.patient_ref.first_name}}, {{case.patient_ref.last_name}} </a></td>
+						{{case.patient_ref.first_name}} {{case.patient_ref.last_name}} </a></td>
 					<td><a href="{% url 'display_case' case.case_ref.id %}" target="_blank">{{case.case_ref.id}}</a></td>
 					<td>{{case.case_ref.date_opened}}</td>
 						{%if case.case_ref.lock_holder == None%}

@@ -40,7 +40,7 @@
 			<table border="0" cellpadding="5" style="display: inline-block; margin: 0 auto; text-align: left">
 				<tr>
 					<td style="height: 250 px; margin: 0; text-align: left;">
-							<br><label>Patient:</label> <a href="{% url 'display_patient' patient_id %}">  {{lastName}}, {{firstName}}</a>
+							<br><label>Patient:</label> <a href="{% url 'display_patient' patient_id %}"> {{firstName}} {{lastName}}</a>
 							<br><label>U.R.M Patient ID:</label> {{patient_id}}
 							<br><label>Gender:</label> {{gender}}
 							<br><label>Regional Health ID:</label> {{health_id}}
