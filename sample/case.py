@@ -193,6 +193,11 @@ def display_case(request, case_id, mode='v'):
             comment_form.fields["comments"].initial = ""
 
         elif mode == 'p':
+
+            # Priority may not be changed if closed.
+            if case.status == 2:
+                return HttpResponseServerError()
+
             priority_form = UpdateCasePriorityForm(request.POST)
             status_form = UpdateCaseStatusForm()
             adopt_form = UpdateCaseLockHolderForm()
@@ -215,18 +220,22 @@ def display_case(request, case_id, mode='v'):
             if not hasattr(user, "doctor"):
                     return HttpResponseServerError()
 
+            # Assert that if the case is already locked, only the current
+            # holder can change it.
+            if (case.lock_holder != None and
+                         case.lock_holder != user.doctor):
+                    return HttpResponseServerError()
+
+            # Assert that if the case is closed, the lock can't be changed.
+            if (case.status == 2):
+                    return HttpResponseServerError()
+
             priority_form = UpdateCasePriorityForm()
             status_form = UpdateCaseStatusForm()
             adopt_form = UpdateCaseLockHolderForm(request.POST)
             comment_form = PostCommentForm()
             if adopt_form.is_valid():
                 toggle_field = int(adopt_form.cleaned_data['toggle_field'])
-
-                # Assert that if the case is already locked, only the current
-                # holder can change it.
-                if (case.lock_holder != None and
-                         case.lock_holder != user.doctor):
-                    return HttpResponseServerError()
 
                 if toggle_field == 1:
 
@@ -251,6 +260,7 @@ def display_case(request, case_id, mode='v'):
                 print "Invalid UpdateCaseLockHolderForm."
 
         elif mode == 's':
+
             priority_form = UpdateCasePriorityForm()
             status_form = UpdateCaseStatusForm(request.POST)
             adopt_form = UpdateCaseLockHolderForm()
@@ -267,7 +277,7 @@ def display_case(request, case_id, mode='v'):
 
             else:
 
-                print "Invalid UpdateCasePriorityForm."
+                print "Invalid UpdateCaseStatusForm."
 
         else:
 

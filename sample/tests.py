@@ -233,6 +233,26 @@ class UpdateCaseTests(TestCase):
             self.assertEqual(response.context['date_of_birth'],
                     datetime.date(1999, 06, 10))
 
+    def test_update_priority_closed(self):
+        ''' Test updating the priority of a case that is closed.
+        Shouldnt work.'''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+        # Set the case to be locked by that different doctor
+        case.status = 2
+        case.save()
+
+        self.client = Client()
+
+        self.client.login(username="thedoctor", password="thepassword")
+
+        url = reverse('display_case', args=[case.id, 'p'])
+        response = self.client.post(url, {'priority': 20})
+
+        self.assertEqual(response.status_code, 500)
+
     def test_lock_case_doctor(self):
         ''' Test adopting a case as a doctor.'''
 
@@ -256,8 +276,26 @@ class UpdateCaseTests(TestCase):
         defaults = populate_default_test_data()
         case = defaults[7]
 
-         # Set the case to be locked by that different doctor
+        # Set the case to be locked by that different doctor
         case.lock_holder = defaults[9]
+        case.save()
+
+        self.client = Client()
+        self.client.login(username="thedoctor", password="thepassword")
+
+        url = reverse('display_case', args=[case.id, 'a'])
+        response = self.client.post(url, {'toggle_field': 1})
+
+        self.assertEqual(response.status_code, 500)
+
+    def test_lock_case_closed(self):
+        ''' Test locking a case that is closed. This shouldn't work. '''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+        # Set the case to be closed.
+        case.status = 2
         case.save()
 
         self.client = Client()
@@ -303,7 +341,7 @@ class UpdateCaseTests(TestCase):
                              None)
 
     def test_unlock_case_different_doctor(self):
-        ''' Test unlocking a case as the same doctor who locked it. 
+        ''' Test unlocking a case as a different doctor than who locked it.
         This should not work.'''
 
         defaults = populate_default_test_data()
@@ -329,6 +367,26 @@ class UpdateCaseTests(TestCase):
 
         self.client = Client()
         self.client.login(username="theworker", password="password")
+
+        url = reverse('display_case', args=[case.id, 'a'])
+        response = self.client.post(url, {'toggle_field': 2})
+
+        self.assertEqual(response.status_code, 500)
+
+    def test_unlock_case_closed(self):
+        ''' Test unlocking a closed case as the same doctor who locked it.
+        This should not work, even though its the same doctor.'''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+        # Set the case to be locked by the current doctor and to be closed.
+        case.lock_holder = defaults[3]
+        case.status = 2
+        case.save()
+
+        self.client = Client()
+        self.client.login(username="thedoctor", password="thepassword")
 
         url = reverse('display_case', args=[case.id, 'a'])
         response = self.client.post(url, {'toggle_field': 2})
