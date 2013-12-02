@@ -101,8 +101,12 @@ public class CasePageActivity extends ActivityAPI {
 				startActivity(i);
 			}
 		}
+		
 		if (jsonCurCase != null) {
-			cCaseId.setText("Case: " + jsonCurCase.optString("case_id"));
+			cCaseId.setText("Case: "
+					+ (jsonCurCaseId != null ? jsonCurCaseId
+							.optString("case_id") : jsonCurCase
+							.optString("case_id")));
 			cPatientName.setText("Name: " + jsonCurCase.optString("lastName")
 					+ ", " + jsonCurCase.optString("firstName"));
 			cPatientUrmId.setText("URM ID: "
