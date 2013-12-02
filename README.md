@@ -49,3 +49,8 @@ Password: doctor
 All the pdf files are uploaded to gh-pages/sprint2
 
 Check the website or the wiki page to read these pdf's.
+
+**Final sprint:**
+
+All the pdf files, screencast, and presentation are uploaded to gh-pages/sprintFinal
+Android code is in the android_app branch, while the main for the website is in the master branch.
