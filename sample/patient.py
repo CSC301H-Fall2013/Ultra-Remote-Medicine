@@ -15,6 +15,12 @@ def display_new_patient(request):
     ''' Display the new patient page and process submitted new-patient
         forms. '''
 
+    user = request.user
+
+    # Only workers may add new patients.
+    if not hasattr(user, "worker"):
+        return HttpResponseServerError()
+
     if request.method == 'POST':
 
         form = NewPatientForm(request.POST, request.FILES)
@@ -29,8 +35,6 @@ def display_new_patient(request):
             sex = form.cleaned_data['sex']
             email = form.cleaned_data['email']
             patient_pic = form.cleaned_data['patient_pic']
-            
-            print "PATIENT PIC: ", patient_pic
 
             try:
                 patient = Patient(
