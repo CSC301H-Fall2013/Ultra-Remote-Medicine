@@ -222,7 +222,7 @@ class UpdateCaseTests(TestCase):
 
             # Test that the case page reflects the new case status.
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(response.context['priority'], '20')
+            self.assertEqual(response.context['priority'], 20)
 
             # A reasonable selection of attributes that should still match.
             self.assertEqual(response.context['firstName'],
@@ -232,6 +232,26 @@ class UpdateCaseTests(TestCase):
             self.assertEqual(response.context['gender'], cpatient.gender)
             self.assertEqual(response.context['date_of_birth'],
                     datetime.date(1999, 06, 10))
+
+    def test_update_priority_open_bad(self):
+        ''' Test updating the priority of a case with an invalid value.
+        This shouldn't work.'''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+        # Set the case to be locked by that different doctor
+        case.status = 2
+        case.save()
+
+        self.client = Client()
+
+        self.client.login(username="thedoctor", password="thepassword")
+
+        url = reverse('display_case', args=[case.id, 'p'])
+        response = self.client.post(url, {'priority': -23})
+
+        self.assertEqual(response.status_code, 500)
 
     def test_update_priority_closed(self):
         ''' Test updating the priority of a case that is closed.
@@ -390,6 +410,76 @@ class UpdateCaseTests(TestCase):
 
         url = reverse('display_case', args=[case.id, 'a'])
         response = self.client.post(url, {'toggle_field': 2})
+
+        self.assertEqual(response.status_code, 500)
+
+    def test_close_case_doctor(self):
+        ''' Test the functionality for a doctor closing a case he/she
+        owns.'''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+        # Set the case to be locked by this doctor.
+        case.lock_holder = defaults[3]
+        case.save()
+
+        self.client = Client()
+        self.client.login(username="thedoctor", password="thepassword")
+
+        url = reverse('display_case', args=[case.id, 's'])
+        response = self.client.post(url, {'status': 2})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["status"], 2)
+
+    def test_close_case_doctor_nonowner(self):
+        ''' Test when a non-owner doctor closing a case. Should fail.'''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+        self.client = Client()
+        self.client.login(username="thedoctor", password="thepassword")
+
+        url = reverse('display_case', args=[case.id, 's'])
+        response = self.client.post(url, {'status': 2})
+
+        self.assertEqual(response.status_code, 500)
+
+    def test_reopen_case_doctor(self):
+        ''' Test the functionality for a doctor reopening a case he/she
+        owns.'''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+        # Set the case to be locked by this doctor.
+        case.lock_holder = defaults[3]
+        case.save()
+
+        self.client = Client()
+        self.client.login(username="thedoctor", password="thepassword")
+
+        url = reverse('display_case', args=[case.id, 's'])
+        response = self.client.post(url, {'status': 1})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["status"], 1)
+
+    def test_add_invalid_reply(self):
+        '''Test trying to add a reply to a comment that doesn't exist.'''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+        self.client = Client()
+        self.client.login(username="thedoctor", password="thepassword")
+
+        url = reverse('display_case', args=[case.id, 'c'])
+        response = self.client.post(url, {'comments': "Hahahahaah! Lololol!",
+                                          'comment_id': 2000012,
+                                          'scan_image': None})
 
         self.assertEqual(response.status_code, 500)
 

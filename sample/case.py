@@ -175,8 +175,14 @@ def display_case(request, case_id, mode='v'):
                             case.reviewer_comments.add(matching_group)
 
                     else:
-                        parent_comment = Comment.objects.filter(
-                                id=comment_id)[0]
+
+                        matching_comments = Comment.objects.filter(
+                                id=comment_id)
+
+                        if len(matching_comments) == 0:
+                            return HttpResponseServerError()
+
+                        parent_comment = matching_comments[0]
                         parent_comment.children.add(comment)
 
                     case.save()
@@ -204,7 +210,11 @@ def display_case(request, case_id, mode='v'):
             comment_form = PostCommentForm()
             if priority_form.is_valid():
 
-                priority = priority_form.cleaned_data['priority']
+                priority = int(priority_form.cleaned_data['priority'])
+
+                # Assert that the priority is non-negative
+                if priority < 0:
+                    return HttpResponseServerError()
 
                 try:
                     case.priority = priority
@@ -255,18 +265,37 @@ def display_case(request, case_id, mode='v'):
                         print str(e)
                         print "hard fail"
                         return HttpResponseServerError()
+                else:
+
+                    # Invalid value provided
+                    return HttpResponseServerError()
 
             else:
                 print "Invalid UpdateCaseLockHolderForm."
 
         elif mode == 's':
 
+            # Only a doctor can change a cases' status.
+            if not hasattr(user, "doctor"):
+                return HttpResponseServerError()
+
+            # If the case is currently closed, only the lock owner can change
+            # this.
+            if user.doctor != case.lock_holder:
+                return HttpResponseServerError()
+
             priority_form = UpdateCasePriorityForm()
             status_form = UpdateCaseStatusForm(request.POST)
             adopt_form = UpdateCaseLockHolderForm()
             comment_form = PostCommentForm()
+
             if status_form.is_valid():
-                status = status_form.cleaned_data['status']
+                status = int(status_form.cleaned_data['status'])
+
+                # Assert that the status is a valid value
+                if status <= 0 or status >= 3:
+                    return HttpResponseServerError()
+
                 try:
                     case.status = int(status)
                     case.save()
