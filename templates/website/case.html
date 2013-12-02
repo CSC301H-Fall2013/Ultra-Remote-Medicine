@@ -60,15 +60,17 @@
 							{%endif%}
 						<form action="{% url 'display_case' case_id 'a' %}" method="post"> {% csrf_token %}
 							{%if case.lock_holder == None%}
-								<label>Case Holder:</label> None<br>
 								{%if viewer.doctor%}
 									<label>Lock/Unlock this case:</label> {{adopt_form.toggle_field}}
+								{%else%}
+									<label>Case Holder:</label> None<br>
 								{%endif%}
 							{%else%}
 								{%if viewer.doctor%}
-									<label>Case Holder:</label> {{case.lock_holder.user.first_name}} {{case.lock_holder.user.last_name}}
-									{%if viewer.doctor.user.first_name == case.lock_holder.user.first_name and case.status == 1%}
-										<br>Lock/Unlock this case: {{adopt_form.toggle_field}}
+									{%if viewer.doctor.user == case.lock_holder.user and case.status == 1%}
+										<label>Lock/Unlock this case:</label> {{adopt_form.toggle_field}}
+									{%else%}
+										<label>Case Holder:</label> {{case.lock_holder.user.first_name}} {{case.lock_holder.user.last_name}}
 									{%endif%}
 								{%else%}
 									<br><label>Case Holder:</label> {{case.lock_holder.user.first_name}} {{case.lock_holder.user.last_name}}
@@ -76,7 +78,7 @@
 							{%endif%}
 						</form>
 						<form action="{% url 'display_case' case_id 's' %}" method="post"> {% csrf_token %}
-							{%if viewer.doctor and viewer.doctor.user.first_name == case.lock_holder.user.first_name%}
+							{%if viewer.doctor and viewer.doctor.user == case.lock_holder.user%}
 								<label>Case Status:</label> {{status_form.status}}
 							{%else%}
 								{%if case.status == 1%}

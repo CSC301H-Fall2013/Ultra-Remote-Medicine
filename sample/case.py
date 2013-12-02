@@ -210,6 +210,11 @@ def display_case(request, case_id, mode='v'):
                     return HttpResponseServerError()
 
         elif mode == 'a':
+
+            # Only doctors may lock a case
+            if not hasattr(user, "doctor"):
+                    return HttpResponseServerError()
+
             priority_form = UpdateCasePriorityForm()
             status_form = UpdateCaseStatusForm()
             adopt_form = UpdateCaseLockHolderForm(request.POST)
@@ -217,7 +222,14 @@ def display_case(request, case_id, mode='v'):
             if adopt_form.is_valid():
                 toggle_field = int(adopt_form.cleaned_data['toggle_field'])
 
+                # Assert that if the case is already locked, only the current
+                # holder can change it.
+                if (case.lock_holder != None and
+                         case.lock_holder != user.doctor):
+                    return HttpResponseServerError()
+
                 if toggle_field == 1:
+
                     try:
                         case.lock_holder = user.doctor
                         case.save()
@@ -226,6 +238,7 @@ def display_case(request, case_id, mode='v'):
                         print "hard fail"
                         return HttpResponseServerError()
                 elif toggle_field == 2:
+
                     try:
                         case.lock_holder = None
                         case.save()

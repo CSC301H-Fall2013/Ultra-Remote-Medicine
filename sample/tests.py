@@ -1,3 +1,4 @@
+from copy import copy
 from django.test import TestCase
 from sample.models import (Doctor, Worker, Patient, SpecialtyType, TimeSlot, Case, Scan,
         Comment, CommentGroup)
@@ -50,7 +51,7 @@ def populate_default_test_data():
         doctor_user = createUser('thedoctor', 'o@boo.com', 'thepassword')
         doctor_user.save()
         doctor = Doctor(user=doctor_user)
-        doctor.user_id = worker_user.id
+        doctor.user_id = doctor_user.id
         doctor.registration_time = timezone.now()
         doctor.save()
     except IntegrityError:
@@ -58,9 +59,20 @@ def populate_default_test_data():
         return HttpResponseServerError()
 
     try:
+        doctor2_user = createUser('doctor2', 'shista@boo.com', 'd2password')
+        doctor2_user.save()
+        doctor2 = Doctor(user=doctor2_user)
+        doctor2.user_id = doctor2_user.id
+        doctor2.registration_time = timezone.now()
+        doctor2.save()
+    except IntegrityError:
+        print 'Failed to create a default doctor'
+        return HttpResponseServerError()
+
+    try:
         sample_patient = Patient(
-                first_name="Jacobi",
-                last_name="Miniti",
+                first_name="Alexis",
+                last_name="Advantageous",
                 gps_coordinates="101010",
                 address="Yonge street",
                 date_of_birth="1999-06-10",
@@ -108,7 +120,7 @@ def populate_default_test_data():
         return HttpResponseServerError()
 
     return [worker_user, worker, doctor_user, doctor, sample_patient, comment,
-            comment_group, sample_case]
+            comment_group, sample_case, doctor2_user, doctor2]
 
 
 class NewCaseTests(TestCase):
@@ -183,6 +195,147 @@ class NewCaseTests(TestCase):
                                 "Sub-Test %d should not redirect." % i)
 
 
+class UpdateCaseTests(TestCase):
+    ''' Test cases for updating a case.'''
+
+    def test_update_priority_open(self):
+        ''' Test updating the priority of a case that is still open and is
+        not locked.'''
+
+        defaults = populate_default_test_data()
+        patient = defaults[4]
+        cpatient = copy(patient)
+        case = defaults[7]
+
+        self.client = Client()
+
+        accounts = [["theworker", "password"],
+                         ["thedoctor", "thepassword"]]
+
+        # Try as both worker and doctor
+        for account in accounts:
+
+            self.client.login(username=account[0], password=account[1])
+
+            url = reverse('display_case', args=[case.id, 'p'])
+            response = self.client.post(url, {'priority': 20})
+
+            # Test that the case page reflects the new case status.
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.context['priority'], '20')
+
+            # A reasonable selection of attributes that should still match.
+            self.assertEqual(response.context['firstName'],
+                             cpatient.first_name)
+            self.assertEqual(response.context['lastName'], cpatient.last_name)
+            self.assertEqual(response.context['patient_id'], cpatient.id)
+            self.assertEqual(response.context['gender'], cpatient.gender)
+            self.assertEqual(response.context['date_of_birth'],
+                    datetime.date(1999, 06, 10))
+
+    def test_lock_case_doctor(self):
+        ''' Test adopting a case as a doctor.'''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+        self.client = Client()
+        self.client.login(username="thedoctor", password="thepassword")
+
+        url = reverse('display_case', args=[case.id, 'a'])
+        response = self.client.post(url, {'toggle_field': 1})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['lock_holder'],
+                             defaults[3])
+
+    def test_lock_case_different_doctor(self):
+        ''' Test adopting a case as a different doctor than who locked it.
+        This shouldn't work.'''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+         # Set the case to be locked by that different doctor
+        case.lock_holder = defaults[9]
+        case.save()
+
+        self.client = Client()
+        self.client.login(username="thedoctor", password="thepassword")
+
+        url = reverse('display_case', args=[case.id, 'a'])
+        response = self.client.post(url, {'toggle_field': 1})
+
+        self.assertEqual(response.status_code, 500)
+
+    def test_lock_case_worker(self):
+        ''' Test adopting a case as a worker. Shouldn't work.'''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+        self.client = Client()
+        self.client.login(username="theworker", password="password")
+
+        url = reverse('display_case', args=[case.id, 'a'])
+        response = self.client.post(url, {'toggle_field': 1})
+
+        self.assertEqual(response.status_code, 500)
+
+    def test_unlock_case_same_doctor(self):
+        ''' Test unlocking a case as the same doctor who locked it.'''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+        # Set the case to be locked by the current doctor
+        case.lock_holder = defaults[3]
+        case.save()
+
+        self.client = Client()
+        self.client.login(username="thedoctor", password="thepassword")
+
+        url = reverse('display_case', args=[case.id, 'a'])
+        response = self.client.post(url, {'toggle_field': 2})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['lock_holder'],
+                             None)
+
+    def test_unlock_case_different_doctor(self):
+        ''' Test unlocking a case as the same doctor who locked it. 
+        This should not work.'''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+        # Set the case to be locked by doctor account #2
+        case.lock_holder = defaults[9]
+        case.save()
+
+        self.client = Client()
+        self.client.login(username="thedoctor", password="thepassword")
+
+        url = reverse('display_case', args=[case.id, 'a'])
+        response = self.client.post(url, {'toggle_field': 2})
+
+        self.assertEqual(response.status_code, 500)
+
+    def test_unlock_case_worker(self):
+        ''' Test unlocking a case as a worker. Shouldn't work.'''
+
+        defaults = populate_default_test_data()
+        case = defaults[7]
+
+        self.client = Client()
+        self.client.login(username="theworker", password="password")
+
+        url = reverse('display_case', args=[case.id, 'a'])
+        response = self.client.post(url, {'toggle_field': 2})
+
+        self.assertEqual(response.status_code, 500)
+
+
 class SetInfoTests(TestCase):
     """
     Test cases to see whether information on doctor's, worker's and patient's
@@ -220,66 +373,6 @@ class SetInfoTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(doctor1.user.first_name,'G')
         self.assertEqual(response.context['user'].first_name, 'G')
-
-    def test_doctor_change_priority(self):
-        defaults = populate_default_test_data()
-        user = defaults[2]
-        #user.save()
-        try:
-            doctor1 = defaults[3]
-            patient1 = defaults[4]
-            #user.save()
-            #doctor1.save()
-            #patient1.save()
-        except IntegrityError:
-            return HttpResponseServerError()
-
-        self.client = Client()
-        self.client.login(username="thedoctor", password='thepassword')
-        url = reverse('display_case', args=[defaults[-1].id])
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(defaults[-1].priority, 10)
-        try:
-            defaults[-1].priority = 30
-            defaults[-1].save()
-            #doctor1.save()
-        except IntegrityError:
-            return HttpResponseServerError()
-        url = reverse('display_case', args=[defaults[-1].id])
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(defaults[-1].priority, 30)
-        
-    def test_worker_change_priority(self):
-        defaults = populate_default_test_data()
-        user = defaults[0]
-        #user.save()
-        try:
-            worker1 = defaults[1]
-            patient1 = defaults[4]
-            #user.save()
-            #doctor1.save()
-            #patient1.save()
-        except IntegrityError:
-            return HttpResponseServerError()
-        
-        self.client = Client()
-        self.client.login(username="theworker", password='password')
-        url = reverse('display_case', args=[defaults[-1].id])
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(defaults[-1].priority, 10)
-        try:
-            defaults[-1].priority = 30
-            defaults[-1].save()
-            #doctor1.save()
-        except IntegrityError:
-            return HttpResponseServerError()
-        url = reverse('display_case', args=[defaults[-1].id])
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(defaults[-1].priority, 30)
 
     def test_doctor_last_name(self):
         user = createUser('doctor1', 'a@a.com', 'doctor')
