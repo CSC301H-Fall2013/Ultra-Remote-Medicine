@@ -293,8 +293,10 @@ def upload_image_m(request):
         image_data = b64decode(data['image_string'])
         scan.file = ContentFile(image_data, "test.png")
         scan.save()
-        case.scan = scan
-        case.save()
+        comment.scans.add(scan)
+        case.scans.add(scan)
+        #case.scan = scan
+        #case.save()
     except IntegrityError:
         json_response = json.dumps({"success": "false",
                                     "type": "IntegrityError"})
